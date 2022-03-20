@@ -1,0 +1,86 @@
+html, body{
+    font-family: 'Akaya Telivigala', cursive;
+    width: 100%;
+    height: 100%;
+}
+*{
+    box-sizing: border-box;
+}
+
+.container-fluid {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2B2A3A;
+}
+
+.header-menu {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-logo {
+    color: pink;
+    font-size: 60px;
+}
+
+.navbar-nav {
+    width: 100%;
+}
+
+.navbar-nav li {
+    display: inline;
+    font-size: 30px;
+}
+
+.navbar-nav li a {
+    display: inline;
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.header-signin {
+    width: 20%;
+    font-size: 30px;
+    color: white;
+}
+
+.header-signin a {
+    color: white;
+    text-decoration: none;
+}
+
+.content-picture {
+    width: 100%;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    font-size: 50px;
+    text-align: center;
+}
+
+.content-btn {
+    background-color: pink;
+    border: none;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+}
+
+.content-btn a {
+    text-decoration: none;
+    color: white;
+}
