@@ -1,137 +1,71 @@
-html, body{
-    font-size: 62.5%;
-    font-family: 'Akaya Telivigala', cursive;
+.signin-content-container {
     width: 100%;
-    height: 100%;
-}
-*{
-    box-sizing: border-box;
-}
-
-:root{
-    --primary-color: #23222F;
-    --pre-color: #2B2A3A ;
-    --text-color: #ffffff;
-    --second-color: #DD8593;
-}
-.navbar{
-    background-color: var(--pre-color);
-    height: 100px;
-}
-.navbar a{
-    color: var(--text-color);
-}
-.navbar a:hover{
-    color: var(--second-color);
-}
-.collapse {
-    font-family: 'Akaya Telivigala', cursive;  
-    font-size: 28px; 
-}
-.header-menu li a{
-    margin: 20px;
-}
-.header-logo .name{
-    font-size: 56px;
-    font-family: 'Pacifico', cursive;
-    color: var(--second-color) ;
-}
-
-.btn{
-    font-family: 'Akaya Telivigala', cursive;
-    color: var(--text-color);
-}
-.btn a{
-    font-size: 28px;
-}
-.btn-or{
-    font-size: 32px;
-    color: var(--text-color);
-}
-.header-signin{
-    display: flex;
-    justify-content: end;
-    
-}
-.header-signin a:hover{
-    color: var(--second-color);
-}
-.container-fluid{
-    background-color: var(--primary-color);
-    
-}
-.signin-form{
-    padding-top: 2rem;
-    padding-bottom: 3rem;
+    height: 400px;
+    background-color: #23222F;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    font-family: 'Akaya Telivigala', cursive;
-    color: var(--text-color);
-    font-size: 32px;
-
+    align-items: center;
 }
 
-.title-signin{
-    font-size: 40px;
-    padding-bottom: 3rem;
+.signin-title h1 {
+    color: white;
+}
+
+.signin-content {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signin-form {
+    width: 50%;
+    height: 100%;
     text-align: center;
 }
-.signin-form i{
-    color: var(--text-color);
-}
-.fa-eye{
-    font-size: 20px;
-    margin-right: 50px;
 
+.signin-form form {
+    display: inline-block;
 }
-.remem{
-    font-size: 20px;
+
+.signin-form form input[type="text"], input[type="password"]{
+    width: 100%;
+    padding: 15px;
+    font-size: 30px;
+    border: none;
+    border-bottom: 2px solid white;
+    background-color: #23222F;
+    color: white;
 }
-.input-in4{
-    padding-left: 25rem;
-    padding-right: 20rem;
+
+.signin-form form input[type="password"] {
+    margin-top: 20px;
+}
+
+.remember-me {
     display: flex;
-    flex-direction: column;
-}
-.input-in4 hr{
-    border-top: 2px solid white;
-    width: 40rem;
-    margin: 8px 310px 35px 0px;
-}
-input{
-    background-color: var(--primary-color);
-    border: none;
-    width: 550px;
-    padding-left: 10px;
-    color: var(--text-color);
-}
-::placeholder{
-    color: #999;
-}
-.button-sigin{
-    display:  flex;
-    justify-content: center;
-    margin-top: 2rem;
-}
-.btn-signin{
-    width: 120px;
-    height: 50px;
-    background-color: var(--second-color);
-    border-radius: 10px;
-    color: var(--text-color);
-    border: none;
-    box-shadow: none;
-    
-}
-footer{
-    background-color: var(--pre-color);
-    color: var(--text-color);
-    font-family: 'Akaya Telivigala', cursive;
-    font-size: 24px;
-   
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
 }
 
-.input-in4 input {
-    width: 70%;
+.signin-form form div input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.signin-form form div h1 {
+    font-size: 20px;
+    color: white;
+    margin-left: 5px;
+}
+
+.signin-form form input[type="submit"] {
+    width: 100px;
+    height: 50px;
+    background-color: pink;
+    color: white;
+    border-radius: 10px;
+    font-size: 20px;
 }
