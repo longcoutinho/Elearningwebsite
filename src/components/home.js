@@ -21,16 +21,16 @@ const Test = function(props) {
             <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href="#" class="nav__link">Decks</a></li>
+                    <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">Statistics</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">About</a></li>
                 </ul>
             </div>
             {/* sigin signup */}
             <div class="header-signin collapse navbar-collapse" id="navbarResponsive">
-                <span class="btn signin"><a href="/sigin">Sign in </a></span>
+                <span class="btn signin"><a href="/signin">Sign in </a></span>
                 <span class="btn-or"> / </span>
-                <span class="btn signup"><a href="#">Sign up</a></span>
+                <span class="btn signup"><a href="/signup">Sign up</a></span>
             </div>
         </div>
 
@@ -63,15 +63,24 @@ const Test = function(props) {
         {/* contact us */}
         <div class="contactus-container">
             <div class="contactus-content">
-                <h2>Contact us</h2>
-            </div>
-            <div class="contact-ways">
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#"><i class="fa-brands fa-google-plus-g"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                <div class="contactus-title">
+                    <h2>Contact us</h2>
+                </div>
+                <div class="contact-ways">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div> 
+        </div>    
+
+        {/* footer */}
+        <div class="footer-container">
+            <h1>Hotline: 0363137565</h1>
+            <h1>Address: Trần Bình, Mai Dịch, Cầu Giấy, Hà Nội</h1>
+            <h1>Email: maitho3101@gmail.com</h1>
         </div>
-    </div>
 
     </div>
   )

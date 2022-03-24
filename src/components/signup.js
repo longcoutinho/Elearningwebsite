@@ -1,9 +1,10 @@
 import React from "react";
-import "../styles/signin.css"
+import "../styles/signup.css"
 
-const Signin = function(props) {
+const Signup = function(props) {
   return (
     <div>
+
         {/* header menu */} 
         <div class="container-fluid">
             {/* logo */} 
@@ -27,21 +28,23 @@ const Signin = function(props) {
             </div>
         </div>
 
-        {/* form sign in */} 
-        <div class="signin-content-container">
-            <div class="signin-title">
-                <h1>Sign In</h1>
+        {/* form sign up */} 
+        <div class="signup-content-container">
+            <div class="signup-title">
+                <h1>Sign Up</h1>
             </div>
-            <div class="signin-content"> 
-                <div class="signin-form">
+            <div class="signup-content"> 
+                <div class="signup-form">
                     <form>
                         <input class="input_username" type="text" name="name" placeholder="User name"/>
-                        <input class="input_password" type="password" name="password" placeholder="********"/>
-                        <div class="remember-me">
-                            <input type="checkbox" />
-                            <h1>Remember me?</h1>
+                        <input class="input_email" type="text" name="email" placeholder="Email"/>
+                        <input class="input_password" type="password" name="password" placeholder="Password"/>
+                        <input class="input_confpassword" type="password" name="confpassword" placeholder="Confirm Password"/>
+                        <input type="submit" value="Sign Up" />
+                        <div class="already-a-member">
+                            <h1>Already a member ?</h1>
+                            <a href="/signin">Sign in </a>
                         </div>
-                        <input type="submit" value="Sign in" />
                     </form>
                 </div>
             </div>
@@ -58,4 +61,4 @@ const Signin = function(props) {
   )
 }
  
-export default Signin;
+export default Signup;

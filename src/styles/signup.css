@@ -1,17 +1,17 @@
-.signin-content-container {
+.signup-content-container {
     width: 100%;
-    height: 400px;
+    height: 550px;
     background-color: #23222F;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.signin-title h1 {
+.signup-title h1 {
     color: white;
 }
 
-.signin-content {
+.signup-content {
     width: 100%;
     height: 80%;
     display: flex;
@@ -19,7 +19,7 @@
     align-items: center;
 }
 
-.signin-form {
+.signup-form {
     width: 50%;
     height: 100%;
     text-align: center;
@@ -29,8 +29,8 @@
     display: inline-block;
 }
 
-.signin-form form input[type="text"], 
-.signin-form form input[type="password"] {
+.signup-form form input[type="text"], 
+.signup-form form input[type="password"] {
     width: 100%;
     padding: 15px;
     font-size: 30px;
@@ -40,33 +40,43 @@
     color: white;
 }
 
+.signup-form form input:not(:first-child) {
+    margin-top: 20px;
+}
+
 .signin-form form input[type="password"] {
     margin-top: 20px;
 }
 
-.remember-me {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 15px;
-}
-
-.signin-form form div input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-}
-
-.signin-form form div h1 {
-    font-size: 20px;
-    color: white;
-    margin-left: 5px;
-}
-
-.signin-form form input[type="submit"] {
+.signup-form form input[type="submit"] {
     width: 100px;
     height: 50px;
     background-color: pink;
     color: white;
     border-radius: 10px;
     font-size: 20px;
+}
+
+.already-a-member {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.already-a-member h1 {
+    margin-left: 200px;
+    font-size: 20px;
+    color: white;
+}
+
+.already-a-member a {
+    margin-left: 10px;
+    text-decoration: none;
+    color: blue;
+}
+
+a:hover {
+    text-decoration: underline;
 }

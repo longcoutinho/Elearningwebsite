@@ -48,6 +48,10 @@ html, body{
     text-decoration: none;
 }
 
+.navbar-nav li a:hover {
+    text-decoration: underline;
+}
+
 .header-signin {
     width: 20%;
     font-size: 30px;
@@ -116,4 +120,40 @@ html, body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.contactus-container {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #23222F;
+    color: white;
+    height: 200px;
+    width: 100%;
+}
+
+.contactus-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2B2A3A;
+    color: white;
+    height: 130px;
+    width: 100%;
+}
+
+.footer-container h1 {
+    font-size: 15px;
+}
+
+a:hover {
+    text-decoration: underline;
 }

@@ -1,0 +1,94 @@
+.decks-content {    
+    height: auto;
+    width: 100%;
+    background-color: #23222F;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.decks-back {
+    width: 100%;
+    height: 30px;
+    background-color: #23222F;
+}
+
+.decks-back a {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.decks-title {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 25px;
+    background-color: #23222F;
+}
+
+.decks-display {
+    height: auto;
+    flex-direction: row;
+    width: 100%;
+    background-color: #23222F;
+    
+}
+
+.decks-cards-container {
+    display: inline-block;
+    background-color: #999999;
+    width: 300px;
+    height: 200px;
+    border-radius: 5px;
+    margin: 20px 70px 30px 70px;
+}
+
+.decks-cards-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    
+}
+
+.decks-cards-name a {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    
+}
+
+.decks-cards-content {
+    width: 100%;
+    height: 50%;
+    color: black;
+    font-size: 10px;
+    word-wrap: break-word;
+}
+
+.decks-cards-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 30%;
+}
+
+.decks-cards-number {
+    font-size: 7px;
+}
+
+.decks-cards-date {
+    font-size: 7px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
