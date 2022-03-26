@@ -1,7 +1,31 @@
 import React from "react";
 import "../styles/signup.css"
+import axios from "axios";
 
 const Signup = function(props) {
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const config = {
+            username: event.target.signup_username.value,
+            password: event.target.signup_password.value,
+            displayname: event.target.signup_displayname.value
+        };
+        axios.post("http://localhost:3001/signup", config)
+        .then(res=> {
+            console.log(res.data);
+            if (res.data == "0") {
+                console.log("Signup successfully");
+            }
+            else {
+                console.log("Username da ton tai!");
+            }
+        })
+        
+      }
+
+
+
+
   return (
     <div>
 
@@ -35,11 +59,11 @@ const Signup = function(props) {
             </div>
             <div class="signup-content"> 
                 <div class="signup-form">
-                    <form>
-                        <input class="input_username" type="text" name="name" placeholder="User name"/>
-                        <input class="input_email" type="text" name="email" placeholder="Email"/>
-                        <input class="input_password" type="password" name="password" placeholder="Password"/>
-                        <input class="input_confpassword" type="password" name="confpassword" placeholder="Confirm Password"/>
+                    <form onSubmit={handleSubmit}>
+                        <input class="input_username" type="text" name="signup_username" placeholder="User name"/>
+                        <input class="input_email" type="text" name="signup_displayname" placeholder="Display name"/>
+                        <input class="input_password" type="password" name="signup_password" placeholder="Password"/>
+                        <input class="input_confpassword" type="password" name="signup_confpassword" placeholder="Confirm Password"/>
                         <input type="submit" value="Sign Up" />
                         <div class="already-a-member">
                             <h1>Already a member ?</h1>

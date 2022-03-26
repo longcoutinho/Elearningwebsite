@@ -157,3 +157,21 @@ html, body{
 a:hover {
     text-decoration: underline;
 }
+
+.user-info {
+    display: flex;                          
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 300px;                                                                                                                           
+}
+
+.user-info div span, .user-info div a{
+    font-size: 20px;
+    color: white;
+}
+
+.user-displayname {
+    display: inline-block;
+}

@@ -4,10 +4,7 @@ import pic_bg_content from "../image/pripic.jpg";
 import { useState } from "react";
 
 const Test = function(props) {
-  const [color, setColor] = useState("green");
-  const onClickimg = () => {
-    setColor("red");
-  }
+  
 
   return (
     <div>
