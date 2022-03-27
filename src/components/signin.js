@@ -8,13 +8,11 @@ import "../styles/signin.css"
 
 
 const Signin = function(props) {
-    const [userinfostate, setDisplay] = useState("none");
-    const [loginsignupstate, setDisplay2] = useState("block");
-    const [userdisplayname, setContent] = useState("");
-    const onClickimg = (content) => {
+    const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
+    const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
+    const onClickimg = () => {
         setDisplay("flex");
         setDisplay2("none");
-        setContent(content);
     }
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -24,10 +22,14 @@ const Signin = function(props) {
         };
         axios.post("http://localhost:3001/person", config)
         .then(res=> {
-            console.log(res.data);
             if (res.data != "0") {
-                onClickimg(res.data );
+                localStorage.setItem("windowdisplayname", res.data);
+                localStorage.setItem("windowuserinfoboxstate", "flex");
+                localStorage.setItem("windowloginboxstate", "none");
+                onClickimg();
+                console.log(localStorage.getItem("windowdisplayname"));
                 console.log("Sign in successfully");
+                window.location.href = '/'
             }
             else {
                 console.log("Invalid username or password!");
@@ -38,6 +40,8 @@ const Signin = function(props) {
     const signoutOnclick = () => {
         setDisplay("none");
         setDisplay2("block");
+        localStorage.setItem("windowuserinfoboxstate", "none");
+        localStorage.setItem("windowloginboxstate", "block");
     }
   return (
     <div>
@@ -60,7 +64,7 @@ const Signin = function(props) {
             <div class="user-info" style={{display:userinfostate}}>
                 <div class="user-displayname">
                     <span>Hello, </span>
-                    <a href="#">{userdisplayname}</a>
+                    <a href="#">{localStorage.getItem("windowdisplayname")}</a>
                 </div>
                 <button onClick={signoutOnclick}>Sign out </button>
             </div>

@@ -164,7 +164,8 @@ a:hover {
     justify-content: space-around;
     align-items: center;
     height: 100%;
-    width: 300px;                                                                                                                           
+    width: 300px;      
+    display: none;                                                                                                                     
 }
 
 .user-info div span, .user-info div a{

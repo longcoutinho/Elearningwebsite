@@ -4,9 +4,16 @@ import pic_bg_content from "../image/pripic.jpg";
 import { useState } from "react";
 
 const Test = function(props) {
-  
-
+    const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
+    const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
+    const signoutOnclick = () => {
+        setDisplay("none");
+        setDisplay2("block");
+        localStorage.setItem("windowuserinfoboxstate", "none");
+        localStorage.setItem("windowloginboxstate", "block");
+    }
   return (
+    
     <div>
         {/* header menu */} 
         <div class="container-fluid">
@@ -23,8 +30,17 @@ const Test = function(props) {
                     <li class="nav__item"><a href="#" class="nav__link">About</a></li>
                 </ul>
             </div>
-            {/* sigin signup */}
-            <div class="header-signin collapse navbar-collapse" id="navbarResponsive">
+
+            <div class="user-info" style={{display:userinfostate}}>
+                <div class="user-displayname">
+                    <span>Hello, </span>
+                    <a href="#">{localStorage.getItem("windowdisplayname")}</a>
+                </div>
+                <button onClick={signoutOnclick}>Sign out </button>
+            </div>
+
+            {/* signin signup */}
+            <div class="header-signin collapse navbar-collapse" id="navbarResponsive" style={{display:loginsignupstate}}>
                 <span class="btn signin"><a href="/signin">Sign in </a></span>
                 <span class="btn-or"> / </span>
                 <span class="btn signup"><a href="/signup">Sign up</a></span>
