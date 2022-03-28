@@ -26,6 +26,7 @@ const Signin = function(props) {
                 localStorage.setItem("windowdisplayname", res.data);
                 localStorage.setItem("windowuserinfoboxstate", "flex");
                 localStorage.setItem("windowloginboxstate", "none");
+                localStorage.setItem("windowusername", event.target.signin_username.value);
                 onClickimg();
                 console.log(localStorage.getItem("windowdisplayname"));
                 console.log("Sign in successfully");

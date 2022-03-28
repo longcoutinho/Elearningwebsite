@@ -37,6 +37,52 @@ async function savePersontoDB(username, password, displayname) {
   }
 }
 
+async function saveDeckToDB(name, decription, owner) {
+  try {
+    await client.connect();
+
+    const database = client.db('Test');
+    const movies = database.collection('decks');
+    const query = {name:name};
+    const movie = await movies.findOne(query);
+    if (movie == null) {
+      await movies.insertOne({
+          name: name,
+          decription: decription,
+          owner: owner
+      });
+      return "0";
+    }
+    else {
+      return "1";
+    }
+    
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function searchDeckInDB(username, deckname) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('decks');
+    const query = {owner:username};
+    var returnString = "thai";
+    await movies.find(query).toArray().then(item => {
+      //console.log(JSON.stringify(item));
+      returnString = JSON.stringify(item);
+    });
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
 async function checklogin(username, password) {
   try {
     await client.connect();
@@ -93,6 +139,37 @@ app.post("/signup", async (request, response) => {
     var person = request.body;
     //savePersontoDB(person.username, person.password);
     savePersontoDB(person.username, person.password, person.displayname).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+ 
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/adddeck", async (request, response) => {
+  try {
+    var person = request.body;
+    //savePersontoDB(person.username, person.password);
+    saveDeckToDB(person.name, person.decription, person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+ 
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/searchdeck", async (request, response) => {
+  try {
+    var person = request.body;
+    console.log(person.username, person.nameOfDeck);
+    //savePersontoDB(person.username, person.password);
+    await searchDeckInDB(person.username, person.nameOfDeck).then(res => {
       console.log(res);
       response.send(res);
     });

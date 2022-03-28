@@ -21,7 +21,7 @@ const Signup = function(props) {
             }
         })
         
-      }
+    }
 
 
 

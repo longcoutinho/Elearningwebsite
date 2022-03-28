@@ -92,3 +92,74 @@
 a:hover {
     text-decoration: underline;
 }
+
+.decks-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.decks-search form {
+    display: inline-block;
+}
+
+.decks-search input {
+    font-size: 30px;
+}
+
+.decks-search button {
+    font-size: 30px;
+}
+
+.add-decks {
+    position: fixed;
+    width: 400px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    margin-top: -250px; /* Negative half of height. */
+    margin-left: -200px;
+    background-color: #23222F;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-decks form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-decks p {
+    font-size: 30px;
+    color: white;
+}
+
+.add-decks input[type="text"] {
+    width: 100%;
+    font-size: 30px;
+}
+
+.add-decks label {
+    margin-top: 50px;
+    display: inline-block;
+    color: white;
+}
+
+.add-decks .close-button {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    left:100%;
+    margin-left: -25px;
+    text-decoration: center;
+}
+
+.add-decks input[type="submit"] {
+    height: 50px;
+    width: 100px;
+    text-decoration: center;
+    font-size: 30px;
+    margin-top: 50px;
+}
