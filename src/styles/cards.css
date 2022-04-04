@@ -65,6 +65,7 @@
 .cards-title-and-number {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 .cards-statistics-title {
@@ -100,3 +101,18 @@
     font-size: 20px;
 }
 
+.study-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.study-button button {
+    width: 180px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #DD8593;
+    color: white;
+    font-size: 20px;
+}
