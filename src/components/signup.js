@@ -1,8 +1,21 @@
 import React from "react";
 import "../styles/signup.css"
 import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const Signup = function(props) {
+    const [decklink, setDecklink] = useState("#"); 
+
+    useEffect( () => {
+        console.log(localStorage.getItem("windowusername"));
+        if (localStorage.getItem("windowusername") == "") {
+            setDecklink("/signin");
+        }
+        else {
+            setDecklink("/decks");
+        }
+    },[]);
     const handleSubmit = (event) => {
         event.preventDefault();
         const config = {
@@ -39,7 +52,7 @@ const Signup = function(props) {
             <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
+                    <li class="nav__item"><a href={decklink} class="nav__link">Decks</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">Statistics</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">About</a></li>
                 </ul>

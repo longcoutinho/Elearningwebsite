@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "../styles/decks.css"
 import { useState } from "react";
 import axios from "axios";
+import { VAR_STRING } from "mysql/lib/protocol/constants/types";
 
 const Decks = function(props) {
     var state = {
@@ -23,6 +24,9 @@ const Decks = function(props) {
         setDisplay2("block");
         localStorage.setItem("windowuserinfoboxstate", "none");
         localStorage.setItem("windowloginboxstate", "block");
+        localStorage.setItem("windowusername", "");
+        console.log("1");
+        window.location.href="/";
     }
     const addOnClick = () => {
         setStateOfAddingBox("flex");
@@ -30,9 +34,12 @@ const Decks = function(props) {
         //state.users = abc;
         //console.log(state.users);
     }
-    const closeOnClick = () => {
+    async function closeOnClick() {
         setStateOfAddingBox("none");
         setBackGroundOpacity("1");
+        await listofDecks(localStorage.getItem("windowusername"), "").then(value => {
+            setabc(value);
+        })
     }
     
     async function listofDecks(username, nameOfDeck) {
@@ -86,13 +93,17 @@ const Decks = function(props) {
         })
     }
 
-    const Card = (props) => {
+    function decksubmit(content) {
+        localStorage.setItem("windowdisplaydeck", content);
+    }
+
+    const Deck = (props) => {
         return (
-            abc.map(item => (
+            abc.map((item, index) => (
                 <div class="decks-cards-container">
                 <div class="decks-cards-name">
-                    <a href="#">{item.name}</a>
-                </div>
+                    <a onClick={() => decksubmit(item.name)} href="/cards">{item.name}</a>
+                </div> 
                 <div class="decks-cards-content">
                     <h1>Decription: {item.decription}</h1>
                 </div>
@@ -155,7 +166,7 @@ const Decks = function(props) {
                 </form>
             </div>
             <div class="decks-display">
-                <Card></Card>
+                <Deck></Deck>
             </div>
         </div>
         <div class="add-decks" style={{"display":adddeckstate}}>

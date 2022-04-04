@@ -1,7 +1,9 @@
 import React from "react";
 import "../styles/home.css";
-import pic_bg_content from "../image/pripic.jpg";
+import pic_bg_content from "../image/bg_liverpool.webp";
 import { useState } from "react";
+import { useEffect } from "react";
+import logo from "../image/liverpool.png"
 
 const Test = function(props) {
     const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
@@ -11,7 +13,20 @@ const Test = function(props) {
         setDisplay2("block");
         localStorage.setItem("windowuserinfoboxstate", "none");
         localStorage.setItem("windowloginboxstate", "block");
+        localStorage.setItem("windowusername", "");
+        window.localStorage.href="/";
     }
+    const [decklink, setDecklink] = useState("#"); 
+
+    useEffect( () => {
+        console.log(localStorage.getItem("windowusername"));
+        if (localStorage.getItem("windowusername") == "") {
+            setDecklink("/signin");
+        }
+        else {
+            setDecklink("/decks");
+        }
+    },[]);
   return (
     
     <div>
@@ -19,13 +34,13 @@ const Test = function(props) {
         <div class="container-fluid">
             {/* logo */} 
             <div class="header-logo">
-                <span class="name">IamRoht</span>
+                <img src={logo} width="80px" />
             </div>
             {/* menu */}
             <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
+                    <li class="nav__item"><a href={decklink} class="nav__link">Decks</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">Statistics</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">About</a></li>
                 </ul>
@@ -52,7 +67,7 @@ const Test = function(props) {
 			<img class="content-picture" src={pic_bg_content} />
 			<div class="carousel-caption">
 				<h1 class="display-2">Study now </h1>
-				<h1 class="display-2">be proud later</h1>
+				<h1 class="display-2">be pround later</h1>
 				<button type="button" class="content-btn"><a href="#">Get started</a></button>
 			</div>
 		</div>

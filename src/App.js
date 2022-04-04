@@ -4,6 +4,7 @@ import Home from './components/home';
 import Signin from "./components/signin";
 import Signup from "./components/signup";
 import Decks from "./components/decks";
+import Cards from "./components/cards";
 
 
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/signin" element={<Signin/>} /> 
         <Route path="/signup" element={<Signup/>} />
         <Route path="/decks" element={<Decks/>} />
+        <Route path="/cards" element={<Cards/>} />
       </Routes>
     </BrowserRouter>
   );

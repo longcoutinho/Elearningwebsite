@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState } from "react";
 import "../styles/signin.css"
-
+import { useEffect } from "react";
 
 
 
@@ -14,6 +14,17 @@ const Signin = function(props) {
         setDisplay("flex");
         setDisplay2("none");
     }
+    const [decklink, setDecklink] = useState("#"); 
+
+    useEffect( () => {
+        console.log(localStorage.getItem("windowusername"));
+        if (localStorage.getItem("windowusername") == "") {
+            setDecklink("/signin");
+        }
+        else {
+            setDecklink("/decks");
+        }
+    },[]);
     const handleSubmit = (event) => {
         event.preventDefault();
         const config = {
@@ -43,6 +54,7 @@ const Signin = function(props) {
         setDisplay2("block");
         localStorage.setItem("windowuserinfoboxstate", "none");
         localStorage.setItem("windowloginboxstate", "block");
+        localStorage.setItem("windowusername", "");
     }
   return (
     <div>
@@ -56,7 +68,7 @@ const Signin = function(props) {
             <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
+                    <li class="nav__item"><a href={decklink} class="nav__link">Decks</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">Statistics</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">About</a></li>
                 </ul>

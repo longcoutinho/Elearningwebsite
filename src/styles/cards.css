@@ -1,0 +1,102 @@
+.cards-content {    
+    height: auto;
+    width: 100%;
+    background-color: #23222F;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.cards-back {
+    width: 100%;
+    height: 30px;
+    background-color: #23222F;
+}
+
+.cards-back a {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.cards-title {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 25px;
+    background-color: #23222F;
+}
+
+.cards-display {
+    height: auto;
+    flex-direction: row;
+    width: 100%;
+    background-color: #23222F;
+    
+}
+
+.cards-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cards-search form {
+    display: inline-block;
+}
+
+.cards-search input {
+    font-size: 30px;
+}
+
+.cards-search button {
+    font-size: 30px;
+}
+
+.cards-statistics {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.cards-title-and-number {
+    display: flex;
+    flex-direction: row;
+}
+
+.cards-statistics-title {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.cards-statistics-title p:first-child {
+    font-size: 30px;
+}
+
+.cards-statistics-title p:not(:first-child) {
+    font-size: 20px;
+}
+
+.cards-statistics-number {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+
+.cards-statistics-number p:first-child {
+    font-size: 30px;
+}
+
+.cards-statistics-number p:not(:first-child) {
+    font-size: 20px;
+}
+
