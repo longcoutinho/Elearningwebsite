@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/home.css";
-import pic_bg_content from "../image/bg_liverpool.webp";
+import pic_bg_content from "../image/pripic.jpg";
 import { useState } from "react";
 import { useEffect } from "react";
 import logo from "../image/liverpool.png"
@@ -67,7 +67,7 @@ const Test = function(props) {
 			<img class="content-picture" src={pic_bg_content} />
 			<div class="carousel-caption">
 				<h1 class="display-2">Study now </h1>
-				<h1 class="display-2">be pround later</h1>
+				<h1 class="display-2">be proud later</h1>
 				<button type="button" class="content-btn"><a href="#">Get started</a></button>
 			</div>
 		</div>

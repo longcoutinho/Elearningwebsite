@@ -105,7 +105,7 @@ const Decks = function(props) {
                     <a onClick={() => decksubmit(item.name)} href="/cards">{item.name}</a>
                 </div> 
                 <div class="decks-cards-content">
-                    <h1>Decription: {item.decription}</h1>
+                    <h1>Description: {item.decription}</h1>
                 </div>
                 <div class="decks-cards-info">
                     <div class="decks-cards-number">
