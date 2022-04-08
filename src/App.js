@@ -5,6 +5,8 @@ import Signin from "./components/signin";
 import Signup from "./components/signup";
 import Decks from "./components/decks";
 import Cards from "./components/cards";
+import Statistic from "./components/statistic";
+import Practice from "./components/practice";
 
 
 
@@ -17,6 +19,8 @@ function App() {
         <Route path="/signup" element={<Signup/>} />
         <Route path="/decks" element={<Decks/>} />
         <Route path="/cards" element={<Cards/>} />
+        <Route path="/statistic" element={<Statistic/>} />
+        <Route path="/practice" element={<Practice/>} />
       </Routes>
     </BrowserRouter>
   );

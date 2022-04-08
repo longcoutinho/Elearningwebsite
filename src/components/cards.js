@@ -3,6 +3,8 @@ import "../styles/cards.css"
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import edit_icon from "../image/edit_icon.png"
+import delete_icon from "../image/delete_icon.jpg"
 const Cards = function(props) {
     var state = {
         users: [
@@ -74,6 +76,14 @@ const Cards = function(props) {
         })
     }
 
+    function edithandle() {
+        console.log(1);
+    }
+
+    function deletehandle() {
+        console.log(0);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const config = {
@@ -99,6 +109,12 @@ const Cards = function(props) {
             }
         })
     }
+    
+    function studyhandle() {
+        console.log(abc);
+        localStorage.setItem("windowdisplaylistcard", JSON.stringify(abc));
+        window.location.href = '/practice';
+    }
 
     const Card = (props) => {
         return (
@@ -112,6 +128,10 @@ const Cards = function(props) {
                     </div>
                     <div class="cards-spelling">
                         <h1>{item.spelling}</h1>
+                    </div>
+                    <div class="handle-icon">
+                        <img onClick = {() => edithandle()} src={edit_icon} />
+                        <img onClick = {() => deletehandle()} src={delete_icon} />
                     </div>
                 </div>
             ))
@@ -183,7 +203,7 @@ const Cards = function(props) {
                             </div>
                         </div>
                         <div class="study-button">
-                            <button>STUDY</button>
+                            <button onClick={studyhandle}>STUDY</button>
                         </div>
                     </div>
                     <div class="cards-display-content">

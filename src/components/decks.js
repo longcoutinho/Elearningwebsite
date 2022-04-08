@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import "../styles/decks.css"
 import { useState } from "react";
 import axios from "axios";
+import edit_icon from "../image/edit_icon.png"
+import delete_icon from "../image/delete_icon.jpg"
 import { VAR_STRING } from "mysql/lib/protocol/constants/types";
 
 const Decks = function(props) {
@@ -97,25 +99,39 @@ const Decks = function(props) {
         localStorage.setItem("windowdisplaydeck", content);
     }
 
+    function edithandle() {
+        console.log(1);
+    }
+
+    function deletehandle() {
+        console.log(0);
+    }
+
     const Deck = (props) => {
         return (
             abc.map((item, index) => (
                 <div class="decks-cards-container">
-                <div class="decks-cards-name">
-                    <a onClick={() => decksubmit(item.name)} href="/cards">{item.name}</a>
-                </div> 
-                <div class="decks-cards-content">
-                    <h1>Description: {item.decription}</h1>
-                </div>
-                <div class="decks-cards-info">
-                    <div class="decks-cards-number">
-                        <h1>200</h1>
+                    <div class="decks-cards-name">
+                        
+                        <a onClick={() => decksubmit(item.name)} href="/cards">{item.name}</a>
+                        
+                    </div> 
+                    <div class="decks-cards-content">
+                        <h1>Description: {item.decription}</h1>
                     </div>
-                    <div class="decks-cards-date">
-                        <h1>06-02-2020</h1>
+                    <div class="decks-cards-info">
+                        <div class="decks-cards-number">
+                            <h1>200</h1>
+                        </div>
+                        <div class="decks-cards-date">
+                            <h1>06-02-2020</h1>
+                        </div>
+                    </div>
+                    <div class="handle-icon">
+                        <img onClick = {() => edithandle()} src={edit_icon} />
+                        <img onClick = {() => deletehandle()} src={delete_icon} />
                     </div>
                 </div>
-            </div>
             ))
         );
     }
