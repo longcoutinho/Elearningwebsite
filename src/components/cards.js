@@ -175,7 +175,7 @@ const Cards = function(props) {
                     <a href="/decks">&lt; Back</a>
                 </div>
                 <div class="cards-title"> 
-                    <h1>CARDS</h1>
+                    <h1>{cardname}</h1>
                 </div>
                 <div class="cards-search">
                     <button onClick={addOnClick}>ADD</button>
@@ -186,22 +186,6 @@ const Cards = function(props) {
                 </div>
                 <div class="cards-display">
                     <div class="cards-statistics">
-                        <div class="cards-title-and-number">
-                            <div class="cards-statistics-title">
-                                <p>{cardname}</p>
-                                <p>Card of deck</p>
-                                <p>Created date</p>
-                                <p>Remember Cards</p>
-                                <p>Not Remember Cards</p>
-                            </div>
-                            <div class="cards-statistics-number">
-                                <p>...</p>
-                                <p>13</p>
-                                <p>14</p>
-                                <p>13</p>
-                                <p>13</p>
-                            </div>
-                        </div>
                         <div class="study-button">
                             <button onClick={studyhandle}>STUDY</button>
                         </div>

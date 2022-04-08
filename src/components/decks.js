@@ -148,7 +148,7 @@ const Decks = function(props) {
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
                     <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
-                    <li class="nav__item"><a href="#" class="nav__link">Statistics</a></li>
+                    <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">About</a></li>
                 </ul>
             </div>
