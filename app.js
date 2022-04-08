@@ -64,13 +64,46 @@ async function saveDeckToDB(name, decription, owner) {
   }
 }
 
-async function searchDeckInDB(username, deckname) {
+async function saveCardToDB(name, type, spelling, meaning, image, synonym, antonym, example, deck_owner, username) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    const movies = database.collection('cards');
+    const query = {name:name, owner:username};
+    const movie = await movies.findOne(query);
+    if (movie == null) {
+      await movies.insertOne({
+          name: name,
+          type: type,
+          spelling: spelling,
+          meaning: meaning,
+          image: image,
+          synonym: synonym,
+          antonym: antonym,
+          example: example,
+          deck_owner: deck_owner,
+          owner: username,
+      });
+      return "0";
+    }
+    else {
+      return "1";
+    }
+    
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function searchDeckInDB(username) {
   try {
     await client.connect();
     const database = client.db('Test');
     movies = database.collection('decks');
     const query = {owner:username};
-    var returnString = "thai";
+    var returnString = "";
     await movies.find(query).toArray().then(item => {
       //console.log(JSON.stringify(item));
       returnString = JSON.stringify(item);
@@ -82,6 +115,26 @@ async function searchDeckInDB(username, deckname) {
     await client.close();
   }
 }
+
+async function searchCardInDB(username, nameOfDeck) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('cards');
+    const query = {owner:username, deck_owner:nameOfDeck};
+    var returnString = "";
+    await movies.find(query).toArray().then(item => {
+      //console.log(JSON.stringify(item));
+      returnString = JSON.stringify(item);
+    });
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
 
 async function checklogin(username, password) {
   try {
@@ -164,12 +217,43 @@ app.post("/adddeck", async (request, response) => {
   }
 });
 
+app.post("/addcard", async (request, response) => {
+  try {
+    var card = request.body;
+    //savePersontoDB(person.username, person.password);
+    saveCardToDB(card.name, card.type, card.spelling, card.meaning, card.image, card.synonym, card.antonym, card.example, card.deck_owner, card.owner).then(res => {
+      console.log(card.owner);
+      response.send(res);
+    });
+ 
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 app.post("/searchdeck", async (request, response) => {
   try {
     var person = request.body;
     console.log(person.username, person.nameOfDeck);
     //savePersontoDB(person.username, person.password);
     await searchDeckInDB(person.username, person.nameOfDeck).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+ 
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/searchcard", async (request, response) => {
+  try {
+    var person = request.body;
+    console.log(person.username, person.nameOfDeck);
+    //savePersontoDB(person.username, person.password);
+    await searchCardInDB(person.username, person.nameOfDeck).then(res => {
       console.log(res);
       response.send(res);
     });

@@ -4,11 +4,21 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 const Cards = function(props) {
+    var state = {
+        users: [
+        ]
+      };
     const [cardname, setCardname] = useState(localStorage.getItem("windowdisplaydeck"));
     const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
     const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
     const [adddeckstate, setStateOfAddingBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
+    const [abc, setabc] = useState(state.users);
+    useEffect( async () => {
+        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
+            setabc(value);
+        })
+    },[]);
     const addOnClick = () => {
         setStateOfAddingBox("flex");
         setBackGroundOpacity("0.7");
@@ -18,12 +28,34 @@ const Cards = function(props) {
     async function closeOnClick() {
         setStateOfAddingBox("none");
         setBackGroundOpacity("1");
-        /*
-        await listofDecks(localStorage.getItem("windowusername"), "").then(value => {
+        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
             setabc(value);
         })
-        */
     }
+
+    async function listofCards(username, nameOfDeck, nameOfCard) {
+        const config = {
+            username: username,
+            nameOfDeck: nameOfDeck,
+        };
+        var returnValue = [];
+        await axios.post("http://localhost:3001/searchcard", config)
+        .then(res=> {
+            //localStorage("arrayOfDecks", res.data);
+            //console.log(JSON.parse(res.data));
+            //console.log(res.data);
+            //var obj = JSON.parse(res.data);
+            //console.log(obj[0]);
+            var currentValue = res.data;
+            for(let i = 0; i < currentValue.length; i++) {
+                if (currentValue[i].name.startsWith(nameOfCard)) {
+                    returnValue.push(currentValue[i]);
+                }
+            }
+        })
+        return returnValue;
+    }
+
     const signoutOnclick = () => {
         setDisplay("none");
         setDisplay2("block");
@@ -37,11 +69,53 @@ const Cards = function(props) {
     const searchSubmit = async (event) => {
         console.log(1);
         event.preventDefault();
-        /*
-        await listofDecks(localStorage.getItem("windowusername"), event.target.inputdecksearch.value).then(value => {
+        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), event.target.inputcardsearch.value).then(value => {
             setabc(value);
         })
-        */
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const config = {
+            name: event.target.card_name.value,
+            type: event.target.card_type.value,
+            spelling: event.target.card_spelling.value, 
+            meaning: event.target.card_meaning.value,
+            image: event.target.card_image.value,
+            synonym: event.target.card_synonym.value,
+            antonym: event.target.card_antonym.value,
+            example: event.target.card_example.value,
+            deck_owner: localStorage.getItem("windowdisplaydeck"),
+            owner: localStorage.getItem("windowusername")
+        };
+        axios.post("http://localhost:3001/addcard", config)
+        .then(res=> {
+            console.log(res.data);
+            if (res.data == "0") {
+                console.log("Add successfully");
+            }
+            else {
+                console.log("Deck da ton tai!");
+            }
+        })
+    }
+
+    const Card = (props) => {
+        return (
+            abc.map((item) => (
+                <div class="cards-container">
+                    <div class="cards-name">
+                        <h1>{item.name}</h1>
+                    </div> 
+                    <div class="card-type">
+                        <h1>{item.type}</h1>
+                    </div>
+                    <div class="cards-spelling">
+                        <h1>{item.spelling}</h1>
+                    </div>
+                </div>
+            ))
+        );
     }
 
     return (
@@ -80,13 +154,13 @@ const Cards = function(props) {
                 <div class="cards-back">
                     <a href="/decks">&lt; Back</a>
                 </div>
-                <div class="cards-title">
+                <div class="cards-title"> 
                     <h1>CARDS</h1>
                 </div>
                 <div class="cards-search">
                     <button onClick={addOnClick}>ADD</button>
                     <form onSubmit={searchSubmit}>
-                        <input type="text" name="inputdecksearch" />
+                        <input type="text" name="inputcardsearch" />
                         <input type="submit" value="SEARCH" />
                     </form>
                 </div>
@@ -112,7 +186,47 @@ const Cards = function(props) {
                             <button>STUDY</button>
                         </div>
                     </div>
+                    <div class="cards-display-content">
+                        <Card></Card>
+                    </div>
                 </div>
+            </div>
+            <div class="add-cards" style={{"display":adddeckstate}}>
+                <div class="add-card-title">
+                    <p>ADD CARDS</p>
+                </div>
+                <div class="add-card-content">
+                    <form onSubmit={handleSubmit}>
+                        <div class="add-card-input">
+                            <div class="add-front-cards">
+                                <p>FRONT</p>
+                                <label>NAME</label>
+                                <input type="text" name="card_name" />
+                                <label>TYPE</label>
+                                <input type="text" name="card_type" />
+                                <label>SPELLING</label>
+                                <input type="text" name="card_spelling" />
+                            </div>
+                            <div class="add-back-cards">
+                                <p>BACK</p>
+                                <label>MEANING</label>
+                                <input type="text" name="card_meaning" />
+                                <label>IMAGE</label>
+                                <input type="text" name="card_image" />
+                                <label>SYNONYM</label>
+                                <input type="text" name="card_synonym" />
+                                <label>ANTONYM</label>
+                                <input type="text" name="card_antonym" />
+                                <label>EXAMPLE</label>
+                                <input type="text" name="card_example" />
+                            </div>
+                        </div>
+                        <div class="add-card-submit">
+                            <input type="submit" value="ADD" />
+                        </div>
+                    </form>
+                </div>
+                <button class="close-button" onClick={closeOnClick}>X</button>
             </div>
         </div>
     );

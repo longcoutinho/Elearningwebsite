@@ -116,3 +116,104 @@
     color: white;
     font-size: 20px;
 }
+
+.add-cards {
+    position: fixed;
+    width: 700px;
+    height: 800px;
+    top: 50%;
+    left: 50%;
+    margin-top: -400px; /* Negative half of height. */
+    margin-left: -350px;
+    background-color: #23222F;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+.add-cards form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-cards p {
+    font-size: 30px;
+    color: white;
+}
+
+.add-cards input[type="text"] {
+    width: 100%;
+    font-size: 30px;
+}
+
+.add-cards label {
+    margin-top: 20px;
+    display: inline-block;
+    color: white;
+}
+
+.add-cards .close-button {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    left:100%;
+    margin-left: -25px;
+    text-decoration: center;
+}
+
+.add-cards input[type="submit"] {
+    height: 50px;
+    width: 100px;
+    text-decoration: center;
+    font-size: 30px;
+    margin-top: 50px;
+}
+
+.add-card-content form {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-card-input {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-front-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-back-cards {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+.cards-container {
+    display: inline-block;
+    background-color: #999999;
+    width: 350px;
+    height: 300px;
+    border-radius: 5px;
+    margin: 20px 70px 30px 70px;
+}
+
+.cards-container div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+.cards-display {
+    display: flex;
+    flex-direction: row;
+}
+
