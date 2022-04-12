@@ -135,6 +135,24 @@ async function searchCardInDB(username, nameOfDeck) {
   }
 }
 
+async function searchListAccountInDB() {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('account');
+    const query = {};
+    var returnString = "";
+    await movies.find(query).toArray().then(item => {
+      //console.log(JSON.stringify(item));
+      returnString = JSON.stringify(item);
+    });
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
 
 async function checklogin(username, password) {
   try {
@@ -263,6 +281,23 @@ app.post("/searchcard", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
+app.post("/searchaccount", async (request, response) => {
+  try {
+    var person = request.body;
+    console.log(person.username, person.nameOfDeck);
+    //savePersontoDB(person.username, person.password);
+    await searchListAccountInDB().then(res => {
+      console.log(res);
+      response.send(res);
+    });
+ 
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 
 app.listen(3001, () => {
   console.log("Listening at :3001...");

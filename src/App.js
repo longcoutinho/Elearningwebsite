@@ -7,6 +7,7 @@ import Decks from "./components/decks";
 import Cards from "./components/cards";
 import Statistic from "./components/statistic";
 import Practice from "./components/practice";
+import User from "./components/user";
 
 
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/cards" element={<Cards/>} />
         <Route path="/statistic" element={<Statistic/>} />
         <Route path="/practice" element={<Practice/>} />
+        <Route path="/user" element={<User/>} />
       </Routes>
     </BrowserRouter>
   );

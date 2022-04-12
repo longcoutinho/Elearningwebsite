@@ -86,7 +86,7 @@ const Statistic = function(props) {
                 <div class="user-info" style={{display:userinfostate}}>
                     <div class="user-displayname">
                         <span>Hello, </span>
-                        <a href="#">{localStorage.getItem("windowdisplayname")}</a>
+                        <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
                     </div>
                     <button onClick={signoutOnclick}>Sign out </button>
                 </div>
