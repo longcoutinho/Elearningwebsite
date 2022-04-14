@@ -96,7 +96,8 @@ const Cards = function(props) {
             antonym: event.target.card_antonym.value,
             example: event.target.card_example.value,
             deck_owner: localStorage.getItem("windowdisplaydeck"),
-            owner: localStorage.getItem("windowusername")
+            owner: localStorage.getItem("windowusername"),
+            box: 1,
         };
         axios.post("http://localhost:3001/addcard", config)
         .then(res=> {
@@ -112,7 +113,13 @@ const Cards = function(props) {
     
     function studyhandle() {
         console.log(abc);
-        localStorage.setItem("windowdisplaylistcard", JSON.stringify(abc));
+        var xyz = [];
+        for(var i = 0; i < abc.length; i++) {
+            if (abc[i].box == 1) {
+                xyz.push(abc[i]);
+            }
+        }
+        localStorage.setItem("windowdisplaylistcard", JSON.stringify(xyz));
         window.location.href = '/practice';
     }
 

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import "../styles/practice.css"
+import axios from "axios";
 
 const Practice = function(props) {
     const [abc, setabc] = useState(JSON.parse(localStorage.getItem("windowdisplaylistcard")));
@@ -19,8 +20,46 @@ const Practice = function(props) {
        xyz[value].display = 0;
        setabc(xyz); 
     },[]);
-    function dontrememberhandle() {
+
+    function rememberhandle() {
         //abc[0].display = 1;
+        const config = {
+            cardname: abc[value].name,
+            deck_owner: localStorage.getItem("windowdisplaydeck"),
+            owner: localStorage.getItem("windowusername"),
+        };
+        axios.post("http://localhost:3001/updatecardbox", config)
+        .then(res=> {
+            console.log(res.data);
+            if (res.data == "0") {
+                console.log("Update succesfully");
+            }
+            else {
+                console.log("No!");
+            }
+        })
+        var xyz = [];
+        var size = Object.keys(abc).length;
+        for(var i = 0; i < size; i++) {
+            xyz.push(abc[i]);
+        }
+        xyz[value].display = 1;
+        if (value >= 0) {
+            if (value > 0) {
+                var newvalue = value - 1;
+                xyz[newvalue].display = 0;
+                incValue(newvalue);
+            }
+            if (value == 0) {
+                setdisplaysentence("flex");
+            }
+        }
+        setabc(xyz);
+        //console.log(abc[0].display);
+    }
+
+
+    function dontrememberhandle() {
         var xyz = [];
         var size = Object.keys(abc).length;
         for(var i = 0; i < size; i++) {
@@ -102,7 +141,7 @@ const Practice = function(props) {
             <BackCard></BackCard>
             <Card></Card>
             <div class="check-container">
-                <button>REMEMBER</button>
+                <button onClick={() => rememberhandle()}>REMEMBER</button>
                 <button onClick={() => dontrememberhandle()}>DONT REMEMBER</button>
             </div>
             <div class="finish-sentence" style={{display:displaysentence}}>

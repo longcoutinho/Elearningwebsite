@@ -99,12 +99,27 @@ const Decks = function(props) {
         localStorage.setItem("windowdisplaydeck", content);
     }
 
-    function edithandle() {
-        console.log(1);
+    async function edithandle() {
+        const config = {
+            owner: localStorage.getItem("windowusername")
+        };
+        await axios.post("http://localhost:3001/update", config)
+        .then(res=> {
+            console.log(res.data);
+        });
     }
 
-    function deletehandle() {
-        console.log(0);
+    async function deletehandle(deckname) {
+        console.log(deckname);
+        const config = {
+            name: deckname,
+            owner: localStorage.getItem("windowusername")
+        };
+        await axios.post("http://localhost:3001/deletedeck", config)
+        .then(res=> {
+            console.log(res.data);
+            setabc(res.data);
+        });
     }
 
     const Deck = (props) => {
@@ -129,7 +144,7 @@ const Decks = function(props) {
                     </div>
                     <div class="handle-icon">
                         <img onClick = {() => edithandle()} src={edit_icon} />
-                        <img onClick = {() => deletehandle()} src={delete_icon} />
+                        <img onClick = {() => deletehandle(item.name)} src={delete_icon} />
                     </div>
                 </div>
             ))

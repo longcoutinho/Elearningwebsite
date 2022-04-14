@@ -40,7 +40,6 @@ async function savePersontoDB(username, password, displayname) {
 async function saveDeckToDB(name, decription, owner) {
   try {
     await client.connect();
-
     const database = client.db('Test');
     const movies = database.collection('decks');
     const query = {name:name};
@@ -64,7 +63,7 @@ async function saveDeckToDB(name, decription, owner) {
   }
 }
 
-async function saveCardToDB(name, type, spelling, meaning, image, synonym, antonym, example, deck_owner, username) {
+async function saveCardToDB(name, type, spelling, meaning, image, synonym, antonym, example, deck_owner, username, box) {
   try {
     await client.connect();
     const database = client.db('Test');
@@ -83,6 +82,7 @@ async function saveCardToDB(name, type, spelling, meaning, image, synonym, anton
           example: example,
           deck_owner: deck_owner,
           owner: username,
+          box: box,
       });
       return "0";
     }
@@ -154,6 +154,74 @@ async function searchListAccountInDB() {
   }
 }
 
+
+async function DeleteDecksInDB(name, owner) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('decks');
+    const query = {owner:owner, name:name};
+    var returnString = "";
+    await movies.deleteMany(query).then(item =>  {
+      console.log("1 document deleted");
+    });
+    listofcards = database.collection('cards');
+    const query3 = {deck_owner:name};
+    await listofcards.deleteMany(query3).then(item =>  {
+      console.log("1 document deleted");
+    });
+    console.log(1);
+    const query2 = {owner:owner};
+    await movies.find(query2).toArray().then(item => {
+      console.log(JSON.stringify(item));
+      returnString = JSON.stringify(item);
+    });
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function UpdatePasswordInDB(owner) {
+  try {
+    console.log(owner);
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('account');
+    const query = {username:owner};
+    var returnString = "";
+    await movies.updateMany(query, {$set: {"password" : "admin"}}).then(item =>  {
+      console.log("updated");
+    });
+    console.log(owner);
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function UpdateCardBoxInDB(name, deck_owner, owner) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('cards');
+    const query = {name:name, deck_owner:deck_owner, owner:owner};
+    var returnString = "";
+    await movies.updateMany(query, {$set: {"box" : 2}}).then(item =>  {
+      console.log("updated");
+    });
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
 async function checklogin(username, password) {
   try {
     await client.connect();
@@ -161,13 +229,13 @@ async function checklogin(username, password) {
     const movies = database.collection('account');
     // Query for a movie that has the title 'Back to the Future'
     const query = {username: username, password: password};
-    console.log(query);
+    //console.log(query);
     const movie = await movies.findOne(query);
     if (movie == null) {
       return "0";
     }
     else {
-      console.log(movie.displayname);
+      //e.log(movie.displayname);
       return movie.displayname;
     }
   } finally {
@@ -210,7 +278,7 @@ app.post("/signup", async (request, response) => {
     var person = request.body;
     //savePersontoDB(person.username, person.password);
     savePersontoDB(person.username, person.password, person.displayname).then(res => {
-      console.log(res);
+      
       response.send(res);
     });
  
@@ -225,7 +293,7 @@ app.post("/adddeck", async (request, response) => {
     var person = request.body;
     //savePersontoDB(person.username, person.password);
     saveDeckToDB(person.name, person.decription, person.owner).then(res => {
-      console.log(res);
+      
       response.send(res);
     });
  
@@ -239,8 +307,8 @@ app.post("/addcard", async (request, response) => {
   try {
     var card = request.body;
     //savePersontoDB(person.username, person.password);
-    saveCardToDB(card.name, card.type, card.spelling, card.meaning, card.image, card.synonym, card.antonym, card.example, card.deck_owner, card.owner).then(res => {
-      console.log(card.owner);
+    saveCardToDB(card.name, card.type, card.spelling, card.meaning, card.image, card.synonym, card.antonym, card.example, card.deck_owner, card.owner, card.box).then(res => {
+      
       response.send(res);
     });
  
@@ -253,10 +321,10 @@ app.post("/addcard", async (request, response) => {
 app.post("/searchdeck", async (request, response) => {
   try {
     var person = request.body;
-    console.log(person.username, person.nameOfDeck);
+    
     //savePersontoDB(person.username, person.password);
     await searchDeckInDB(person.username, person.nameOfDeck).then(res => {
-      console.log(res);
+      
       response.send(res);
     });
  
@@ -269,10 +337,10 @@ app.post("/searchdeck", async (request, response) => {
 app.post("/searchcard", async (request, response) => {
   try {
     var person = request.body;
-    console.log(person.username, person.nameOfDeck);
+    
     //savePersontoDB(person.username, person.password);
     await searchCardInDB(person.username, person.nameOfDeck).then(res => {
-      console.log(res);
+      
       response.send(res);
     });
  
@@ -285,10 +353,8 @@ app.post("/searchcard", async (request, response) => {
 app.post("/searchaccount", async (request, response) => {
   try {
     var person = request.body;
-    console.log(person.username, person.nameOfDeck);
     //savePersontoDB(person.username, person.password);
     await searchListAccountInDB().then(res => {
-      console.log(res);
       response.send(res);
     });
  
@@ -298,6 +364,50 @@ app.post("/searchaccount", async (request, response) => {
   }
 });
 
+app.post("/deletedeck", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await DeleteDecksInDB(person.name, person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/update", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await UpdatePasswordInDB(person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/updatecardbox", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await UpdateCardBoxInDB(person.cardname, person.deck_owner, person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 app.listen(3001, () => {
   console.log("Listening at :3001...");
