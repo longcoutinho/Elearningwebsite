@@ -98,6 +98,7 @@ const Cards = function(props) {
             deck_owner: localStorage.getItem("windowdisplaydeck"),
             owner: localStorage.getItem("windowusername"),
             box: 1,
+            time: new Date().toLocaleString(),
         };
         axios.post("http://localhost:3001/addcard", config)
         .then(res=> {

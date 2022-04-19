@@ -72,7 +72,9 @@ const Decks = function(props) {
         const config = {
             name: event.target.deck_name.value,
             decription: event.target.deck_decription.value,
-            owner: localStorage.getItem("windowusername")
+            owner: localStorage.getItem("windowusername"),
+            deckCount: 0,
+            time: new Date().toLocaleString(),
         };
         axios.post("http://localhost:3001/adddeck", config)
         .then(res=> {
@@ -136,10 +138,10 @@ const Decks = function(props) {
                     </div>
                     <div class="decks-cards-info">
                         <div class="decks-cards-number">
-                            <h1>200</h1>
+                            <h1>{item.deckCount}</h1>
                         </div>
                         <div class="decks-cards-date">
-                            <h1>06-02-2020</h1>
+                            <h1>{item.time}</h1>
                         </div>
                     </div>
                     <div class="handle-icon">

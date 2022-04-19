@@ -37,7 +37,7 @@ async function savePersontoDB(username, password, displayname) {
   }
 }
 
-async function saveDeckToDB(name, decription, owner) {
+async function saveDeckToDB(name, decription, owner, deckCount, time) {
   try {
     await client.connect();
     const database = client.db('Test');
@@ -48,7 +48,9 @@ async function saveDeckToDB(name, decription, owner) {
       await movies.insertOne({
           name: name,
           decription: decription,
-          owner: owner
+          owner: owner,
+          deckCount: deckCount,
+          time: time
       });
       return "0";
     }
@@ -63,7 +65,7 @@ async function saveDeckToDB(name, decription, owner) {
   }
 }
 
-async function saveCardToDB(name, type, spelling, meaning, image, synonym, antonym, example, deck_owner, username, box) {
+async function saveCardToDB(name, type, spelling, meaning, image, synonym, antonym, example, deck_owner, username, box, time) {
   try {
     await client.connect();
     const database = client.db('Test');
@@ -83,12 +85,19 @@ async function saveCardToDB(name, type, spelling, meaning, image, synonym, anton
           deck_owner: deck_owner,
           owner: username,
           box: box,
+          time: time
+      });
+      const movies2 = database.collection('decks');
+      const query2 = {name:deck_owner, owner:username};
+      const cur = await movies2.findOne(query2);
+      var newCount = cur.deckCount + 1; 
+      await movies2.updateMany(query2, {$set: {"deckCount" : newCount}}).then(item =>  {
+        console.log("updated");
       });
       return "0";
     }
-    else {
+    else 
       return "1";
-    }
     
     // Query for a movie that has the title 'Back to the Future'
   } finally {
@@ -292,7 +301,7 @@ app.post("/adddeck", async (request, response) => {
   try {
     var person = request.body;
     //savePersontoDB(person.username, person.password);
-    saveDeckToDB(person.name, person.decription, person.owner).then(res => {
+    saveDeckToDB(person.name, person.decription, person.owner, person.deckCount, person.time).then(res => {
       
       response.send(res);
     });
@@ -307,7 +316,7 @@ app.post("/addcard", async (request, response) => {
   try {
     var card = request.body;
     //savePersontoDB(person.username, person.password);
-    saveCardToDB(card.name, card.type, card.spelling, card.meaning, card.image, card.synonym, card.antonym, card.example, card.deck_owner, card.owner, card.box).then(res => {
+    saveCardToDB(card.name, card.type, card.spelling, card.meaning, card.image, card.synonym, card.antonym, card.example, card.deck_owner, card.owner, card.box, card.time).then(res => {
       
       response.send(res);
     });

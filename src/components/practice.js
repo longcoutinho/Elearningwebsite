@@ -27,6 +27,8 @@ const Practice = function(props) {
             cardname: abc[value].name,
             deck_owner: localStorage.getItem("windowdisplaydeck"),
             owner: localStorage.getItem("windowusername"),
+            box: abc[value].box,
+            time: new Date().toLocaleString()
         };
         axios.post("http://localhost:3001/updatecardbox", config)
         .then(res=> {
@@ -77,7 +79,7 @@ const Practice = function(props) {
             }
         }
         setabc(xyz);
-        //console.log(abc[0].display);
+        console.log(abc[value].name);
     }
     
     function backhandle() {
