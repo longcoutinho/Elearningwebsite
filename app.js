@@ -175,12 +175,35 @@ async function DeleteDecksInDB(name, owner) {
       console.log("1 document deleted");
     });
     listofcards = database.collection('cards');
-    const query3 = {deck_owner:name};
+    const query3 = {deck_owner:name, owner:owner};
     await listofcards.deleteMany(query3).then(item =>  {
       console.log("1 document deleted");
     });
     console.log(1);
     const query2 = {owner:owner};
+    await movies.find(query2).toArray().then(item => {
+      console.log(JSON.stringify(item));
+      returnString = JSON.stringify(item);
+    });
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function DeleteCardsInDB(name, deck_owner, owner) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('cards');
+    const query = {name:name, deck_owner:deck_owner, owner:owner};
+    var returnString = "";
+    await movies.deleteMany(query).then(item =>  {
+      console.log("1 document deleted");
+    });
+    const query2 = {deck_owner:deck_owner, owner:owner};
     await movies.find(query2).toArray().then(item => {
       console.log(JSON.stringify(item));
       returnString = JSON.stringify(item);
@@ -420,6 +443,21 @@ app.post("/deletedeck", async (request, response) => {
     //console.log(person.name, person.owner);
     //savePersontoDB(person.username, person.password);
     await DeleteDecksInDB(person.name, person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/deletecard", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await DeleteCardsInDB(person.name, person.deck_owner, person.owner).then(res => {
       console.log(res);
       response.send(res);
     });

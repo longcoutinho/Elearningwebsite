@@ -35,6 +35,19 @@ const Cards = function(props) {
         })
     }
 
+    async function deletehandle(deck_owner, cardname, owner) {
+        const config = {
+            name: cardname,
+            deck_owner: deck_owner,
+            owner: owner
+        };
+        await axios.post("http://localhost:3001/deletecard", config)
+        .then(res=> {
+            console.log(res.data);
+            setabc(res.data);
+        });
+    }
+
     async function listofCards(username, nameOfDeck, nameOfCard) {
         const config = {
             username: username,
@@ -80,9 +93,6 @@ const Cards = function(props) {
         console.log(1);
     }
 
-    function deletehandle() {
-        console.log(0);
-    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -139,7 +149,7 @@ const Cards = function(props) {
                     </div>
                     <div class="handle-icon">
                         <img onClick = {() => edithandle()} src={edit_icon} />
-                        <img onClick = {() => deletehandle()} src={delete_icon} />
+                        <img onClick = {() => deletehandle(item.deck_owner, item.name, item.owner)} src={delete_icon} />
                     </div>
                 </div>
             ))
