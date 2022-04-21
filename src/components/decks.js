@@ -14,6 +14,7 @@ const Decks = function(props) {
     const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
     const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
     const [adddeckstate, setStateOfAddingBox] = useState("none");
+    const [editdeckstate, setStateOfEditBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
     useEffect( async () => {
         await listofDecks(localStorage.getItem("windowusername"), "").then(value => {
@@ -44,6 +45,14 @@ const Decks = function(props) {
         })
     }
     
+    async function closeOnClick2() {
+        setStateOfEditBox("none");
+        setBackGroundOpacity("1");
+        await listofDecks(localStorage.getItem("windowusername"), "").then(value => {
+            setabc(value);
+        })
+    }
+
     async function listofDecks(username, nameOfDeck) {
         const config = {
             username: username,
@@ -67,7 +76,7 @@ const Decks = function(props) {
         return returnValue;
     }
 
-    const handleSubmit = (event) => {
+    const addSubmit = (event) => {
         event.preventDefault();
         const config = {
             name: event.target.deck_name.value,
@@ -89,6 +98,27 @@ const Decks = function(props) {
         
     }
 
+    const editSubmit = (event) => {
+        event.preventDefault();
+        const config = {
+            name: localStorage.getItem("windowdisplaydeckname"),
+            newname: event.target.edit_deck_name.value,
+            newdecription: event.target.edit_deck_decription.value,
+            owner: localStorage.getItem("windowusername"),
+        };
+        axios.post("http://localhost:3001/editdeck", config)
+        .then(res=> {
+            console.log(res.data);
+            if (res.data == "0") {
+                console.log("Edit successfully");
+            }
+            else {
+                console.log("Deck da ton tai!");
+            }
+        })
+        
+    }
+
     const searchSubmit = async (event) => {
         console.log(1);
         event.preventDefault();
@@ -101,14 +131,10 @@ const Decks = function(props) {
         localStorage.setItem("windowdisplaydeck", content);
     }
 
-    async function edithandle() {
-        const config = {
-            owner: localStorage.getItem("windowusername")
-        };
-        await axios.post("http://localhost:3001/update", config)
-        .then(res=> {
-            console.log(res.data);
-        });
+    async function edithandle(name) {
+        setStateOfEditBox("flex");
+        setBackGroundOpacity("0.7");
+        localStorage.setItem("windowdisplaydeckname", name);
     }
 
     async function deletehandle(deckname) {
@@ -145,7 +171,7 @@ const Decks = function(props) {
                         </div>
                     </div>
                     <div class="handle-icon">
-                        <img onClick = {() => edithandle()} src={edit_icon} />
+                        <img onClick = {() => edithandle(item.name)} src={edit_icon} />
                         <img onClick = {() => deletehandle(item.name)} src={delete_icon} />
                     </div>
                 </div>
@@ -205,7 +231,7 @@ const Decks = function(props) {
         <div class="add-decks" style={{"display":adddeckstate}}>
             <p>ADD DECKS</p>
             <button class="close-button" onClick={closeOnClick}>X</button>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={addSubmit}>
                 <label>NAME</label>
                 <input type="text" name="deck_name" />
                 <label>DECRIPTION</label>
@@ -214,6 +240,18 @@ const Decks = function(props) {
             </form>
         </div>
         
+        <div class="edit-decks" style={{"display":editdeckstate}}>
+            <p>EDIT DECKS</p>
+            <button class="close-button" onClick={closeOnClick2}>X</button>
+            <form onSubmit={editSubmit}>
+                <label>NAME</label>
+                <input type="text" name="edit_deck_name" />
+                <label>DECRIPTION</label>
+                <input type="text" name="edit_deck_decription" />
+                <input type="submit" value="EDIT" />
+            </form>
+        </div>
+
     </div>
   )
 }

@@ -231,6 +231,47 @@ async function UpdateCardBoxInDB(name, deck_owner, owner) {
   }
 }
 
+async function EditDeckInDB(name, newname, newdescription, owner) {
+  try {
+    
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('decks');
+    const query1 = {name:newname, owner:owner};
+    const cur = await movies.find(query1).toArray();
+    if (cur.length == 0 || newname == name) {
+      const query2 = {name:name, owner:owner};
+        await movies.updateMany(query2, {$set: {"name": newname, "decription": newdescription}}).then(item =>  {
+          console.log("updated");
+        });
+        movies2 = database.collection('cards');
+        const query3 = {deck_owner:name, owner:owner};
+        await movies2.updateMany(query3, {$set: {"deck_owner": newname}}).then(item =>  {
+          console.log("updated");
+        });
+        return "0";
+    }
+    else {
+      console.log(cur);
+      return "1";
+    }
+      /*
+      if (item == null) {
+        
+      }
+      else {
+        console.log("kkk");
+        return "1";
+      }
+    });
+    */
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
 async function checklogin(username, password) {
   try {
     await client.connect();
@@ -409,6 +450,21 @@ app.post("/updatecardbox", async (request, response) => {
     //console.log(person.name, person.owner);
     //savePersontoDB(person.username, person.password);
     await UpdateCardBoxInDB(person.cardname, person.deck_owner, person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/editdeck", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await EditDeckInDB(person.name, person.newname, person.newdecription, person.owner).then(res => {
       console.log(res);
       response.send(res);
     });
