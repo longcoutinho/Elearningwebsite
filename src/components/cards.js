@@ -14,6 +14,7 @@ const Cards = function(props) {
     const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
     const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
     const [adddeckstate, setStateOfAddingBox] = useState("none");
+    const [editcardstate, setStateOfEditBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
     const [abc, setabc] = useState(state.users);
     useEffect( async () => {
@@ -27,9 +28,25 @@ const Cards = function(props) {
         //state.users = abc;
         //console.log(state.users);
     }
+
+    const editOnClick = (name) => {
+        setStateOfEditBox("flex");
+        setBackGroundOpacity("0.7");
+        localStorage.setItem("windowdisplaycardname", name);
+    }
+
     async function closeOnClick() {
         setStateOfAddingBox("none");
         setBackGroundOpacity("1");
+        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
+            setabc(value);
+        })
+    }
+
+    async function editcloseOnClick(deck_owner, name) {
+        setStateOfEditBox("none");
+        setBackGroundOpacity("1");
+        
         await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
             setabc(value);
         })
@@ -89,8 +106,31 @@ const Cards = function(props) {
         })
     }
 
-    function edithandle() {
-        console.log(1);
+    const edithandleSubmit = (event) => {
+        event.preventDefault();
+        const config = {
+            name: localStorage.getItem("windowdisplaycardname"),
+            deck_owner: localStorage.getItem("windowdisplaydeck"),
+            owner: localStorage.getItem("windowusername"),
+            newname: event.target.edit_card_name.value,
+            newtype: event.target.edit_card_type.value,
+            newspelling: event.target.edit_card_spelling.value,
+            newmeaning: event.target.edit_card_meaning.value,
+            newimage: event.target.edit_card_image.value,
+            newsynonym: event.target.edit_card_synonym.value,
+            newantonym: event.target.edit_card_antonym.value,
+            newexample: event.target.edit_card_example.value,
+        };
+        axios.post("http://localhost:3001/editcard", config)
+        .then(res=> {
+            console.log(res.data);
+            if (res.data == "0") {
+                console.log("Add successfully");
+            }
+            else {
+                console.log("Deck da ton tai!");
+            }
+        })
     }
 
 
@@ -148,7 +188,7 @@ const Cards = function(props) {
                         <h1>{item.spelling}</h1>
                     </div>
                     <div class="handle-icon">
-                        <img onClick = {() => edithandle()} src={edit_icon} />
+                        <img onClick = {() => editOnClick(item.name)} src={edit_icon} />
                         <img onClick = {() => deletehandle(item.deck_owner, item.name, item.owner)} src={delete_icon} />
                     </div>
                 </div>
@@ -249,6 +289,44 @@ const Cards = function(props) {
                     </form>
                 </div>
                 <button class="close-button" onClick={closeOnClick}>X</button>
+            </div>
+
+            <div class="edit-cards" style={{"display":editcardstate}}>
+                <div class="edit-card-title">
+                    <p>EDIT CARDS</p>
+                </div>
+                <div class="edit-card-content">
+                    <form onSubmit={edithandleSubmit}>
+                        <div class="edit-card-input">
+                            <div class="edit-front-cards">
+                                <p>FRONT</p>
+                                <label>NAME</label>
+                                <input type="text" name="edit_card_name" />
+                                <label>TYPE</label>
+                                <input type="text" name="edit_card_type" />
+                                <label>SPELLING</label>
+                                <input type="text" name="edit_card_spelling" />
+                            </div>
+                            <div class="edit-back-cards">
+                                <p>BACK</p>
+                                <label>MEANING</label>
+                                <input type="text" name="edit_card_meaning" />
+                                <label>IMAGE</label>
+                                <input type="text" name="edit_card_image" />
+                                <label>SYNONYM</label>
+                                <input type="text" name="edit_card_synonym" />
+                                <label>ANTONYM</label>
+                                <input type="text" name="edit_card_antonym" />
+                                <label>EXAMPLE</label>
+                                <input type="text" name="edit_card_example" />
+                            </div>
+                        </div>
+                        <div class="edit-card-submit">
+                            <input type="submit" value="EDIT" />
+                        </div>
+                    </form>
+                </div>
+                <button class="edit-close-button" onClick={editcloseOnClick}>X</button>
             </div>
         </div>
     );

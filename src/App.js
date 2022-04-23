@@ -9,8 +9,6 @@ import Statistic from "./components/statistic";
 import Practice from "./components/practice";
 import User from "./components/user";
 
-
-
 function App() {
   return (
     <BrowserRouter>

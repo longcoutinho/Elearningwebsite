@@ -203,6 +203,13 @@ async function DeleteCardsInDB(name, deck_owner, owner) {
     await movies.deleteMany(query).then(item =>  {
       console.log("1 document deleted");
     });
+    const movies2 = database.collection('decks');
+    const query3 = {name:deck_owner, owner:owner};
+    const cur = await movies2.findOne(query3);
+    var newCount = cur.deckCount - 1; 
+    await movies2.updateMany(query3, {$set: {"deckCount" : newCount}}).then(item =>  {
+      console.log("updated");
+    });
     const query2 = {deck_owner:deck_owner, owner:owner};
     await movies.find(query2).toArray().then(item => {
       console.log(JSON.stringify(item));
@@ -229,6 +236,46 @@ async function UpdatePasswordInDB(owner) {
     });
     console.log(owner);
     return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function ChangeDisplaynameInDB(name, newname) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('account');
+    const query = {username:name};
+    await movies.updateMany(query, {$set: {"displayname" : newname}}).then(item =>  {
+      console.log("changed displayname");
+    });
+    return "0";
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function ChangePasswordInDB(username, oldpassword, newpassword) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('account');
+    const query = {username:username, password:oldpassword};
+    const cur = await movies.find(query).toArray();
+    if (cur.length == 0) {
+      return "1";
+    }
+    else {
+      await movies.updateMany(query, {$set: {"password" : newpassword}}).then(item =>  {
+        console.log("changed password");
+      });
+      return "0";
+    }
     // Query for a movie that has the title 'Back to the Future'
   } finally {
     // Ensures that the client will close when you finish/error
@@ -278,17 +325,31 @@ async function EditDeckInDB(name, newname, newdescription, owner) {
       console.log(cur);
       return "1";
     }
-      /*
-      if (item == null) {
-        
-      }
-      else {
-        console.log("kkk");
-        return "1";
-      }
-    });
-    */
-    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function EditCardInDB(name, deck_owner, owner, newname, newtype, newspelling, newmeaning, newimage, newsynonym, newantonym, newexample) {
+  try {
+    console.log(1);
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('cards');
+    const query1 = {name:newname, deck_owner:deck_owner, owner:owner};
+    console.log(query1);
+    const cur = await movies.find(query1).toArray();
+    if (cur.length == 0 || newname == name) {
+      const query2 = {name:name, deck_owner:deck_owner, owner:owner};
+        await movies.updateMany(query2, {$set: {"name": newname, "type": newtype, "spelling": newspelling, "meaning": newmeaning, "image": newimage, "synonym": newsynonym, "antonym": newantonym, "example": newexample}}).then(item =>  {
+          console.log("updated");
+        });
+        return "0";
+    }
+    else {
+      return "1";
+    }
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
@@ -503,6 +564,51 @@ app.post("/editdeck", async (request, response) => {
     //console.log(person.name, person.owner);
     //savePersontoDB(person.username, person.password);
     await EditDeckInDB(person.name, person.newname, person.newdecription, person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/editcard", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await EditCardInDB(person.name, person.deck_owner, person.owner, person.newname, person.newtype, person.newspelling, person.newmeaning, person.newimage, person.newsynonym, person.newantonym, person.newexample).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/changedisplaynameuser", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await ChangeDisplaynameInDB(person.username, person.newname).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/changepassworduser", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await ChangePasswordInDB(person.username, person.oldpassword, person.newpassword).then(res => {
       console.log(res);
       response.send(res);
     });

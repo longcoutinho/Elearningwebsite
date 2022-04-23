@@ -5,6 +5,7 @@ import logo from "../image/liverpool.png"
 import axios from "axios";
 
 const User = function(props) {
+    
     var state = {
         users: [
         ]
@@ -24,7 +25,7 @@ const User = function(props) {
     const [displayusercard, setDisplayUser] = useState("flex");
     const [displaychangename, setDisplayChangeName] = useState("none");
     const [displaychangepassword, setDisplayChangePassword] = useState("none");
-
+    
     async function listofUserCards() {
         const config = {
 
@@ -40,7 +41,52 @@ const User = function(props) {
             returnValue = res.data;
         })
         return returnValue;
+    }   
+    
+    const changenamesubmit = async (event) => {
+        event.preventDefault();
+        const config = {
+            username: localStorage.getItem("windowusername"),
+            newname: event.target.new_displayname_user.value,
+        };
+        axios.post("http://localhost:3001/changedisplaynameuser", config)
+        .then(res=> {
+            console.log(res.data);
+            if (res.data == "0") {
+                localStorage.setItem("windowdisplayname", config.newname);
+                window.location.reload(false);
+            }
+            else {
+                console.log("Deck da ton tai!");
+            }
+        })
     }
+    
+    const changepasswordsubmit = async (event) => {
+        event.preventDefault();
+        console.log(1);
+        const config = {
+            username: localStorage.getItem("windowusername"),
+            oldpassword: event.target.old_password_user.value,
+            newpassword: event.target.new_password_user.value,
+            confirmpassword: event.target.confirm_password_user.value
+        };
+        if (config.newpassword == config.confirmpassword) {
+            axios.post("http://localhost:3001/changepassworduser", config).then(res=> {
+                console.log(res.data);
+                if (res.data == "0") {
+                    console.log("Changed password!")
+                }
+                else {
+                    console.log("Deck da ton tai!");
+                }
+            })
+        }
+        else {
+            console.log("Password doesn't match");
+        }
+    }
+    
 
     useEffect( async () => {
         if (localStorage.getItem("windowusername") == "admin") {
@@ -52,6 +98,7 @@ const User = function(props) {
         await listofUserCards().then(value => {
             setabc(value);
         })
+        
     },[]);
     
     const UserCard = () => {
@@ -65,7 +112,7 @@ const User = function(props) {
             ))
         );
     }
-
+    
     function changenamehandle() {
         setDisplayChangeName("flex");
     }
@@ -73,7 +120,6 @@ const User = function(props) {
     function changepasswordhandle() {
         setDisplayChangePassword("flex");
     }
-
     return (
         <div class="study-container">
             {/* header menu */} 
@@ -114,24 +160,24 @@ const User = function(props) {
                 <p>Name: {localStorage.getItem("windowdisplayname")} </p>
                 <button onClick={() => changenamehandle()}>CHANGE NAME</button>
             </div>
-            <form class="change-name-container" style={{display:displaychangename}}>
+            <form onSubmit={changenamesubmit} class="change-name-container" style={{display:displaychangename}}>
                 <label>
                     New name:
                 </label>
-                <input type="text" />
+                <input type="text" name="new_displayname_user"/>
                 <input type="submit" value="CHANGE" />
             </form>
             <p>Username: {localStorage.getItem("windowusername")}</p>
             <button onClick={() => changepasswordhandle()}>CHANGE PASSWORD</button>
-            <form class="change-password-container" style={{display:displaychangepassword}}>
+            <form onSubmit={changepasswordsubmit} class="change-password-container" style={{display:displaychangepassword}}>
                 <label>
                     Old password
                 </label>
-                <input type="text" />
+                <input type="password" name="old_password_user"/>
                 <label>New password</label>
-                <input type="text" />
+                <input type="password" name="new_password_user"/>
                 <label>Confirm password</label>
-                <input type="text" />
+                <input type="password" name="confirm_password_user"/>
                 <input type="submit" value="CHANGE" />
             </form>
             <p style={{display:displayusercard}}>Danh sach user</p>
@@ -142,4 +188,5 @@ const User = function(props) {
         </div>
     )
 }
+
 export default User
