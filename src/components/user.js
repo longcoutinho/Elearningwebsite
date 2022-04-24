@@ -19,7 +19,7 @@ const User = function(props) {
         localStorage.setItem("windowuserinfoboxstate", "none");
         localStorage.setItem("windowloginboxstate", "block");
         localStorage.setItem("windowusername", "");
-        window.localStorage.href="/";
+        window.location.href="/";
     }
     const [decklink, setDecklink] = useState("#"); 
     const [displayusercard, setDisplayUser] = useState("flex");

@@ -126,6 +126,7 @@ const Cards = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Add successfully");
+                editcloseOnClick();
             }
             else {
                 console.log("Deck da ton tai!");
@@ -155,6 +156,7 @@ const Cards = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Add successfully");
+                closeOnClick();
             }
             else {
                 console.log("Deck da ton tai!");

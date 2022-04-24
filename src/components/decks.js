@@ -90,6 +90,7 @@ const Decks = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Add successfully");
+                closeOnClick();
             }
             else {
                 console.log("Deck da ton tai!");
@@ -111,6 +112,7 @@ const Decks = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Edit successfully");
+                closeOnClick2();
             }
             else {
                 console.log("Deck da ton tai!");

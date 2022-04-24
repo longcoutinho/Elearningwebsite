@@ -7,6 +7,7 @@ const Practice = function(props) {
     const [abc, setabc] = useState(JSON.parse(localStorage.getItem("windowdisplaylistcard")));
     const [value, incValue] = useState(Object.keys(abc).length - 1);
     const [displaysentence, setdisplaysentence] = useState("none");
+    const [displaybutton, setDisplayButton] = useState("flex");
     const [rotationstate, setrotation] = useState("none");
     const [rotationstate2, setrotation2] = useState("none");
     useEffect(() => {
@@ -17,7 +18,11 @@ const Practice = function(props) {
            abc[i].display = 1;
            xyz.push(abc[i]);
        }
-       xyz[value].display = 0;
+       if (value >=0) xyz[value].display = 0;
+       else {
+            setdisplaysentence("flex");
+            setDisplayButton("none");
+       }
        setabc(xyz); 
     },[]);
 
@@ -54,10 +59,13 @@ const Practice = function(props) {
             }
             if (value == 0) {
                 setdisplaysentence("flex");
+                setDisplayButton("none");
             }
         }
         setabc(xyz);
         //console.log(abc[0].display);
+        setrotation("none");
+        setrotation2("rotateY(180deg)");
     }
 
 
@@ -76,10 +84,13 @@ const Practice = function(props) {
             }
             if (value == 0) {
                 setdisplaysentence("flex");
+                setDisplayButton("none");
             }
         }
         setabc(xyz);
         console.log(abc[value].name);
+        setrotation("none");
+        setrotation2("rotateY(180deg)");
     }
     
     function backhandle() {
@@ -143,8 +154,8 @@ const Practice = function(props) {
             <BackCard></BackCard>
             <Card></Card>
             <div class="check-container">
-                <button onClick={() => rememberhandle()}>REMEMBER</button>
-                <button onClick={() => dontrememberhandle()}>DONT REMEMBER</button>
+                <button onClick={() => rememberhandle()} style={{display:displaybutton}} >REMEMBER</button>
+                <button onClick={() => dontrememberhandle()} style={{display:displaybutton}}>DONT REMEMBER</button>
             </div>
             <div class="finish-sentence" style={{display:displaysentence}}>
                 <p>ALL DONE!</p>
