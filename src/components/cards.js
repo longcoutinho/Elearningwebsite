@@ -137,6 +137,8 @@ const Cards = function(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        var dateNow = new Date();
+        dateNow.setHours(0,0,0,0);
         const config = {
             name: event.target.card_name.value,
             type: event.target.card_type.value,
@@ -149,7 +151,7 @@ const Cards = function(props) {
             deck_owner: localStorage.getItem("windowdisplaydeck"),
             owner: localStorage.getItem("windowusername"),
             box: 1,
-            time: new Date().toLocaleString(),
+            time: dateNow.toLocaleString(),
         };
         axios.post("http://localhost:3001/addcard", config)
         .then(res=> {
@@ -164,15 +166,24 @@ const Cards = function(props) {
         })
     }
     
+    function getDay(a, b) {
+        return (b - a) / (24*3600*1000);
+    }
+
     function studyhandle() {
+        var dateNow = new Date();
+        dateNow.setHours(0,0,0,0);
         console.log(abc);
         var xyz = [];
         for(var i = 0; i < abc.length; i++) {
-            if (abc[i].box == 1) {
-                xyz.push(abc[i]);
-            }
+            var dateDiff = getDay(new Date(abc[i].time).getTime(), dateNow.getTime());
+            if (abc[i].box == 1) xyz.push(abc[i]);
+            else if (abc[i].box == 2 && dateDiff % 3 == 0 && dateDiff) xyz.push(abc[i]);
+            else if (abc[i].box == 3 && dateDiff % 10 == 0 && dateDiff) xyz.push(abc[i]);
+            else if (abc[i].box == 4 && dateDiff % 30 == 0 && dateDiff) xyz.push(abc[i]);
+            else if (abc[i].box == 5 && dateDiff % 90 == 0 && dateDiff) xyz.push(abc[i]); 
         }
-        localStorage.setItem("windowdisplaylistcard", JSON.stringify(xyz));
+        localStorage.setItem("windowdisplaylistcard", JSON.stringify(xyz));         
         window.location.href = '/practice';
     }
 

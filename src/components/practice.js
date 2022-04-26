@@ -10,10 +10,10 @@ const Practice = function(props) {
     const [displaybutton, setDisplayButton] = useState("flex");
     const [rotationstate, setrotation] = useState("none");
     const [rotationstate2, setrotation2] = useState("none");
+    
     useEffect(() => {
         var xyz = [];
         var size = Object.keys(abc).length;
-        console.log(1);
        for(var i = 0; i < size; i++) {
            abc[i].display = 1;
            xyz.push(abc[i]);
@@ -23,17 +23,19 @@ const Practice = function(props) {
             setdisplaysentence("flex");
             setDisplayButton("none");
        }
-       setabc(xyz); 
+       setabc(xyz);
     },[]);
 
     function rememberhandle() {
         //abc[0].display = 1;
+        var dateNow = new Date();
+        dateNow.setHours(0,0,0,0);
         const config = {
             cardname: abc[value].name,
             deck_owner: localStorage.getItem("windowdisplaydeck"),
             owner: localStorage.getItem("windowusername"),
             box: abc[value].box,
-            time: new Date().toLocaleString()
+            time: dateNow.toLocaleString()
         };
         axios.post("http://localhost:3001/updatecardbox", config)
         .then(res=> {

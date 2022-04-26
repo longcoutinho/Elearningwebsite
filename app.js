@@ -283,14 +283,14 @@ async function ChangePasswordInDB(username, oldpassword, newpassword) {
   }
 }
 
-async function UpdateCardBoxInDB(name, deck_owner, owner) {
+async function UpdateCardBoxInDB(name, deck_owner, owner, box) {
   try {
     await client.connect();
     const database = client.db('Test');
     movies = database.collection('cards');
     const query = {name:name, deck_owner:deck_owner, owner:owner};
     var returnString = "";
-    await movies.updateMany(query, {$set: {"box" : 2}}).then(item =>  {
+    await movies.updateMany(query, {$set: {"box" : box + 1}}).then(item =>  {
       console.log("updated");
     });
     return returnString;
@@ -548,7 +548,7 @@ app.post("/updatecardbox", async (request, response) => {
     var person = request.body;
     //console.log(person.name, person.owner);
     //savePersontoDB(person.username, person.password);
-    await UpdateCardBoxInDB(person.cardname, person.deck_owner, person.owner).then(res => {
+    await UpdateCardBoxInDB(person.cardname, person.deck_owner, person.owner, person.box).then(res => {
       console.log(res);
       response.send(res);
     });
