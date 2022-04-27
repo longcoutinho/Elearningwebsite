@@ -3,7 +3,7 @@ import { useState } from "react";
 import "../styles/user.css"
 import logo from "../image/liverpool.png"
 import axios from "axios";
-
+import delete_icon from "../image/delete_icon.jpg"
 const User = function(props) {
     
     var state = {
@@ -101,6 +101,18 @@ const User = function(props) {
         
     },[]);
     
+    async function deletehandle(username) {
+        const config = {
+            username: username,
+        };
+        console.log(config);
+        await axios.post("http://localhost:3001/deleteuser", config)
+        .then(res=> {
+            console.log(res.data);
+            setabc(res.data);
+        });
+    }
+
     const UserCard = () => {
         return (
             abc.map((item, index) => (
@@ -108,6 +120,7 @@ const User = function(props) {
                     <p>{index + 1}</p>
                     <p>username: {item.username}</p>
                     <p>password: {item.password}</p>
+                    <img class = "delete-icon" onClick = {() => deletehandle(item.username)} src={delete_icon} />
                 </div>
             ))
         );

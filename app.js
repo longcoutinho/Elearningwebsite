@@ -223,6 +223,29 @@ async function DeleteCardsInDB(name, deck_owner, owner) {
   }
 }
 
+async function DeleteUsersInDB(username) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    movies = database.collection('account');
+    const query = {username:username};
+    var returnString = "";
+    await movies.deleteMany(query).then(item =>  {
+      console.log("1 document deleted");
+    });
+    const query2 = {};
+    await movies.find(query2).toArray().then(item => {
+      console.log(JSON.stringify(item));
+      returnString = JSON.stringify(item);
+    });
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
 async function UpdatePasswordInDB(owner) {
   try {
     console.log(owner);
@@ -519,6 +542,21 @@ app.post("/deletecard", async (request, response) => {
     //console.log(person.name, person.owner);
     //savePersontoDB(person.username, person.password);
     await DeleteCardsInDB(person.name, person.deck_owner, person.owner).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/deleteuser", async (request, response) => {
+  try {
+    var person = request.body;
+    console.log(person.username);
+    //savePersontoDB(person.username, person.password);
+    await DeleteUsersInDB(person.username).then(res => {
       console.log(res);
       response.send(res);
     });
