@@ -10,6 +10,7 @@ const Practice = function(props) {
     const [displaysentence, setdisplaysentence] = useState("none");
     const [displaybutton, setDisplayButton] = useState("flex");
     const [rotateState, setrotation] = useState("none");
+    const [buttonstate, setButton] = useState(false);
     
     useEffect(() => {
         var xyz = [];
@@ -25,6 +26,28 @@ const Practice = function(props) {
        }
        setabc(xyz);
     },[]);
+
+    function changecard() {
+        var xyz = [];
+        var size = Object.keys(abc).length;
+        for(var i = 0; i < size; i++) {
+            xyz.push(abc[i]);
+        }
+        xyz[value].display = 1;
+        if (value >= 0) {
+            if (value > 0) {
+                var newvalue = value - 1;
+                xyz[newvalue].display = 0;
+                incValue(newvalue);
+            }
+            if (value == 0) {
+                setdisplaysentence("flex");
+                setDisplayButton("none");
+            }
+        }
+        setabc(xyz);
+        setButton(false);
+    }
 
     function rememberhandle() {
         setrotation("none");
@@ -48,24 +71,8 @@ const Practice = function(props) {
                 console.log("No!");
             }
         })
-        var xyz = [];
-        var size = Object.keys(abc).length;
-        for(var i = 0; i < size; i++) {
-            xyz.push(abc[i]);
-        }
-        xyz[value].display = 1;
-        if (value >= 0) {
-            if (value > 0) {
-                var newvalue = value - 1;
-                xyz[newvalue].display = 0;
-                incValue(newvalue);
-            }
-            if (value == 0) {
-                setdisplaysentence("flex");
-                setDisplayButton("none");
-            }
-        }
-        setabc(xyz);
+        setButton(true);
+        setTimeout(changecard, 1000);
         //console.log(abc[0].display);
         
         //setrotation2("rotateY(180deg)");
@@ -96,24 +103,8 @@ const Practice = function(props) {
                 console.log("No!");
             }
         })
-        var xyz = [];
-        var size = Object.keys(abc).length;
-        for(var i = 0; i < size; i++) {
-            xyz.push(abc[i]);
-        }
-        xyz[value].display = 1;
-        if (value >= 0) {
-            if (value > 0) {
-                var newvalue = value - 1;
-                xyz[newvalue].display = 0;
-                incValue(newvalue);
-            }
-            if (value == 0) {
-                setdisplaysentence("flex");
-                setDisplayButton("none");
-            }
-        }
-        setabc(xyz);
+        setButton(true);
+        setTimeout(changecard, 1000);
         console.log(abc[value].name);
         var curtotal = parseInt(localStorage.getItem("windowtotalwords"));
         localStorage.setItem("windowtotalwords", curtotal + 1); 
@@ -203,8 +194,8 @@ const Practice = function(props) {
             </div>
             
             <div class="check-container">
-                <button onClick={() => rememberhandle()} style={{display:displaybutton}} >REMEMBER</button>
-                <button onClick={() => dontrememberhandle()} style={{display:displaybutton}}>DONT REMEMBER</button>
+                <button disabled={buttonstate} onClick={() => rememberhandle()} style={{display:displaybutton}} >REMEMBER</button>
+                <button disabled={buttonstate} onClick={() => dontrememberhandle()} style={{display:displaybutton}}>DONT REMEMBER</button>
             </div>
             <div class="finish-sentence" style={{display:displaysentence}}>
                 <p>ALL DONE!</p>
