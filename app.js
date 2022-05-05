@@ -15,7 +15,7 @@ async function savePersontoDB(username, password, displayname) {
     await client.connect();
 
     const database = client.db('Test');
-    const movies = database.collection('account');
+    movies = database.collection('account');
     const query = {username: username};
     const movie = await movies.findOne(query);
     if (movie == null) {
@@ -306,14 +306,72 @@ async function ChangePasswordInDB(username, oldpassword, newpassword) {
   }
 }
 
-async function UpdateCardBoxInDB(name, deck_owner, owner, box) {
+async function UpdateWordsInDB(owner, time, r_words, t_words) {
+  try {
+    await client.connect();
+    const database = client.db('Test');
+    listupdateofwords = database.collection('words');  
+    const query = {username:owner, time:time};
+    const cur = await listupdateofwords.find(query).toArray();
+    if (cur.length == 0) {
+      await listupdateofwords.insertOne({
+        username: owner,
+        time: time,
+        r_words: r_words,
+        t_words: t_words
+      });
+      console.log("insert new");
+      return "1";
+    }
+    else {
+      console.log(cur[0].r_words);
+      console.log(cur[0].t_words);
+      cur[0].r_words += r_words;
+      cur[0].t_words += t_words;
+      await listupdateofwords.updateMany(query, {$set: {"r_words" : cur[0].r_words, "t_words" : cur[0].t_words}}).then(item =>  {
+        console.log("update words");
+      });
+      return "0";
+    }
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function SearchWordsInDB(owner, time) {
+  try {
+    var returnString = "0";
+    await client.connect();
+    const database = client.db('Test');
+    listofwords = database.collection('words');  
+    const query = {username:owner, time:time};
+    const cur = await listofwords.find(query).toArray();
+    if (cur.length == 0) {
+      console.log("no data");
+      return "0";
+    }
+    else {
+      console.log(1);
+      returnString = cur;
+    }
+    return returnString;
+    // Query for a movie that has the title 'Back to the Future'
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+async function UpdateCardBoxInDB(name, deck_owner, owner, box, time) {
   try {
     await client.connect();
     const database = client.db('Test');
     movies = database.collection('cards');
     const query = {name:name, deck_owner:deck_owner, owner:owner};
     var returnString = "";
-    await movies.updateMany(query, {$set: {"box" : box + 1}}).then(item =>  {
+    await movies.updateMany(query, {$set: {"box" : box, "time" : time}}).then(item =>  {
       console.log("updated");
     });
     return returnString;
@@ -586,7 +644,7 @@ app.post("/updatecardbox", async (request, response) => {
     var person = request.body;
     //console.log(person.name, person.owner);
     //savePersontoDB(person.username, person.password);
-    await UpdateCardBoxInDB(person.cardname, person.deck_owner, person.owner, person.box).then(res => {
+    await UpdateCardBoxInDB(person.cardname, person.deck_owner, person.owner, person.box, person.time).then(res => {
       console.log(res);
       response.send(res);
     });
@@ -648,6 +706,37 @@ app.post("/changepassworduser", async (request, response) => {
     //savePersontoDB(person.username, person.password);
     await ChangePasswordInDB(person.username, person.oldpassword, person.newpassword).then(res => {
       console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/updatecountwords", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    console.log("join in");
+    await UpdateWordsInDB(person.owner, person.time, person.r_words, person.t_words).then(res => {
+      console.log(res);
+      response.send(res);
+    });
+    //response.send(check);  
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.post("/takewordsinfo", async (request, response) => {
+  try {
+    var person = request.body;
+    //console.log(person.name, person.owner);
+    //savePersontoDB(person.username, person.password);
+    await SearchWordsInDB(person.owner, person.time).then(res => {
+      //console.log(res);
       response.send(res);
     });
     //response.send(check);  

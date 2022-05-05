@@ -1,48 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import logo from "../image/liverpool.png"
 import "../styles/statistic.css"
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
-const data = [
-  {
-    name: 'Monday',
-    Total_words: 20,
-    Remembered_words: 12,
-  },
-  {
-    name: 'Tuesday',
-    Total_words: 30,
-    Remembered_words: 13,
-  },
-  {
-    name: 'Wednesday',
-    Total_words: 20,
-    Remembered_words: 12,
-  },
-  {
-    name: 'Thursday',
-    Total_words: 27,
-    Remembered_words: 19,
-  },
-  {
-    name: 'Friday',
-    Total_words: 18,
-    Remembered_words: 18,
-  },
-  {
-    name: 'Saturday',
-    Total_words: 23,
-    Remembered_words: 23,
-  },
-  {
-    name: 'Sunday',
-    Total_words: 15,
-    Remembered_words: 5
-  },
-];
+import Chart from 'react-apexcharts'
 
 const Statistic = function(props) {
     const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
@@ -56,15 +18,87 @@ const Statistic = function(props) {
         window.location.href="/";
     }
     const [decklink, setDecklink] = useState("#");
-    useEffect( () => {
-        console.log(localStorage.getItem("windowusername"));
+    
+    useEffect( async () => {
         if (localStorage.getItem("windowusername") == "") {
             setDecklink("/signin");
         }
         else {
             setDecklink("/decks");
         }
-    },[]);
+        var newseries =  [
+          {    
+            name: 'Total words',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: 'Remembered words',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          }
+        ]
+        var d = new Date();
+        var ind = 0;
+        d.setHours(0,0,0,0);
+        var day = d.getDay();
+        console.log(day);
+        if (day == 0) day = 7;
+        for(let i = day - 1; i >=0; i--) {
+          var newd = new Date(d.getDate() - i);
+          var oldd = new Date(); 
+          oldd.setDate(newd);
+          oldd.setHours(0, 0, 0, 0);
+
+          const config = {
+            owner: localStorage.getItem("windowusername"),
+            time: oldd.toLocaleString(),
+          };
+
+          await axios.post("http://localhost:3001/takewordsinfo", config)
+          .then(res=> {
+            if (res.data == "0") {
+              console.log("no data!");
+            }
+            else {
+              ind = (day - 1) - i;
+              newseries[0].data[ind] = res.data[0].t_words;
+              newseries[1].data[ind] = res.data[0].r_words;
+            } 
+          })
+        }
+        setSeries(newseries);
+    
+    },[]); 
+    
+    const [options, setOptions] = useState(
+      {
+        chart: {
+          id: 'apexchart-example',
+          type: 'bar'
+        },
+        
+        xaxis: {
+          categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        }
+      }
+    )
+    const [series, setSeries] = useState([
+        {    
+          name: 'Total words',
+          data: [0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          name: 'Remembered words',
+          data: [0, 0, 0, 0, 0, 0, 0]
+        }
+      ]
+        )
+
+    const BarChart = () => {
+    return (
+        <Chart options={options} series={series} type="bar" width={500} height={320}/>
+  )
+    }
+
     return (
         <div>
             {/* header menu */} 
@@ -98,29 +132,11 @@ const Statistic = function(props) {
                     <span class="btn signup"><a href="/signup">Sign up</a></span>
                 </div>
             </div>
-            <div class="statistic-content">
-            <BarChart
-          width={800}
-          height={400}
-          data={data}
-          barCategoryGap={40}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="Total_words" fill="#2B2A3A" />
-          <Bar dataKey="Remembered_words" fill="#DD8593" />
-        </BarChart>
+            <div>
+            <BarChart></BarChart>
             </div>
         </div>
+        
     )
 }
 

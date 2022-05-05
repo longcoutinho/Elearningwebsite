@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import edit_icon from "../image/edit_icon.png"
 import delete_icon from "../image/delete_icon.jpg"
+import { useSpeechSynthesis } from "react-speech-kit";
 const Cards = function(props) {
     var state = {
         users: [
@@ -16,6 +17,8 @@ const Cards = function(props) {
     const [adddeckstate, setStateOfAddingBox] = useState("none");
     const [editcardstate, setStateOfEditBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
+    const [linkcontent, setLinkContent] = useState("");
+    const [imagelink, setImage] = useState("");
     const [abc, setabc] = useState(state.users);
     useEffect( async () => {
         await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
@@ -134,6 +137,14 @@ const Cards = function(props) {
         })
     }
 
+    const onChangehandle = (event) => {
+        setLinkContent(event.target.value);
+    }
+
+    function uploadImage() {
+        setImage(linkcontent);
+        
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -183,7 +194,9 @@ const Cards = function(props) {
             else if (abc[i].box == 4 && dateDiff % 30 == 0 && dateDiff) xyz.push(abc[i]);
             else if (abc[i].box == 5 && dateDiff % 90 == 0 && dateDiff) xyz.push(abc[i]); 
         }
-        localStorage.setItem("windowdisplaylistcard", JSON.stringify(xyz));         
+        localStorage.setItem("windowdisplaylistcard", JSON.stringify(xyz));    
+        localStorage.setItem("windowrememberedwords", 0);
+        localStorage.setItem("windowtotalwords", 0);     
         window.location.href = '/practice';
     }
 
@@ -222,7 +235,7 @@ const Cards = function(props) {
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
                         <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
-                        <li class="nav__item"><a href="#" class="nav__link">Statistics</a></li>
+                        <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
                         <li class="nav__item"><a href="#" class="nav__link">About</a></li>
                     </ul>
                 </div>
@@ -282,12 +295,17 @@ const Cards = function(props) {
                                 <label>SPELLING</label>
                                 <input type="text" name="card_spelling" />
                             </div>
+                            <div class="image-cards">
+                                <p>IMAGE PREVIEW</p>
+                                <button type="button" onClick={uploadImage}>LOAD IMAGE</button>
+                                <img style={{"width":"300px", "height":"300px"}} src={imagelink} />
+                            </div>
                             <div class="add-back-cards">
                                 <p>BACK</p>
                                 <label>MEANING</label>
                                 <input type="text" name="card_meaning" />
                                 <label>IMAGE</label>
-                                <input type="text" name="card_image" />
+                                <input type="text" name="card_image" onChange={onChangehandle}/>
                                 <label>SYNONYM</label>
                                 <input type="text" name="card_synonym" />
                                 <label>ANTONYM</label>

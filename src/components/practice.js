@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import "../styles/practice.css"
 import axios from "axios";
+import voice_icon from "../image/voice_icon.jpg"
 
 const Practice = function(props) {
     const [abc, setabc] = useState(JSON.parse(localStorage.getItem("windowdisplaylistcard")));
     const [value, incValue] = useState(Object.keys(abc).length - 1);
     const [displaysentence, setdisplaysentence] = useState("none");
     const [displaybutton, setDisplayButton] = useState("flex");
-    const [rotationstate, setrotation] = useState("none");
-    const [rotationstate2, setrotation2] = useState("none");
+    const [rotateState, setrotation] = useState("none");
     
     useEffect(() => {
         var xyz = [];
@@ -34,7 +34,7 @@ const Practice = function(props) {
             cardname: abc[value].name,
             deck_owner: localStorage.getItem("windowdisplaydeck"),
             owner: localStorage.getItem("windowusername"),
-            box: abc[value].box,
+            box: abc[value].box + 1,
             time: dateNow.toLocaleString()
         };
         axios.post("http://localhost:3001/updatecardbox", config)
@@ -66,12 +66,34 @@ const Practice = function(props) {
         }
         setabc(xyz);
         //console.log(abc[0].display);
-        setrotation("none");
-        setrotation2("rotateY(180deg)");
+        //setrotation("none");
+        //setrotation2("rotateY(180deg)");
+        var curremem = parseInt(localStorage.getItem("windowrememberedwords"));
+        localStorage.setItem("windowrememberedwords", curremem + 1);
+        var curtotal = parseInt(localStorage.getItem("windowtotalwords"));
+        localStorage.setItem("windowtotalwords", curtotal + 1); 
     }
 
-
     function dontrememberhandle() {
+        var dateNow = new Date();
+        dateNow.setHours(0,0,0,0);
+        const config = {
+            cardname: abc[value].name,
+            deck_owner: localStorage.getItem("windowdisplaydeck"),
+            owner: localStorage.getItem("windowusername"),
+            box: 1,
+            time: dateNow.toLocaleString()
+        };
+        axios.post("http://localhost:3001/updatecardbox", config)
+        .then(res=> {
+            console.log(res.data);
+            if (res.data == "0") {
+                console.log("Update succesfully");
+            }
+            else {
+                console.log("No!");
+            }
+        })
         var xyz = [];
         var size = Object.keys(abc).length;
         for(var i = 0; i < size; i++) {
@@ -91,31 +113,50 @@ const Practice = function(props) {
         }
         setabc(xyz);
         console.log(abc[value].name);
-        setrotation("none");
-        setrotation2("rotateY(180deg)");
+        var curtotal = parseInt(localStorage.getItem("windowtotalwords"));
+        localStorage.setItem("windowtotalwords", curtotal + 1); 
     }
     
     function backhandle() {
+        var dateNow = new Date();
+        dateNow.setHours(0,0,0,0);
+        const config = {
+            owner: localStorage.getItem("windowusername"),
+            time: dateNow.toLocaleString(),
+            r_words: parseInt(localStorage.getItem("windowrememberedwords")),
+            t_words: parseInt(localStorage.getItem("windowtotalwords")),
+        };
+        console.log(config);
+        axios.post("http://localhost:3001/updatecountwords", config)
+        .then(res=> {
+            console.log(res.data);
+        })
         window.location.href="/cards";
     }
 
-    function rotatehandle() {
-        setrotation("rotateY(180deg)");
-        setrotation2("none");
-        console.log(1);
+    const rotatehandle = (event) => {
+        if (event.target.tagName == "DIV") setrotation("rotateY(180deg)");
+        //setrotation2("none");
+        console.log(3);
     }
 
     function rotatehandle2() {
         setrotation("none");
-        setrotation2("rotateY(180deg)");
-        console.log(1);
+        //setrotation2("rotateY(180deg)");
+        console.log(2);
+    }
+
+    function readOnClick(content) {
+        let utterance = new SpeechSynthesisUtterance(content);
+        speechSynthesis.speak(utterance);
+        console.log("kk");
     }
 
     const Card = (props) => {
         return (
             abc.map((item) => (
-                <div>
-                <div onClick={() => rotatehandle()} class="cards-study-container" style={{display:  item.display ? 'none' : 'flex', transform:rotationstate}}>
+                <div onClick={rotatehandle} class="cards-study-container" style={{display:  item.display ? 'none' : 'flex'}}>
+                    <img class="voice-icon" onClick={() => readOnClick(item.name)} src={voice_icon} />
                      <div class="cards-study-name" >
                             <h1>{item.name}</h1>
                         </div> 
@@ -126,7 +167,6 @@ const Practice = function(props) {
                             <h1>{item.spelling}</h1>
                         </div>
                 </div>
-                </div>
             ))
         );
     }
@@ -134,27 +174,32 @@ const Practice = function(props) {
     const BackCard = (props) => {
         return (
             abc.map((item) => (
-                <div>
-                <div onClick={() => rotatehandle2()} class="cards-study-container-2" style={{display:  item.display ? 'none' : 'flex', transform:rotationstate2}}>
-                     <div class="cards-study-name">
-                            <h1>{item.meaning}</h1>
-                        </div> 
-                        <div class="card-study-type">
-                            <h1>{item.anonym}</h1>
-                        </div>
-                        <div class="cards-study-spelling">
-                            <h1>{item.example}</h1>
-                        </div>
+                <div onClick={rotatehandle2} class="cards-study-container-2" style={{display:  item.display ? 'none' : 'flex'}}>
+                    <img style={{"height":"200px", "width":"200px"}} src={item.image}></img>
+                    <div class="cards-study-name">
+                        <h1>{item.meaning}</h1>
+                    </div> 
+                    <div class="card-study-type">
+                        <h1>{item.synonym}</h1>
+                    </div>
+                    <div class="cards-study-name">
+                        <h1>{item.antonym}</h1>
+                    </div>
+                    <div class="cards-study-spelling">
+                        <h1>{item.example}</h1>
+                    </div>
                 </div>
-                 </div>
             ))
         );
     }
 
     return (
         <div class="study-container">
-            <BackCard></BackCard>
-            <Card></Card>
+            <div  style={{"transform":rotateState}} class="flip-card">
+                <Card></Card>
+                <BackCard></BackCard>
+            </div>
+            
             <div class="check-container">
                 <button onClick={() => rememberhandle()} style={{display:displaybutton}} >REMEMBER</button>
                 <button onClick={() => dontrememberhandle()} style={{display:displaybutton}}>DONT REMEMBER</button>

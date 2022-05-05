@@ -26,7 +26,7 @@ const User = function(props) {
     const [displaychangename, setDisplayChangeName] = useState("none");
     const [displaychangepassword, setDisplayChangePassword] = useState("none");
     
-    async function listofUserCards() {
+    async function listofUserCards(text) {
         const config = {
 
         };
@@ -40,7 +40,12 @@ const User = function(props) {
             //console.log(obj[0]);
             returnValue = res.data;
         })
-        return returnValue;
+        var newarr = [];
+        for(let i = 0; i < returnValue.length; i++) {
+            if (returnValue[i].username.startsWith(text)) newarr.push(returnValue[i]);
+        }
+        console.log(returnValue);
+        return newarr;
     }   
     
     const changenamesubmit = async (event) => {
@@ -95,7 +100,7 @@ const User = function(props) {
         else {
             setDisplayUser("none");
         }
-        await listofUserCards().then(value => {
+        await listofUserCards("").then(value => {
             setabc(value);
         })
         
@@ -111,6 +116,13 @@ const User = function(props) {
             console.log(res.data);
             setabc(res.data);
         });
+    }
+
+    async function onChangehandle(event) {
+        console.log(event.target.value);
+        await listofUserCards(event.target.value).then(value => {
+            setabc(value);
+        })
     }
 
     const UserCard = () => {
@@ -194,6 +206,8 @@ const User = function(props) {
                 <input type="submit" value="CHANGE" />
             </form>
             <p style={{display:displayusercard}}>Danh sach user</p>
+            <p>SEARCH</p>
+            <input onChange={onChangehandle} type="text"></input>
             <div class="display-user-card">
                 <UserCard></UserCard>
             </div>

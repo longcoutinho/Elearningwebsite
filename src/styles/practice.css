@@ -1,35 +1,42 @@
-.cards-study-container {
-    position: absolute;
+.flip-card {
+    position: relative;
     top: 50px;
-    left: 35%;
-    width: 400px;
-    height: 300px;
+    left: 30%;
+    width: 700px;
+    height: 600px;
+    transition: transform 1s;
+    transform-style: preserve-3d;    
+    pointer-events: auto;                                                             
+}
+
+
+.cards-study-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     background-color: pink;
-    border-radius: 5px;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transition: transform 1.0s;
+    border-radius: 5px;           
+    z-index: 1;          
+    backface-visibility: hidden;                                               
 }
+
 
 .cards-study-container-2 {
-    position: absolute;
-    top: 50px;
-    left: 35%;
-    width: 400px;
-    height: 300px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     background-color: pink;
     border-radius: 5px;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transition: transform 0.6s;
+    transform: rotateY(180deg);
 }
 
+.cards-study-container, .cards-study-container-2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
 
 .study-container {
     width: 100%;
@@ -38,25 +45,52 @@
 
 .check-container {
     position: absolute;
-    width: 400px;
-    top: 450px;
-    left: 35%;
+    width: 700px;
+    top: 750px;
+    left: 30%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
 .check-container button {
-    width: 170px;
+    width: 270px;
     height: 50px;
     background-color: pink;
     color: white;
     border-radius: 10px;
     font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .finish-sentence { 
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.cards-study-name {
+    width: 100%;;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.cards-study-name h1 {
+    display: block;
+    width: 10%;
+    height: auto;
+}
+
+.voice-icon {
+    width: 50px;
+    height: 50px;
+    z-index: 100;
+}
+
+.voice-icon:hover {
+    cursor: pointer;
 }
