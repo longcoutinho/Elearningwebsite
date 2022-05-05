@@ -27,6 +27,7 @@ const Practice = function(props) {
     },[]);
 
     function rememberhandle() {
+        setrotation("none");
         //abc[0].display = 1;
         var dateNow = new Date();
         dateNow.setHours(0,0,0,0);
@@ -66,7 +67,7 @@ const Practice = function(props) {
         }
         setabc(xyz);
         //console.log(abc[0].display);
-        //setrotation("none");
+        
         //setrotation2("rotateY(180deg)");
         var curremem = parseInt(localStorage.getItem("windowrememberedwords"));
         localStorage.setItem("windowrememberedwords", curremem + 1);
@@ -75,6 +76,7 @@ const Practice = function(props) {
     }
 
     function dontrememberhandle() {
+        setrotation("none");
         var dateNow = new Date();
         dateNow.setHours(0,0,0,0);
         const config = {
@@ -140,7 +142,7 @@ const Practice = function(props) {
         console.log(3);
     }
 
-    function rotatehandle2() {
+    const rotatehandle2 = (event) => {
         setrotation("none");
         //setrotation2("rotateY(180deg)");
         console.log(2);

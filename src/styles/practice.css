@@ -4,7 +4,7 @@
     left: 30%;
     width: 700px;
     height: 600px;
-    transition: transform 1s;
+    transition: transform 0.25s;
     transform-style: preserve-3d;    
     pointer-events: auto;                                                             
 }
@@ -30,6 +30,7 @@
     background-color: pink;
     border-radius: 5px;
     transform: rotateY(180deg);
+    background-color: red;
 }
 
 .cards-study-container, .cards-study-container-2 {
