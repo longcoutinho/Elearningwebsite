@@ -1,6 +1,11 @@
+/* .signin-container{
+    font-family: 'Akaya Telivigala', cursive;
+    width: 100%;
+    height: 100%;
+} */
 .signin-content-container {
     width: 100%;
-    height: 400px;
+    height: 650px;
     background-color: #23222F;
     display: flex;
     flex-direction: column;
@@ -9,6 +14,7 @@
 
 .signin-title h1 {
     color: white;
+    font-size: 50px;
 }
 
 .signin-content {
@@ -32,23 +38,48 @@
 .signin-form form input[type="text"], 
 .signin-form form input[type="password"] {
     width: 100%;
-    padding: 15px;
-    font-size: 30px;
+    padding: 20px;
+    padding-left: 75px;
+    font-size: 38px;
     border: none;
     border-bottom: 2px solid white;
     background-color: #23222F;
     color: white;
-}
-
-.signin-form form input[type="password"] {
     margin-top: 20px;
 }
 
+.hihi{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.fa-user-large  {
+    position: absolute;
+    left: 0;
+    font-size: 40px;
+    color: white;
+    padding-left: 15px;
+}
+.fa-lock {
+    position: absolute;
+    left: 0;
+    color: white;
+    padding-left: 15px;
+    font-size: 40px;
+    bottom: 30%;
+}
+.fa-eye{
+    position: absolute;
+    right: 0;
+    color: white;
+    font-size: 24px;
+}
 .remember-me {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .signin-form form div input[type="checkbox"] {
@@ -57,21 +88,50 @@
 }
 
 .signin-form form div h1 {
-    font-size: 20px;
+    font-size: 24px;
     color: white;
     margin-left: 5px;
 }
-
+::placeholder{
+    color: #999;
+    font-family: 'Akaya Telivigala', cursive;
+}
 .signin-form form input[type="submit"] {
-    width: 100px;
-    height: 50px;
-    background-color: pink;
+    width: 120px;
+    height: 60px;
     color: white;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 30px;
+    background-color: var(--second-color);
+    font-family: 'Akaya Telivigala', cursive;
+    margin-top: 30px;
 }
 
-a:hover {
+.signin-form form input[type="submit"]:hover{
+    cursor: pointer;
+}
+
+.in4 a:hover {
     text-decoration: underline;
 }
 
+.in4 a {
+    color: white;
+    text-decoration: underline;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 0px;
+    color: white;
+    font-size: 25px;
+}
+
+.eye-icon:hover {
+    cursor: pointer;
+}
+
+.notify-p {
+    font-size: 25px;
+    color: white;   
+}

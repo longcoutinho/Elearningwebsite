@@ -18,8 +18,12 @@ const Cards = function(props) {
     const [editcardstate, setStateOfEditBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
     const [linkcontent, setLinkContent] = useState("");
+    const [linkcontent2, setLinkContent2] = useState("");
     const [imagelink, setImage] = useState("");
+    const [imagelink2, setImage2] = useState("");
     const [abc, setabc] = useState(state.users);
+    const [notify, setNotify] = useState("");
+    const [searchContent, setSearchContent] = useState("");
     useEffect( async () => {
         await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
             setabc(value);
@@ -27,20 +31,21 @@ const Cards = function(props) {
     },[]);
     const addOnClick = () => {
         setStateOfAddingBox("flex");
-        setBackGroundOpacity("0.7");
+        //setBackGroundOpacity("0.7");
         //state.users = abc;
         //console.log(state.users);
     }
 
     const editOnClick = (name) => {
         setStateOfEditBox("flex");
-        setBackGroundOpacity("0.7");
+        //setBackGroundOpacity("0.7");
         localStorage.setItem("windowdisplaycardname", name);
     }
 
     async function closeOnClick() {
         setStateOfAddingBox("none");
         setBackGroundOpacity("1");
+        setNotify("");
         await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
             setabc(value);
         })
@@ -49,7 +54,7 @@ const Cards = function(props) {
     async function editcloseOnClick(deck_owner, name) {
         setStateOfEditBox("none");
         setBackGroundOpacity("1");
-        
+        setNotify("");
         await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
             setabc(value);
         })
@@ -104,7 +109,7 @@ const Cards = function(props) {
     const searchSubmit = async (event) => {
         console.log(1);
         event.preventDefault();
-        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), event.target.inputcardsearch.value).then(value => {
+        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), searchContent).then(value => {
             setabc(value);
         })
     }
@@ -124,7 +129,32 @@ const Cards = function(props) {
             newantonym: event.target.edit_card_antonym.value,
             newexample: event.target.edit_card_example.value,
         };
-        axios.post("http://localhost:3001/editcard", config)
+        if (config.newname.localeCompare("") == 0) {
+            setNotify("Please fill in card's name!");
+        }
+        else if (config.newtype.localeCompare("") == 0) {
+            setNotify("Please select card's type!");
+        }
+        else if (config.newspelling.localeCompare("") == 0) {
+            setNotify("Please fill in card's spelling!");
+        }
+        else if (config.newmeaning.localeCompare("") == 0) {
+            setNotify("Please fill in card's meaning!");
+        }
+        else if (config.newimage.localeCompare("") == 0) {
+            setNotify("Please fill in card's image!");
+        }
+        else if (config.newsynonym.localeCompare("") == 0) {
+            setNotify("Please fill in card's synonym!");
+        }
+        else if (config.newantonym.localeCompare("") == 0) {
+            setNotify("Please fill in card's antonym!");
+        }
+        else if (config.newexample.localeCompare("") == 0) {
+            setNotify("Please fill in card's example!");
+        }
+        else {
+            axios.post("http://localhost:3001/editcard", config)
         .then(res=> {
             console.log(res.data);
             if (res.data == "0") {
@@ -132,17 +162,29 @@ const Cards = function(props) {
                 editcloseOnClick();
             }
             else {
-                console.log("Deck da ton tai!");
+                setNotify("Card's already exist!");
             }
         })
+        }
+        
     }
 
     const onChangehandle = (event) => {
         setLinkContent(event.target.value);
     }
 
+    const onChangehandle2 = (event) => {
+        setLinkContent2(event.target.value);
+    }
+
+
     function uploadImage() {
         setImage(linkcontent);
+        
+    }
+
+    function uploadImage2() {
+        setImage2(linkcontent2);
         
     }
 
@@ -164,6 +206,33 @@ const Cards = function(props) {
             box: 1,
             time: dateNow.toLocaleString(),
         };
+        console.log(config.name);
+        console.log(config.type);
+        if (config.name.localeCompare("") == 0) {
+            setNotify("Please fill in card's name!");
+        }
+        else if (config.type.localeCompare("") == 0) {
+            setNotify("Please select card's type!");
+        }
+        else if (config.spelling.localeCompare("") == 0) {
+            setNotify("Please fill in card's spelling!");
+        }
+        else if (config.meaning.localeCompare("") == 0) {
+            setNotify("Please fill in card's meaning!");
+        }
+        else if (config.image.localeCompare("") == 0) {
+            setNotify("Please fill in card's image!");
+        }
+        else if (config.synonym.localeCompare("") == 0) {
+            setNotify("Please fill in card's synonym!");
+        }
+        else if (config.antonym.localeCompare("") == 0) {
+            setNotify("Please fill in card's antonym!");
+        }
+        else if (config.example.localeCompare("") == 0) {
+            setNotify("Please fill in card's example!");
+        }
+        else {
         axios.post("http://localhost:3001/addcard", config)
         .then(res=> {
             console.log(res.data);
@@ -172,10 +241,12 @@ const Cards = function(props) {
                 closeOnClick();
             }
             else {
-                console.log("Deck da ton tai!");
+                setNotify("Card's already exist!");
             }
         })
+        }    
     }
+
     
     function getDay(a, b) {
         return (b - a) / (24*3600*1000);
@@ -200,22 +271,24 @@ const Cards = function(props) {
         window.location.href = '/practice';
     }
 
+    const searchChange = (event) => {
+        setSearchContent(event.target.value);
+    }
+
     const Card = (props) => {
         return (
             abc.map((item) => (
                 <div class="cards-container">
                     <div class="cards-name">
-                        <h1>{item.name}</h1>
+                        <span>{item.name}</span>
+                        <span>{item.type}</span>
                     </div> 
-                    <div class="card-type">
-                        <h1>{item.type}</h1>
-                    </div>
                     <div class="cards-spelling">
-                        <h1>{item.spelling}</h1>
+                        <span>{item.spelling}</span>
                     </div>
                     <div class="handle-icon">
-                        <img onClick = {() => editOnClick(item.name)} src={edit_icon} />
-                        <img onClick = {() => deletehandle(item.deck_owner, item.name, item.owner)} src={delete_icon} />
+                        <i onClick = {() => editOnClick(item.name)} class="fa-solid fa-pen-to-square"></i>
+                        <i onClick = {() => deletehandle(item.deck_owner, item.name, item.owner)} class="fa-solid fa-trash-can"></i>
                     </div>
                 </div>
             ))
@@ -236,7 +309,7 @@ const Cards = function(props) {
                         <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
                         <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
                         <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
-                        <li class="nav__item"><a href="#" class="nav__link">About</a></li>
+                        <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
                     </ul>
                 </div>
                 <div class="user-info" style={{display:userinfostate}}>
@@ -244,7 +317,6 @@ const Cards = function(props) {
                         <span>Hello, </span>
                         <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
                     </div>
-                    <button onClick={signoutOnclick}>Sign out </button>
                 </div>
 
                 {/* signin signup */}
@@ -261,39 +333,61 @@ const Cards = function(props) {
                 <div class="cards-title"> 
                     <h1>{cardname}</h1>
                 </div>
-                <div class="cards-search">
-                    <button onClick={addOnClick}>ADD</button>
-                    <form onSubmit={searchSubmit}>
-                        <input type="text" name="inputcardsearch" />
-                        <input type="submit" value="SEARCH" />
-                    </form>
-                </div>
-                <div class="cards-display">
+
+                <div class="hehe">
                     <div class="cards-statistics">
                         <div class="study-button">
                             <button onClick={studyhandle}>STUDY</button>
                         </div>
                     </div>
+                    <div class="cards-search">
+                        {/* <button onClick={addOnClick}><i class="fa-solid fa-plus"></i></button> */}
+                        <form>
+                            <input onChange={searchChange} type="text" name="inputcardsearch" placeholder="Search" />
+                            <i onClick={searchSubmit}  class="fa-solid fa-magnifying-glass" type="submit" value="search"></i>
+                            <hr/>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="cards-display">
                     <div class="cards-display-content">
+                        <div class="cards-plus">
+                            <button onClick={addOnClick}><i class="fa-solid fa-plus"></i></button>
+                        </div>
                         <Card></Card>
                     </div>
                 </div>
             </div>
             <div class="add-cards" style={{"display":adddeckstate}}>
                 <div class="add-card-title">
-                    <p>ADD CARDS</p>
+                    <p>CREATE NEW CARD</p>
                 </div>
                 <div class="add-card-content">
                     <form onSubmit={handleSubmit}>
                         <div class="add-card-input">
                             <div class="add-front-cards">
                                 <p>FRONT</p>
-                                <label>NAME</label>
-                                <input type="text" name="card_name" />
-                                <label>TYPE</label>
-                                <input type="text" name="card_type" />
-                                <label>SPELLING</label>
-                                <input type="text" name="card_spelling" />
+                                <div class="input-in4">
+                                    <span>NAME</span>
+                                    <input type="text" name="card_name" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>TYPE</span>
+                                    <select id="numberToSelect" name="card_type" onchange="selectNum()">
+                                        <option value="">Selected</option>
+                                        <option value="(adj)">Adjective</option>
+                                        <option value="(n)">Noun</option>
+                                        <option value="(v)">Verb</option>
+                                        <option value="(adv)">Adverb</option>
+                                        <option value="(prep)">Preposition</option>
+                                        <option value="(others)">Others</option>
+                                    </select>   
+                                </div>
+                                <div class="input-in4">
+                                    <span>SPELLING</span>
+                                    <input type="text" name="card_spelling" />
+                                </div>
                             </div>
                             <div class="image-cards">
                                 <p>IMAGE PREVIEW</p>
@@ -302,18 +396,29 @@ const Cards = function(props) {
                             </div>
                             <div class="add-back-cards">
                                 <p>BACK</p>
-                                <label>MEANING</label>
-                                <input type="text" name="card_meaning" />
-                                <label>IMAGE</label>
-                                <input type="text" name="card_image" onChange={onChangehandle}/>
-                                <label>SYNONYM</label>
-                                <input type="text" name="card_synonym" />
-                                <label>ANTONYM</label>
-                                <input type="text" name="card_antonym" />
-                                <label>EXAMPLE</label>
-                                <input type="text" name="card_example" />
+                                <div class="input-in4">
+                                    <span>MEANING</span>
+                                    <input type="text" name="card_meaning" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>IMAGE</span>
+                                    <input type="text" name="card_image" onChange={onChangehandle}/>
+                                </div>
+                                <div class="input-in4">
+                                    <span>SYNONYM</span>
+                                    <input type="text" name="card_synonym" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>ANTONYM</span>
+                                    <input type="text" name="card_antonym" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>EXAMPLE</span>
+                                    <input type="text" name="card_example" />
+                                </div>
                             </div>
                         </div>
+                        <p>{notify}</p>
                         <div class="add-card-submit">
                             <input type="submit" value="ADD" />
                         </div>
@@ -330,28 +435,58 @@ const Cards = function(props) {
                     <form onSubmit={edithandleSubmit}>
                         <div class="edit-card-input">
                             <div class="edit-front-cards">
-                                <p>FRONT</p>
-                                <label>NAME</label>
-                                <input type="text" name="edit_card_name" />
-                                <label>TYPE</label>
-                                <input type="text" name="edit_card_type" />
-                                <label>SPELLING</label>
-                                <input type="text" name="edit_card_spelling" />
+                            <p>FRONT</p>
+                                <div class="input-in4">
+                                    <span>NAME</span>
+                                    <input type="text" name="edit_card_name" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>TYPE</span>
+                                    <select id="numberToSelect" name="edit_card_type" onchange="selectNum()">
+                                        <option value="">Selected</option>
+                                        <option value="(adj)">Adjective</option>
+                                        <option value="(n)">Noun</option>
+                                        <option value="(v)">Verb</option>
+                                        <option value="(adv)">Adverb</option>
+                                        <option value="(prep)">Preposition</option>
+                                        <option value="(others)">Others</option>
+                                    </select>   
+                                </div>
+                                <div class="input-in4">
+                                    <span>SPELLING</span>
+                                    <input type="text" name="edit_card_spelling" />
+                                </div>
+                            </div>
+                            <div class="image-cards">
+                                <p>IMAGE PREVIEW</p>
+                                <button type="button" onClick={uploadImage2}>LOAD IMAGE</button>
+                                <img style={{"width":"300px", "height":"300px"}} src={imagelink2} />
                             </div>
                             <div class="edit-back-cards">
-                                <p>BACK</p>
-                                <label>MEANING</label>
-                                <input type="text" name="edit_card_meaning" />
-                                <label>IMAGE</label>
-                                <input type="text" name="edit_card_image" />
-                                <label>SYNONYM</label>
-                                <input type="text" name="edit_card_synonym" />
-                                <label>ANTONYM</label>
-                                <input type="text" name="edit_card_antonym" />
-                                <label>EXAMPLE</label>
-                                <input type="text" name="edit_card_example" />
+                            <p>BACK</p>
+                                <div class="input-in4">
+                                    <span>MEANING</span>
+                                    <input type="text" name="edit_card_meaning" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>IMAGE</span>
+                                    <input type="text" name="edit_card_image" onChange={onChangehandle2}/>
+                                </div>
+                                <div class="input-in4">
+                                    <span>SYNONYM</span>
+                                    <input type="text" name="edit_card_synonym" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>ANTONYM</span>
+                                    <input type="text" name="edit_card_antonym" />
+                                </div>
+                                <div class="input-in4">
+                                    <span>EXAMPLE</span>
+                                    <input type="text" name="edit_card_example" />
+                                </div>
                             </div>
                         </div>
+                        <p>{notify}</p>
                         <div class="edit-card-submit">
                             <input type="submit" value="EDIT" />
                         </div>

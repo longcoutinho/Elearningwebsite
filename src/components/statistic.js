@@ -71,6 +71,7 @@ const Statistic = function(props) {
     
     const [options, setOptions] = useState(
       {
+        colors: ['#23222F', '#DD8593'],
         chart: {
           id: 'apexchart-example',
           type: 'bar'
@@ -84,7 +85,7 @@ const Statistic = function(props) {
     const [series, setSeries] = useState([
         {    
           name: 'Total words',
-          data: [0, 0, 0, 0, 0, 0, 0]
+          data: [0, 0, 0, 0, 0, 0, 0],
         },
         {
           name: 'Remembered words',
@@ -95,7 +96,7 @@ const Statistic = function(props) {
 
     const BarChart = () => {
     return (
-        <Chart options={options} series={series} type="bar" width={500} height={320}/>
+        <Chart options={options} series={series} type="bar" width={1200} height={500}/>
   )
     }
 
@@ -105,7 +106,7 @@ const Statistic = function(props) {
             <div class="container-fluid">
                 {/* logo */} 
                 <div class="header-logo">
-                    <img src={logo} width="80px" />
+                  <span class="name">IamRoht</span>
                 </div>
                 {/* menu */}
                 <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
@@ -113,7 +114,7 @@ const Statistic = function(props) {
                         <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
                         <li class="nav__item"><a href={decklink} class="nav__link">Decks</a></li>
                         <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
-                        <li class="nav__item"><a href="#" class="nav__link">About</a></li>
+                        <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
                     </ul>
                 </div>
 
@@ -122,7 +123,6 @@ const Statistic = function(props) {
                         <span>Hello, </span>
                         <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
                     </div>
-                    <button onClick={signoutOnclick}>Sign out </button>
                 </div>
 
                 {/* signin signup */}
@@ -132,8 +132,8 @@ const Statistic = function(props) {
                     <span class="btn signup"><a href="/signup">Sign up</a></span>
                 </div>
             </div>
-            <div>
-            <BarChart></BarChart>
+            <div class="statistic-content">
+              <BarChart></BarChart>
             </div>
         </div>
         

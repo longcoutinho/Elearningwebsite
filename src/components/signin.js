@@ -15,7 +15,10 @@ const Signin = function(props) {
         setDisplay2("none");
     }
     const [decklink, setDecklink] = useState("#"); 
-
+    const [eyedisplay, setEyeDisplay] = useState("none");
+    const [eyeslashdisplay, setEyeSlashDisplay] = useState("block");
+    const [passwordtype, setPasswordType] = useState("password");
+    const [notify, setNotify] = useState("");
     useEffect( () => {
         console.log(localStorage.getItem("windowusername"));
         if (localStorage.getItem("windowusername") == "") {
@@ -44,7 +47,7 @@ const Signin = function(props) {
                 window.location.href = '/'
             }
             else {
-                console.log("Invalid username or password!");
+                setNotify("Invalid username or password!");
             }
         })
         
@@ -56,8 +59,23 @@ const Signin = function(props) {
         localStorage.setItem("windowloginboxstate", "block");
         localStorage.setItem("windowusername", "");
     }
+
+    function onClickEye1() {
+        console.log(1);
+        setPasswordType("password");
+        setEyeDisplay("none");
+        setEyeSlashDisplay("block");
+    }
+
+    function onClickEye2() {
+        console.log(2);
+        setPasswordType("text");
+        setEyeDisplay("block");
+        setEyeSlashDisplay("none");
+    }
+
   return (
-    <div>
+    <div class="signin-container">
         {/* header menu */} 
         <div class="container-fluid">
             {/* logo */} 
@@ -70,7 +88,7 @@ const Signin = function(props) {
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
                     <li class="nav__item"><a href={decklink} class="nav__link">Decks</a></li>
                     <li class="nav__item"><a href="#" class="nav__link">Statistics</a></li>
-                    <li class="nav__item"><a href="#" class="nav__link">About</a></li>
+                    <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
                 </ul>
             </div>
         
@@ -79,7 +97,6 @@ const Signin = function(props) {
                     <span>Hello, </span>
                     <a href="#">{localStorage.getItem("windowdisplayname")}</a>
                 </div>
-                <button onClick={signoutOnclick}>Sign out </button>
             </div>
 
             {/* signin signup */}
@@ -98,12 +115,21 @@ const Signin = function(props) {
             <div class="signin-content"> 
                 <div class="signin-form">
                     <form onSubmit={handleSubmit}>
-                        <input class="input_username" type="text" name="signin_username" placeholder="User name"/>
-                        <input class="input_password" type="password" name="signin_password" placeholder="********"/>
+                        <div class="hihi">
+                            <i class="fa-solid fa-user-large"></i>
+                            <input class="input_username" type="text" name="signin_username" placeholder="User name"/>
+                        </div>
+                        <div class="hihi">
+                            <i class="fa-solid fa-lock"></i>
+                            <input class="input_password" type={passwordtype} name="signin_password" placeholder="********"/>
+                            <i onClick={onClickEye1} style={{"display":eyedisplay}} class="fa-solid fa-eye eye-icon"></i>
+                            <i onClick={onClickEye2} style={{"display":eyeslashdisplay}} class="fa-solid fa-eye-slash eye-icon"></i>
+                        </div>
                         <div class="remember-me">
                             <input type="checkbox" />
                             <h1>Remember me?</h1>
                         </div>
+                        <p class="notify-p">{notify}</p>
                         <input type="submit" value="Sign in"/>
                     </form>
                 </div>
@@ -112,9 +138,20 @@ const Signin = function(props) {
 
         {/* footer */}
         <div class="footer-container">
-            <h1>Hotline: 0363137565</h1>
-            <h1>Address: Trần Bình, Mai Dịch, Cầu Giấy, Hà Nội</h1>
-            <h1>Email: maitho3101@gmail.com</h1>
+            <div class=" in4">
+                <div>Hotline: 0363137565</div>
+                <div>Address: Trần Bình, Mai Dịch, Cầu Giấy, Hà Nội</div>
+                <div>Email: <a href="">maitho3101@gmail.com</a> </div>
+            </div>
+            <div class=" contactus ">
+                <h3>Contact us: </h3>
+                <div class=" social ">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
         </div>
 
     </div>

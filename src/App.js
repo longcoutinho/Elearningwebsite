@@ -8,6 +8,7 @@ import Cards from "./components/cards";
 import Statistic from "./components/statistic";
 import Practice from "./components/practice";
 import User from "./components/user";
+import About from "./components/about";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/statistic" element={<Statistic/>} />
         <Route path="/practice" element={<Practice/>} />
         <Route path="/user" element={<User/>} />
+        <Route path="/about" element={<About/>} />
       </Routes>
     </BrowserRouter>
   );

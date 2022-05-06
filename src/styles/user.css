@@ -1,35 +1,147 @@
+.user-container{
+    width: 100%;
+}
 .display-user-card {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    margin: 30px 50px;
 }
 .user-card-container { 
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 200px;
-    height: 200px;
-    background-color: red;
+   
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    width: 100% ;
 }
 
 .change-name-container {
     margin-top: 20px;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    font-size: 28px;
 }
-
+.change-name-container label{
+    margin-right: 20px;
+}
 .change-password-container {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    font-size: 28px;
 }
-
+.input-password{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+.input-password label{
+    width: 250px;
+}
 .change-password-container input {
     width: 200px;
 }
 
+.gg{
+    display: flex;
+}
+.user-list-title, .title-user-info{
+    font-size: 32px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+}
+#user {
+    font-family: 'Akaya Telivigala', cursive;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 26px;
+    margin: 10px 50px;
+  }
+  
+  #user td, #user th {
+    border: 1px solid #a1a0a0;
+    padding: 8px;
+  }
+  
+  #user tr:nth-child(odd){background-color: #ebe8e8;}
+  #user tr:hover {background-color: #c7c6c6;}
+#admin {
+    font-family: 'Akaya Telivigala', cursive;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 26px;
+    
+  }
+  #admin tr:nth-child(odd){background-color: #f2f2f2;}
+  #admin td, #admin th {
+    border: 1px solid #a1a0a0;
+    padding: 8px;
+  }
+  #admin tr:hover {background-color: #c7c6c6;}
+  
+  #user td:first-child{
+      width: 30%;
+  }
+  #user td:nth-child(2){
+      width: 50%;
+  }
+  #user td:nth-child(3){
+      width: 20%;
+  }
+  #admin td:first-child{
+      width: 5%;
+  }
+  #admin th:first-child{
+      width: 5%;
+  }
+  #admin td:nth-child(2){
+      width: 40%;
+  }
+  #admin th:nth-child(2){
+      width: 40%;
+  }
+  #admin td:nth-child(3){
+      width: 40%;
+  }
+  #admin th:nth-child(3){
+      width: 40%;
+  }
+  .sign-out{
+      display: flex;
+      justify-content: end;
+      margin-right: 70px;
+  }
+  .btn-signout{
+    width: 100px;
+    height: 50px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    background-color: var(--second-color);
+    font-family: 'Akaya Telivigala', cursive;
+    margin-top: 30px;
+  }
+  
 .delete-icon {
     width: 30px;
     height: 30px;
+}
+
+.user-search-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    padding-right: 30px;
+}
+
+.user-search-container input {
+    width: 400px;
+    font-size: 32px;
+}
+
+.user-search-container i {
+    color: black;
 }

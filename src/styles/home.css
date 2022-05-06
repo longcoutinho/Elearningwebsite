@@ -7,6 +7,13 @@ html, body{
     box-sizing: border-box;
 }
 
+:root{
+    --primary-color: #23222F;
+    --pre-color: #2B2A3A ;
+    --text-color: #ffffff;
+    --second-color: #DD8593;
+}
+
 .container-fluid {
     position: relative;
     top: 0px;
@@ -30,6 +37,10 @@ html, body{
 .header-logo {
     color: pink;
     font-size: 60px;
+    color: var(--second-color);
+    font-size: 60px;
+    font-family: 'Pacifico', cursive; 
+    padding-left: 30px;
 }
 
 .navbar-nav {
@@ -122,27 +133,10 @@ html, body{
     align-items: center;
 }
 
-.contactus-container {
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #23222F;
-    color: white;
-    height: 200px;
-    width: 100%;
-}
-
-.contactus-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    height: 100%;
-}
-
 .footer-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     background-color: #2B2A3A;
     color: white;
@@ -175,4 +169,90 @@ a:hover {
 
 .user-displayname {
     display: inline-block;
+}
+
+.about{
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-family: 'Ubuntu', sans-serif;
+}
+.problem{
+    display: flex;
+    padding: 2rem 2rem 4rem 2rem;
+}
+.problem img{
+    width: 600px;
+    height: 260px;
+}
+.problem-content{
+    padding-left: 2rem;
+    position: relative;
+    text-align: justify;
+}
+.problem-content button{
+    position: absolute;
+    left: 50%;
+    
+}
+.problem-text{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 10;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.solution{
+    display: flex;
+    padding: 1rem 2rem 4rem 2rem;
+}
+.solution-content{
+    padding-right: 2rem;
+    margin-top: 4rem;
+    position: relative;
+    text-align: justify;
+}
+.solution-content button{
+    position: absolute;
+    left: 50%;
+}
+.read-btn{
+    background-color: var(--second-color);
+    font-family: 'Akaya Telivigala',cursive;
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+}
+.read-btn a{
+    color: var(--text-color);
+    text-decoration: none;
+}
+.read-btn a:hover{
+    color: var(--text-color);
+}
+
+.contactus {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 200px;
+}
+
+.social a {
+    font-size: 35px;
+    margin-left: 10px;
+    color: white;
+}
+
+.info-footer {
+    margin-left: 30px;
+    color: white;
+}
+
+.info-footer a {
+    text-decoration: none;
+    color: white;
+}
+
+.fa-box-archive{
+    font-size: 600%;
 }

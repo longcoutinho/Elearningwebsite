@@ -16,6 +16,8 @@ const Decks = function(props) {
     const [adddeckstate, setStateOfAddingBox] = useState("none");
     const [editdeckstate, setStateOfEditBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
+    const [searchContent, setSearchContent] = useState("");
+    const [notify, setNotify] = useState("");
     useEffect( async () => {
         await listofDecks(localStorage.getItem("windowusername"), "").then(value => {
             setabc(value);
@@ -33,7 +35,6 @@ const Decks = function(props) {
     }
     const addOnClick = () => {
         setStateOfAddingBox("flex");
-        setBackGroundOpacity("0.7");
         //state.users = abc;
         //console.log(state.users);
     }
@@ -83,7 +84,7 @@ const Decks = function(props) {
             decription: event.target.deck_decription.value,
             owner: localStorage.getItem("windowusername"),
             deckCount: 0,
-            time: new Date().toLocaleString(),
+            time: new Date().toLocaleDateString(),
         };
         axios.post("http://localhost:3001/adddeck", config)
         .then(res=> {
@@ -93,7 +94,7 @@ const Decks = function(props) {
                 closeOnClick();
             }
             else {
-                console.log("Deck da ton tai!");
+                setNotify("Deck's already exist!")
             }
         })
         
@@ -115,16 +116,15 @@ const Decks = function(props) {
                 closeOnClick2();
             }
             else {
-                console.log("Deck da ton tai!");
+                setNotify("Deck's already exist!")
             }
         })
         
     }
 
     const searchSubmit = async (event) => {
-        console.log(1);
         event.preventDefault();
-        await listofDecks(localStorage.getItem("windowusername"), event.target.inputdecksearch.value).then(value => {
+        await listofDecks(localStorage.getItem("windowusername"), searchContent).then(value => {
             setabc(value);
         })
     }
@@ -152,6 +152,10 @@ const Decks = function(props) {
         });
     }
 
+    const onChangehandle = (event) => {
+        setSearchContent(event.target.value);
+    }
+
     const Deck = (props) => {
         return (
             abc.map((item, index) => (
@@ -166,15 +170,17 @@ const Decks = function(props) {
                     </div>
                     <div class="decks-cards-info">
                         <div class="decks-cards-number">
+                            <i class="fa-solid fa-layer-group"></i>
                             <h1>{item.deckCount}</h1>
                         </div>
                         <div class="decks-cards-date">
+                            <i class="fa-solid fa-calendar-days"></i>
                             <h1>{item.time}</h1>
                         </div>
                     </div>
                     <div class="handle-icon">
-                        <img onClick = {() => edithandle(item.name)} src={edit_icon} />
-                        <img onClick = {() => deletehandle(item.name)} src={delete_icon} />
+                        <i onClick = {() => edithandle(item.name)} class="fa-solid fa-pen-to-square"></i>
+                        <i onClick = {() => deletehandle(item.name)} class="fa-solid fa-trash-can"></i>
                     </div>
                 </div>
             ))
@@ -194,7 +200,7 @@ const Decks = function(props) {
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
                     <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
                     <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
-                    <li class="nav__item"><a href="#" class="nav__link">About</a></li>
+                    <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
                 </ul>
             </div>
             <div class="user-info" style={{display:userinfostate}}>
@@ -202,7 +208,6 @@ const Decks = function(props) {
                     <span>Hello, </span>
                     <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
                 </div>
-                <button onClick={signoutOnclick}>Sign out </button>
             </div>
 
             {/* signin signup */}
@@ -220,36 +225,51 @@ const Decks = function(props) {
                 <h1>DECKS</h1>
             </div>
             <div class="decks-search">
-                <button onClick={addOnClick}>ADD</button>
-                <form onSubmit={searchSubmit}>
-                    <input type="text" name="inputdecksearch" />
-                    <input type="submit" value="SEARCH" />
+                {/*<button onClick={addOnClick}>ADD</button>*/}
+                <form>
+                    <input onChange={onChangehandle} type="text" name="inputdecksearch" placeholder="Search" />
+                    <i onClick={searchSubmit} class="fa-solid fa-magnifying-glass" type="submit" value="search"></i>
+                    <hr/>
                 </form>
             </div>
             <div class="decks-display">
+                <div class="decks-plus">
+                    <button onClick={addOnClick}><i class="fa-solid fa-plus"></i></button>
+                </div>
                 <Deck></Deck>
             </div>
         </div>
         <div class="add-decks" style={{"display":adddeckstate}}>
-            <p>ADD DECKS</p>
+            <p>CREATE NEW DECK</p>
             <button class="close-button" onClick={closeOnClick}>X</button>
             <form onSubmit={addSubmit}>
-                <label>NAME</label>
-                <input type="text" name="deck_name" />
-                <label>DECRIPTION</label>
-                <input type="text" name="deck_decription" />
+                <div class="input-in4">
+                    <span>Name</span>
+                    <input type="text" name="deck_name" />
+                </div>
+                <div class="input-in4">
+                    <span>Description</span>
+                    <input type="text" name="deck_decription" />
+                </div>
+                <p>{notify}</p>
                 <input type="submit" value="ADD" />
+                
             </form>
         </div>
-        
+
         <div class="edit-decks" style={{"display":editdeckstate}}>
             <p>EDIT DECKS</p>
             <button class="close-button" onClick={closeOnClick2}>X</button>
             <form onSubmit={editSubmit}>
-                <label>NAME</label>
-                <input type="text" name="edit_deck_name" />
-                <label>DECRIPTION</label>
-                <input type="text" name="edit_deck_decription" />
+                <div class="input-in4">
+                    <span>Name</span>
+                    <input type="text" name="edit_deck_name" />
+                </div>
+                <div class="input-in4">
+                    <span>Description</span>
+                    <input type="text" name="edit_deck_decription" />
+                </div>
+                <p>{notify}</p>
                 <input type="submit" value="EDIT" />
             </form>
         </div>

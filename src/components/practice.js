@@ -149,16 +149,14 @@ const Practice = function(props) {
         return (
             abc.map((item) => (
                 <div onClick={rotatehandle} class="cards-study-container" style={{display:  item.display ? 'none' : 'flex'}}>
-                    <img class="voice-icon" onClick={() => readOnClick(item.name)} src={voice_icon} />
-                     <div class="cards-study-name" >
-                            <h1>{item.name}</h1>
-                        </div> 
-                        <div class="card-study-type">
-                            <h1>{item.type}</h1>
-                        </div>
-                        <div class="cards-study-spelling">
-                            <h1>{item.spelling}</h1>
-                        </div>
+                    <div class="cards-study-name" >
+                        <span>{item.name}</span>
+                        <span>{item.type}</span>
+                    </div> 
+                    <div class="cards-study-spelling">
+                        <span>{item.spelling}</span>
+                    </div>
+                    <i onClick={() => readOnClick(item.name)} class="fa-solid fa-volume-high"></i>
                 </div>
             ))
         );
@@ -168,18 +166,19 @@ const Practice = function(props) {
         return (
             abc.map((item) => (
                 <div onClick={rotatehandle2} class="cards-study-container-2" style={{display:  item.display ? 'none' : 'flex'}}>
-                    <img style={{"height":"200px", "width":"200px"}} src={item.image}></img>
-                    <div class="cards-study-name">
-                        <h1>{item.meaning}</h1>
+                    
+                    <div class="cards-study-meaning">
+                        <span>{item.meaning}</span>
                     </div> 
-                    <div class="card-study-type">
-                        <h1>{item.synonym}</h1>
+                    <div class="cards-study-word">
+                        <span>Synonym: {item.synonym}</span>
+                        <span>Antonym: {item.antonym}</span>
                     </div>
-                    <div class="cards-study-name">
-                        <h1>{item.antonym}</h1>
+                    <div class="cards-study-example">
+                        <span>Ex: {item.example}</span>
                     </div>
-                    <div class="cards-study-spelling">
-                        <h1>{item.example}</h1>
+                    <div class="cards-study-image">
+                        <img style={{"height":"200px", "width":"200px"}} src={item.image}></img>
                     </div>
                 </div>
             ))

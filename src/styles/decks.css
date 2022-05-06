@@ -32,6 +32,7 @@
 
 .decks-display {
     height: auto;
+    display: flex;
     flex-direction: row;
     width: 100%;
     background-color: #23222F;
@@ -42,9 +43,22 @@
     display: inline-block;
     background-color: #999999;
     width: 300px;
-    height: 200px;
-    border-radius: 5px;
+    height: 220px;
+    border-radius: 10px;
     margin: 20px 70px 30px 70px;
+    padding: 15px;
+    box-shadow: 10px 10px 5px rgba(153, 153, 153, 0.158) ;
+}
+
+.decks-plus{
+    display: inline-block;
+    background-color: #999999;
+    width: 300px;
+    height: 220px;
+    border-radius: 10px;
+    margin: 20px 70px 30px 70px;
+    padding: 15px;
+    box-shadow: 10px 10px 5px rgba(153, 153, 153, 0.158) ;
 }
 
 .decks-cards-name {
@@ -59,7 +73,7 @@
 
 .decks-cards-name a {
     color: white;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
     text-decoration: none;
     
@@ -67,9 +81,9 @@
 
 .decks-cards-content {
     width: 100%;
-    height: 40%;
+    height: 35%;
     color: black;
-    font-size: 10px;
+    font-size: 12px;
     word-wrap: break-word;
 }
 
@@ -80,13 +94,25 @@
     align-items: center;
     width: 100%;
     height: 20%;
+    font-size: 28px;
+}
+
+.decks-cards-info i{
+    font-size: 22px;
+    padding-right: 10px;
 }
 
 .decks-cards-number {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-size: 7px;
 }
 
 .decks-cards-date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-size: 7px;
 }
 
@@ -96,8 +122,9 @@ a:hover {
 
 .decks-search {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
+    margin-right: 20px;
 }
 
 .decks-search form {
@@ -106,6 +133,27 @@ a:hover {
 
 .decks-search input {
     font-size: 30px;
+    background-color: #23222F;
+    border: none;
+    color: white;
+}
+
+.fa-magnifying-glass{
+    color: white;
+    font-size: 30px;
+}
+
+.fa-magnifying-glass:hover {
+    cursor: pointer;
+}
+
+.fa-plus {
+    color: #23222F;
+    font-size: 70px;
+}
+.fa-plus:hover {
+    color: white ;
+    cursor: pointer;
 }
 
 .decks-search button {
@@ -114,13 +162,13 @@ a:hover {
 
 .add-decks {
     position: fixed;
-    width: 400px;
-    height: 500px;
+    width: 700px;
+    height: 650px;
     top: 50%;
     left: 50%;
-    margin-top: -250px; /* Negative half of height. */
-    margin-left: -200px;
-    background-color: #23222F;
+    margin-top: -325px; /* Negative half of height. */
+    margin-left: -350px;
+    background-color: #504f4f;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -130,6 +178,8 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 .add-decks p {
@@ -137,24 +187,39 @@ a:hover {
     color: white;
 }
 
-.add-decks input[type="text"] {
-    width: 100%;
-    font-size: 30px;
-}
+.input-in4 input[type="text"] {
+    width: 400px;
+    font-size: 32px;
+    border-radius: 5px;
+    border: none;
+    height: 78px;
 
-.add-decks label {
-    margin-top: 50px;
-    display: inline-block;
+}
+.input-in4 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    width: 100%;
+    
+}
+.input-in4 span {
+    margin-top: 30px;
     color: white;
+    font-size: 30px;
+    padding-bottom: 25px;
+    
 }
 
 .add-decks .close-button {
     position: absolute;
     height: 25px;
     width: 25px;
-    left:100%;
+    left: 100%;
     margin-left: -25px;
     text-decoration: center;
+    border-radius: 5px;
 }
 
 .add-decks input[type="submit"] {
@@ -162,23 +227,30 @@ a:hover {
     width: 100px;
     text-decoration: center;
     font-size: 30px;
-    margin-top: 50px;
+    margin-top: 25px;
+    background-color: #DD8593;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Akaya Telivigala', cursive;
 }
 
-.handle-icon img {
-    width: 20px;
-    height: 20px;
+.add-decks input[type="submit"]:active{
+    color:#23222F;
 }
+
 
 .edit-decks {
     position: fixed;
-    width: 400px;
-    height: 500px;
+    width: 700px;
+    height: 650px;
     top: 50%;
     left: 50%;
-    margin-top: -250px; /* Negative half of height. */
-    margin-left: -200px;
-    background-color: #23222F;
+    margin-top: -325px; /* Negative half of height. */
+    margin-left: -350px;
+    background-color: #504f4f;
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px #99999928 ;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -193,17 +265,7 @@ a:hover {
 .edit-decks p {
     font-size: 30px;
     color: white;
-}
-
-.edit-decks input[type="text"] {
-    width: 100%;
-    font-size: 30px;
-}
-
-.edit-decks label {
-    margin-top: 50px;
-    display: inline-block;
-    color: white;
+    font-weight: 600;
 }
 
 .edit-decks .close-button {
@@ -213,6 +275,7 @@ a:hover {
     left:100%;
     margin-left: -25px;
     text-decoration: center;
+    border-radius: 5px;
 }
 
 .edit-decks input[type="submit"] {
@@ -220,5 +283,42 @@ a:hover {
     width: 100px;
     text-decoration: center;
     font-size: 30px;
-    margin-top: 50px;
+    margin-top: 30px;
+    background-color: #DD8593;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Akaya Telivigala', cursive;
+}
+
+.decks-plus button{
+    width: 90px;
+    height: 90px;
+    background-color: #999999;
+    border: none;
+    margin-left: 80px;
+    margin-top: 25px;
+}
+
+.handle-icon  {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+.handle-icon i{
+    width: 38px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    background-color: #504f4f;
+    color: white;
+    border-radius: 5px;
+}
+.handle-icon i:hover{
+    color: #DD8593;
+    cursor: pointer;
 }

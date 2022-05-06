@@ -25,7 +25,8 @@ const User = function(props) {
     const [displayusercard, setDisplayUser] = useState("flex");
     const [displaychangename, setDisplayChangeName] = useState("none");
     const [displaychangepassword, setDisplayChangePassword] = useState("none");
-    
+    const [searchContent, setSearchContent] = useState("");
+
     async function listofUserCards(text) {
         const config = {
 
@@ -118,9 +119,13 @@ const User = function(props) {
         });
     }
 
-    async function onChangehandle(event) {
+    function onChangehandle(event) {
         console.log(event.target.value);
-        await listofUserCards(event.target.value).then(value => {
+        setSearchContent(event.target.value);
+    }
+
+    async function onClickhandle() {
+        await listofUserCards(searchContent).then(value => {
             setabc(value);
         })
     }
@@ -129,10 +134,20 @@ const User = function(props) {
         return (
             abc.map((item, index) => (
                 <div class="user-card-container" style={{display:displayusercard}}>
-                    <p>{index + 1}</p>
-                    <p>username: {item.username}</p>
-                    <p>password: {item.password}</p>
-                    <img class = "delete-icon" onClick = {() => deletehandle(item.username)} src={delete_icon} />
+
+                   
+                    
+                    <table id="admin">
+
+                        <tr>
+                            <td >{index + 1}</td>
+                            <td > {item.username}</td>
+                            <td >{item.password}</td>
+                            <td > <img class = "delete-icon" onClick = {() => deletehandle(item.username)} src={delete_icon} /></td>
+                        </tr>
+                        
+                    </table>
+
                 </div>
             ))
         );
@@ -146,12 +161,12 @@ const User = function(props) {
         setDisplayChangePassword("flex");
     }
     return (
-        <div class="study-container">
+        <div class="user-container">
             {/* header menu */} 
             <div class="container-fluid">
                 {/* logo */} 
                 <div class="header-logo">
-                    <img src={logo} width="80px" />
+                    <span>IamRoht</span>
                 </div>
                 {/* menu */}
                 <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
@@ -159,7 +174,7 @@ const User = function(props) {
                         <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
                         <li class="nav__item"><a href={decklink} class="nav__link">Decks</a></li>
                         <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
-                        <li class="nav__item"><a href="#" class="nav__link">About</a></li>
+                        <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
                     </ul>
                 </div>
 
@@ -168,7 +183,6 @@ const User = function(props) {
                         <span>Hello, </span>
                         <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
                     </div>
-                    <button onClick={signoutOnclick}>Sign out </button>
                 </div>
 
                 {/* signin signup */}
@@ -181,10 +195,31 @@ const User = function(props) {
             <div class="title-user-info">
                 <p>Thong tin ca nhan</p>
             </div>
-            <div>
-                <p>Name: {localStorage.getItem("windowdisplayname")} </p>
-                <button onClick={() => changenamehandle()}>CHANGE NAME</button>
+            <div class="gg" >
+                <table id="user">
+
+                <tr>
+                    <td >Username</td>
+                    <td >{localStorage.getItem("windowusername")}</td>
+                    <td ></td>
+                </tr>
+                <tr>
+                    <td >Display name</td>
+                    <td >{localStorage.getItem("windowdisplayname")}</td>
+                    <td ><button onClick={() => changenamehandle()}>CHANGE </button></td>
+                </tr>
+                <tr>
+                    <td >Password</td>
+                    <td >********</td>
+                    <td ><button onClick={() => changepasswordhandle()}>CHANGE </button></td>
+                </tr>
+                </table>
+                {/* <p>Name: {localStorage.getItem("windowdisplayname")} </p>
+                <button onClick={() => changenamehandle()}>CHANGE NAME</button> */}
             </div>
+
+
+            <div class="sign-out"><button class="btn-signout" onClick={signoutOnclick}>Sign out </button></div>
             <form onSubmit={changenamesubmit} class="change-name-container" style={{display:displaychangename}}>
                 <label>
                     New name:
@@ -192,23 +227,40 @@ const User = function(props) {
                 <input type="text" name="new_displayname_user"/>
                 <input type="submit" value="CHANGE" />
             </form>
-            <p>Username: {localStorage.getItem("windowusername")}</p>
-            <button onClick={() => changepasswordhandle()}>CHANGE PASSWORD</button>
+
+
             <form onSubmit={changepasswordsubmit} class="change-password-container" style={{display:displaychangepassword}}>
-                <label>
-                    Old password
-                </label>
-                <input type="password" name="old_password_user"/>
-                <label>New password</label>
-                <input type="password" name="new_password_user"/>
-                <label>Confirm password</label>
-                <input type="password" name="confirm_password_user"/>
+                <div class="input-password">
+                    <label> Old password</label>
+                    <input type="password" name="old_password_user"/>
+                </div>
+                <div class="input-password">
+                    <label>New password</label>
+                    <input type="password" name="new_password_user"/>
+                </div>
+                <div class="input-password">
+                    <label>Confirm password</label>
+                    <input type="password" name="confirm_password_user"/>
+                </div>
+                <div class="input-password">
                 <input type="submit" value="CHANGE" />
+                </div>
             </form>
-            <p style={{display:displayusercard}}>Danh sach user</p>
-            <p>SEARCH</p>
-            <input onChange={onChangehandle} type="text"></input>
-            <div class="display-user-card">
+            
+            <p class="user-list-title" style={{display:displayusercard}}>Danh sach user</p>
+            <div style={{display:displayusercard}} class="user-search-container">
+                <input onChange={onChangehandle} placeholder="Search" type="text"></input>
+                <i onClick={onClickhandle} class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="display-user-card" style={{display:displayusercard}}>
+                <table id="admin">
+                    <tr>
+                        <th >STT</th>
+                        <th >Username</th>
+                        <th >Password</th>
+                        <th >Action</th>
+                    </tr>
+                </table>
                 <UserCard></UserCard>
             </div>
            

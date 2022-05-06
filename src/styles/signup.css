@@ -1,6 +1,6 @@
 .signup-content-container {
     width: 100%;
-    height: 550px;
+    height: 810px;
     background-color: #23222F;
     display: flex;
     flex-direction: column;
@@ -9,6 +9,7 @@
 
 .signup-title h1 {
     color: white;
+    font-size: 50px;
 }
 
 .signup-content {
@@ -24,7 +25,33 @@
     height: 100%;
     text-align: center;
 }
-
+.hihi{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.fa-user-large  {
+    position: absolute;
+    left: 0;
+    font-size: 38px;
+    color: white;
+    padding-left: 15px;
+}
+.fa-lock {
+    position: absolute;
+    left: 0;
+    color: white;
+    padding-left: 15px;
+    font-size: 32px;
+    bottom: 30%;
+}
+.fa-eye{
+    position: absolute;
+    right: 0;
+    color: white;
+    font-size: 24px;
+}
 .signin-form form {
     display: inline-block;
 }
@@ -33,6 +60,7 @@
 .signup-form form input[type="password"] {
     width: 100%;
     padding: 15px;
+    padding-left: 75px;
     font-size: 30px;
     border: none;
     border-bottom: 2px solid white;
@@ -51,10 +79,16 @@
 .signup-form form input[type="submit"] {
     width: 100px;
     height: 50px;
-    background-color: pink;
+    background-color: var(--second-color);
+    font-family: 'Akaya Telivigala', cursive;
     color: white;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 24px;
+    margin-top: 2rem;
+}
+
+.signup-form form input[type="submit"]:hover{
+    cursor: pointer;
 }
 
 .already-a-member {
@@ -62,19 +96,21 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-left: 90px;
 }
 
 
 .already-a-member h1 {
     margin-left: 200px;
-    font-size: 20px;
+    font-size: 24px;
     color: white;
 }
 
 .already-a-member a {
     margin-left: 10px;
     text-decoration: none;
-    color: blue;
+    color: var(--second-color);
+    font-size: 24px;
 }
 
 a:hover {
