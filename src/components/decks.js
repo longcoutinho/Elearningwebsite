@@ -91,6 +91,7 @@ const Decks = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Add successfully");
+                event.target.reset(); 
                 closeOnClick();
             }
             else {
@@ -113,6 +114,7 @@ const Decks = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Edit successfully");
+                event.target.reset(); 
                 closeOnClick2();
             }
             else {

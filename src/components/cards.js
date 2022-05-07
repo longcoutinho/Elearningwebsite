@@ -24,6 +24,7 @@ const Cards = function(props) {
     const [abc, setabc] = useState(state.users);
     const [notify, setNotify] = useState("");
     const [searchContent, setSearchContent] = useState("");
+    const [inputContent, setInputContent] = useState("");
     useEffect( async () => {
         await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
             setabc(value);
@@ -159,6 +160,7 @@ const Cards = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Add successfully");
+                event.target.reset(); 
                 editcloseOnClick();
             }
             else {
@@ -238,6 +240,7 @@ const Cards = function(props) {
             console.log(res.data);
             if (res.data == "0") {
                 console.log("Add successfully");
+                event.target.reset(); 
                 closeOnClick();
             }
             else {
