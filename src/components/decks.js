@@ -17,6 +17,8 @@ const Decks = function(props) {
     const [editdeckstate, setStateOfEditBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
     const [searchContent, setSearchContent] = useState("");
+    const [nameInputContent, setNameInput] = useState("");
+    const [DescriptionInputContent, setDiscriptionInput] = useState("");
     const [notify, setNotify] = useState("");
     useEffect( async () => {
         await listofDecks(localStorage.getItem("windowusername"), "").then(value => {
@@ -39,6 +41,8 @@ const Decks = function(props) {
         //console.log(state.users);
     }
     async function closeOnClick() {
+        setNameInput("");
+        setDiscriptionInput("");
         setStateOfAddingBox("none");
         setBackGroundOpacity("1");
         await listofDecks(localStorage.getItem("windowusername"), "").then(value => {
@@ -135,10 +139,13 @@ const Decks = function(props) {
         localStorage.setItem("windowdisplaydeck", content);
     }
 
-    async function edithandle(name) {
+    async function edithandle(item) {
+        console.log(item);
+        setNameInput(item.name);
+        setDiscriptionInput(item.decription);
         setStateOfEditBox("flex");
         setBackGroundOpacity("0.7");
-        localStorage.setItem("windowdisplaydeckname", name);
+        localStorage.setItem("windowdisplaydeckname", item.name);
     }
 
     async function deletehandle(deckname) {
@@ -157,6 +164,7 @@ const Decks = function(props) {
     const onChangehandle = (event) => {
         setSearchContent(event.target.value);
     }
+
 
     const Deck = (props) => {
         return (
@@ -181,7 +189,7 @@ const Decks = function(props) {
                         </div>
                     </div>
                     <div class="handle-icon">
-                        <i onClick = {() => edithandle(item.name)} class="fa-solid fa-pen-to-square"></i>
+                        <i onClick = {() => edithandle(item)} class="fa-solid fa-pen-to-square"></i>
                         <i onClick = {() => deletehandle(item.name)} class="fa-solid fa-trash-can"></i>
                     </div>
                 </div>
@@ -265,11 +273,11 @@ const Decks = function(props) {
             <form onSubmit={editSubmit}>
                 <div class="input-in4">
                     <span>Name</span>
-                    <input type="text" name="edit_deck_name" />
+                    <input onChange={(e) => {setNameInput(e.target.value)}} value={nameInputContent} type="text" name="edit_deck_name" />
                 </div>
                 <div class="input-in4">
                     <span>Description</span>
-                    <input type="text" name="edit_deck_decription" />
+                    <input onChange={(e) => {setDiscriptionInput(e.target.value)}} value={DescriptionInputContent} type="text" name="edit_deck_decription" />
                 </div>
                 <p>{notify}</p>
                 <input type="submit" value="EDIT" />

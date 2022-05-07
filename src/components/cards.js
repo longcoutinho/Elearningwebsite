@@ -24,7 +24,14 @@ const Cards = function(props) {
     const [abc, setabc] = useState(state.users);
     const [notify, setNotify] = useState("");
     const [searchContent, setSearchContent] = useState("");
-    const [inputContent, setInputContent] = useState("");
+    const [nameInputContent, setNameInput] = useState("");
+    const [typeInputContent, setTypeInput] = useState("");
+    const [spellingInputContent, setSpellingInput] = useState("");
+    const [meaningInputContent, setMeaningInput] = useState("");
+    const [imageInputContent, setImageInput] = useState("");
+    const [synonymInputContent, setSynonymInput] = useState("");
+    const [antonymInputContent, setAntonymInput] = useState("");
+    const [exampleInputContent, setExampleInput] = useState("");
     useEffect( async () => {
         await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
             setabc(value);
@@ -37,10 +44,20 @@ const Cards = function(props) {
         //console.log(state.users);
     }
 
-    const editOnClick = (name) => {
+    const editOnClick = (item) => {
+        console.log(item);
+        setNameInput(item.name);
+        setTypeInput(item.type);
+        setSpellingInput(item.spelling);
+        setMeaningInput(item.meaning);
+        setImageInput(item.image);
+        setImage2(item.image);
+        setSynonymInput(item.synonym);
+        setAntonymInput(item.antonym);
+        setExampleInput(item.example);
         setStateOfEditBox("flex");
         //setBackGroundOpacity("0.7");
-        localStorage.setItem("windowdisplaycardname", name);
+        localStorage.setItem("windowdisplaycardname", item.name);
     }
 
     async function closeOnClick() {
@@ -177,6 +194,7 @@ const Cards = function(props) {
 
     const onChangehandle2 = (event) => {
         setLinkContent2(event.target.value);
+        setImageInput(event.target.value);
     }
 
 
@@ -290,7 +308,7 @@ const Cards = function(props) {
                         <span>{item.spelling}</span>
                     </div>
                     <div class="handle-icon">
-                        <i onClick = {() => editOnClick(item.name)} class="fa-solid fa-pen-to-square"></i>
+                        <i onClick = {() => editOnClick(item)} class="fa-solid fa-pen-to-square"></i>
                         <i onClick = {() => deletehandle(item.deck_owner, item.name, item.owner)} class="fa-solid fa-trash-can"></i>
                     </div>
                 </div>
@@ -441,11 +459,11 @@ const Cards = function(props) {
                             <p>FRONT</p>
                                 <div class="input-in4">
                                     <span>NAME</span>
-                                    <input type="text" name="edit_card_name" />
+                                    <input value={nameInputContent} onChange={(e) => {setNameInput(e.target.value)}} type="text" name="edit_card_name" />
                                 </div>
                                 <div class="input-in4">
                                     <span>TYPE</span>
-                                    <select id="numberToSelect" name="edit_card_type" onchange="selectNum()">
+                                    <select value={typeInputContent} onChange={(e) => {setTypeInput(e.target.value)}} id="numberToSelect" name="edit_card_type" onchange="selectNum()">
                                         <option value="">Selected</option>
                                         <option value="(adj)">Adjective</option>
                                         <option value="(n)">Noun</option>
@@ -457,7 +475,7 @@ const Cards = function(props) {
                                 </div>
                                 <div class="input-in4">
                                     <span>SPELLING</span>
-                                    <input type="text" name="edit_card_spelling" />
+                                    <input value={spellingInputContent} onChange={(e) => {setSpellingInput(e.target.value)}} type="text" name="edit_card_spelling" />
                                 </div>
                             </div>
                             <div class="image-cards">
@@ -469,23 +487,23 @@ const Cards = function(props) {
                             <p>BACK</p>
                                 <div class="input-in4">
                                     <span>MEANING</span>
-                                    <input type="text" name="edit_card_meaning" />
+                                    <input value={meaningInputContent} onChange={(e) => setMeaningInput(e.target.value)} type="text" name="edit_card_meaning" />
                                 </div>
                                 <div class="input-in4">
                                     <span>IMAGE</span>
-                                    <input type="text" name="edit_card_image" onChange={onChangehandle2}/>
+                                    <input value={imageInputContent} type="text" name="edit_card_image" onChange={onChangehandle2}/>
                                 </div>
                                 <div class="input-in4">
                                     <span>SYNONYM</span>
-                                    <input type="text" name="edit_card_synonym" />
+                                    <input value={synonymInputContent} onChange={(e) => setSynonymInput(e.target.value)} type="text" name="edit_card_synonym" />
                                 </div>
                                 <div class="input-in4">
                                     <span>ANTONYM</span>
-                                    <input type="text" name="edit_card_antonym" />
+                                    <input value={antonymInputContent} onChange={(e) => setAntonymInput(e.target.value)} type="text" name="edit_card_antonym" />
                                 </div>
                                 <div class="input-in4">
                                     <span>EXAMPLE</span>
-                                    <input type="text" name="edit_card_example" />
+                                    <input value={exampleInputContent} onChange={(e) => setExampleInput(e.target.value)} type="text" name="edit_card_example" />
                                 </div>
                             </div>
                         </div>
