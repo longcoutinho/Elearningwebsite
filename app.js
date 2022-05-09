@@ -310,6 +310,7 @@ async function UpdateWordsInDB(owner, time, r_words, t_words) {
   try {
     await client.connect();
     const database = client.db('Test');
+    var returnString = "0";
     listupdateofwords = database.collection('words');  
     const query = {username:owner, time:time};
     const cur = await listupdateofwords.find(query).toArray();
@@ -321,7 +322,7 @@ async function UpdateWordsInDB(owner, time, r_words, t_words) {
         t_words: t_words
       });
       console.log("insert new");
-      return "1";
+      returnString = "1";
     }
     else {
       console.log(cur[0].r_words);
@@ -331,8 +332,8 @@ async function UpdateWordsInDB(owner, time, r_words, t_words) {
       await listupdateofwords.updateMany(query, {$set: {"r_words" : cur[0].r_words, "t_words" : cur[0].t_words}}).then(item =>  {
         console.log("update words");
       });
-      return "0";
     }
+    return returnString;
     // Query for a movie that has the title 'Back to the Future'
   } finally {
     // Ensures that the client will close when you finish/error
