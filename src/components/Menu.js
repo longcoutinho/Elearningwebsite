@@ -3,14 +3,20 @@ const Menu = function(props) {
     const [user_logedin, setUserLogin] = useState(props.user_logedin === "true");
     const [box1, setBox1] = useState("block");
     const [box2, setBox2] = useState("block");
+    const [deckLink, setDecklink] = useState("/");
+    const [statisticLink, setStatisticLink] = useState("/");
     useEffect(() => {
         if (user_logedin === true) {
             setBox1("flex");
             setBox2("none");
+            setDecklink("/decks");
+            setStatisticLink("/statistics");
         } 
         else {
             setBox1("none");
             setBox2("flex");
+            setDecklink("/signin");
+            setStatisticLink("/signin");
         }
     });
     return (
@@ -25,8 +31,8 @@ const Menu = function(props) {
             <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href="/" class="nav__link">Decks</a></li>
-                    <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
+                    <li class="nav__item"><a href={deckLink} class="nav__link">Decks</a></li>
+                    <li class="nav__item"><a href={statisticLink} class="nav__link">Statistics</a></li>
                     <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
                 </ul>
             </div>

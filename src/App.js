@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
-import Home from './components/home';
-import Signin from "./components/signin";
-import Signup from "./components/signup";
+import Home from './components/Home.js';
+import Signin from "./components/Signin.js";
+import Signup from "./components/Signup.js";
 import Decks from "./components/decks";
 import Cards from "./components/cards";
 import Statistic from "./components/statistic";
