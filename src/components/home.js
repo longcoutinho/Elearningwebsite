@@ -3,66 +3,18 @@ import "../styles/home.css";
 import pic_bg_content from "../image/pripic.jpg";
 import { useState } from "react";
 import { useEffect } from "react";
-import logo from "../image/liverpool.png"
 import duongcong from "../image/duongcong.png";
 import box from "../image/76867.png"
+import Menu from "./Menu.js"
+import Footer  from "./Footer.js";
 
-const Test = function(props) {
+const Home = function(props) {
     const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
     const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
-    const signoutOnclick = () => {
-        setDisplay("none");
-        setDisplay2("block");
-        localStorage.setItem("windowuserinfoboxstate", "none");
-        localStorage.setItem("windowloginboxstate", "block");
-        localStorage.setItem("windowusername", "");
-        window.location.href="/";
-    }
-    const [decklink, setDecklink] = useState("#"); 
-
-    useEffect( () => {
-        console.log(localStorage.getItem("windowusername"));
-        if (localStorage.getItem("windowusername") =="") {
-            setDecklink("/signin");
-        }
-        else {
-            setDecklink("/decks");
-        }
-    },[]);
   return (
     
     <div>
-        {/* header menu */} 
-        <div class="container-fluid">
-            {/* logo */} 
-            <div class="header-logo">
-                <span>IamRoht</span>
-            </div>
-            {/* menu */}
-            <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href={decklink} class="nav__link">Decks</a></li>
-                    <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
-                    <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
-                </ul>
-            </div>
-
-            <div class="user-info" style={{display:userinfostate}}>
-                <div class="user-displayname">
-                    <span>Hello, </span>
-                    <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
-                </div>
-            </div>
-
-            {/* signin signup */}
-            <div class="header-signin collapse navbar-collapse" id="navbarResponsive" style={{display:loginsignupstate}}>
-                <span class="btn signin"><a href="/signin">Sign in </a></span>
-                <span class="btn-or"> / </span>
-                <span class="btn signup"><a href="/signup">Sign up</a></span>
-            </div>
-        </div>
-
+        <Menu user_logedin="false"></Menu>
         {/* study now, be proud later */} 
         <div class="content-container">
 			<img class="content-picture" src={pic_bg_content} />
@@ -116,27 +68,9 @@ const Test = function(props) {
 
             </div>
         </div>
-
-        {/* footer */}
-        <div class="footer-container">
-            <div class="info-footer">
-                <div>Hotline: 0363137565</div>
-                <div>Address: Trần Bình, Mai Dịch, Cầu Giấy, Hà Nội</div>
-                <div>Email: <a href="">maitho3101@gmail.com</a> </div>
-            </div>
-            <div class="contactus">
-                <h3>Contact us: </h3>
-                <div class="social">
-                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-
+        <Footer></Footer>
     </div>
   )
 }
  
-export default Test;
+export default Home;
