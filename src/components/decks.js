@@ -5,7 +5,7 @@ import axios from "axios";
 import edit_icon from "../image/edit_icon.png"
 import delete_icon from "../image/delete_icon.jpg"
 import { VAR_STRING } from "mysql/lib/protocol/constants/types";
-
+import Menu from "./Menu.js";
 const Decks = function(props) {
     var state = {
         users: [
@@ -198,35 +198,7 @@ const Decks = function(props) {
     }
   return (
     <div>
-        {/* header menu */} 
-        <div class="container-fluid">
-            {/* logo */} 
-            <div class="header-logo">
-                <span class="name">IamRoht</span>
-            </div>
-            {/* menu */}
-            <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                    <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
-                    <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
-                    <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
-                </ul>
-            </div>
-            <div class="user-info" style={{display:userinfostate}}>
-                <div class="user-displayname">
-                    <span>Hello, </span>
-                    <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
-                </div>
-            </div>
-
-            {/* signin signup */}
-            <div class="header-signin collapse navbar-collapse" id="navbarResponsive" style={{display:loginsignupstate}}>
-                <span class="btn signin"><a href="/signin">Sign in </a></span>
-                <span class="btn-or"> / </span>
-                <span class="btn signup"><a href="/signup">Sign up</a></span>
-            </div>
-        </div>
+        <Menu user_logedin={localStorage.getItem("user_logedin")}></Menu>
         <div class="decks-content" style={{"opacity":bgopacity}}>
             <div class="decks-back">
                 <a href="/">&lt; Back</a>

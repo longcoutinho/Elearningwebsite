@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/signup.css"
 import axios from "axios";
 import { useState } from "react";
-import { useEffect } from "react";
 import Menu from "./Menu.js"
 import Footer from "./Footer.js";
 
@@ -59,7 +58,7 @@ const Signup = function(props) {
     }
   return (
     <div>
-        <Menu user_logedin = "false"></Menu>
+        <Menu user_logedin="false"></Menu>
         {/* form sign up */} 
         <div class="signup-content-container">
             <div class="signup-title">

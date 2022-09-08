@@ -10,7 +10,7 @@ const Menu = function(props) {
             setBox1("flex");
             setBox2("none");
             setDecklink("/decks");
-            setStatisticLink("/statistics");
+            setStatisticLink("/statistic");
         } 
         else {
             setBox1("none");
