@@ -19,10 +19,23 @@ const Signin = function(props) {
         axios.post("http://localhost:3001/person", config)
         .then(res=> {
             if (res.data != "0") {
-                localStorage.setItem("user_logedin", "true");
-                localStorage.setItem("windowdisplayname", res.data);
-                localStorage.setItem("windowusername", event.target.signin_username.value);
-                window.location.href = '/'
+                const userData = {
+                    logedIn: 'true',
+                    displayName: res.data,
+                    username: event.target.signin_username.value
+                }
+                props.parentCallback(userData);
+                const config2 = {
+                    username: config.username,
+                    nameOfDeck: ""
+                };
+                axios.post("http://localhost:3001/searchdeck", config2)
+                .then(res=> {
+                    console.log(config2);
+                    props.changeListOfDeck(res.data);
+                    console.log(res.data);
+                    window.location.href = '/';
+                })
             }
             else {
                 setNotify("Invalid username or password !");

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect } from "react";   
 import "../styles/about.css"
 import img1 from "../image/theforgettingcurve.png"
 import img2 from "../image/img2.png"
@@ -7,11 +6,9 @@ import img3 from "../image/img3.jpg"
 import Menu from "./Menu.js"
 
 const About = function(props) {
-    const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
-    const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
     return (
         <div>
-            <Menu user_logedin={localStorage.getItem("user_logedin")}></Menu>
+            <Menu {...props}></Menu>
             <div class="about-container">
                 <p class="about-title">Lịch sử ra đời và cơ sở khoa học của phương pháp “Lặp lại ngắt quãng”</p>
                 <p class="about-content">

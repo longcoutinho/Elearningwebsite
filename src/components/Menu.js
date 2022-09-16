@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react"; 
+import { useLayoutEffect } from "react";
 const Menu = function(props) {
-    const [user_logedin, setUserLogin] = useState(props.user_logedin === "true");
+    const [user_logedin, setUserLogin] = useState(props.logedIn);
     const [box1, setBox1] = useState("block");
     const [box2, setBox2] = useState("block");
     const [deckLink, setDecklink] = useState("/");
     const [statisticLink, setStatisticLink] = useState("/");
+    const [displayname, setDisplayname] = useState(props.displayName);
     useEffect(() => {
-        if (user_logedin === true) {
+        //console.log(user_logedin);
+        if (user_logedin === 'true') {
             setBox1("flex");
             setBox2("none");
             setDecklink("/decks");
@@ -18,7 +21,12 @@ const Menu = function(props) {
             setDecklink("/signin");
             setStatisticLink("/signin");
         }
-    });
+    }, [user_logedin]);
+    useEffect(() => {
+        //console.log(props);
+        setUserLogin(props.logedIn);
+        setDisplayname(props.displayName);
+    }, [props]);
     return (
         <div>
         {/* header menu */} 
@@ -40,7 +48,7 @@ const Menu = function(props) {
             <div class="user-info" style={{display:box1}}>
                 <div class="user-displayname">
                     <span>Hello, </span>
-                    <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
+                    <a href="/user">{displayname}</a>
                 </div>
             </div>
 

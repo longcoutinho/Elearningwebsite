@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import "../styles/user.css"
-import logo from "../image/liverpool.png"
+import "../styles/user.css";
 import axios from "axios";
 import delete_icon from "../image/delete_icon.jpg"
 import Menu from "./Menu";
@@ -12,17 +11,15 @@ const User = function(props) {
         ]
       };
     const [abc, setabc] = useState(state.users);
-    const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
-    const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
     const signoutOnclick = () => {
-        setDisplay("none");
-        setDisplay2("block");
-        localStorage.setItem("windowuserinfoboxstate", "none");
-        localStorage.setItem("windowloginboxstate", "block");
-        localStorage.setItem("windowusername", "");
-        window.location.href="/";
+        const userData = {
+            logedIn: 'false',
+            displayName: "",
+            username: ""
+        }
+        props.parentCallback(userData);
+        window.location.href="/signin";
     }
-    const [decklink, setDecklink] = useState("#"); 
     const [displayusercard, setDisplayUser] = useState("flex");
     const [displaychangename, setDisplayChangeName] = useState("none");
     const [displaychangepassword, setDisplayChangePassword] = useState("none");
@@ -35,11 +32,6 @@ const User = function(props) {
         var returnValue = [];
         await axios.post("http://localhost:3001/searchaccount", config)
         .then(res=> {
-            //localStorage("arrayOfDecks", res.data);
-            //console.log(JSON.parse(res.data));
-            //console.log(res.data);
-            //var obj = JSON.parse(res.data);
-            //console.log(obj[0]);
             returnValue = res.data;
         })
         var newarr = [];
@@ -163,7 +155,7 @@ const User = function(props) {
     }
     return (
         <div class="user-container">
-            <Menu user_logedin={localStorage.getItem("user_logedin")}></Menu>
+            <Menu {...props}></Menu>
             <div class="title-user-info">
                 <p>Thong tin ca nhan</p>
             </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "../styles/home.css";
 import Menu from "./Menu.js"
 import Footer  from "./Footer.js";
@@ -7,7 +7,7 @@ import Introduction from "./Introduction.js";
 const Home = function(props) {
   return (
     <div>
-        <Menu user_logedin={localStorage.getItem("user_logedin")}></Menu>
+        <Menu {...props}></Menu>
         <Introduction></Introduction>
         <Footer></Footer>
     </div>

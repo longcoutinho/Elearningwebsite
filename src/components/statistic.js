@@ -2,31 +2,12 @@ import React from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
-import logo from "../image/liverpool.png"
 import "../styles/statistic.css"
 import Chart from 'react-apexcharts'
 import Menu from "./Menu";
 
 const Statistic = function(props) {
-    const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
-    const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
-    const signoutOnclick = () => {
-        setDisplay("none");
-        setDisplay2("block");
-        localStorage.setItem("windowuserinfoboxstate", "none");
-        localStorage.setItem("windowloginboxstate", "block");
-        localStorage.setItem("windowusername", "");
-        window.location.href="/";
-    }
-    const [decklink, setDecklink] = useState("#");
-    
     useEffect( async () => {
-        if (localStorage.getItem("windowusername") == "") {
-            setDecklink("/signin");
-        }
-        else {
-            setDecklink("/decks");
-        }
         var newseries =  [
           {    
             name: 'Total words',
@@ -103,7 +84,7 @@ const Statistic = function(props) {
 
     return (
         <div>
-            <Menu user_logedin={localStorage.getItem("user_logedin")}></Menu>
+            <Menu {...props}></Menu>
             <div class="statistic-content">
               <BarChart></BarChart>
             </div>
