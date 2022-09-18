@@ -6,14 +6,12 @@ import { useEffect } from "react";
 import edit_icon from "../image/edit_icon.png"
 import delete_icon from "../image/delete_icon.jpg"
 import { useSpeechSynthesis } from "react-speech-kit";
+import Menu from "./Menu";
+import { useLocation, useNavigate } from "react-router";
+import { useLayoutEffect } from "react";
 const Cards = function(props) {
-    var state = {
-        users: [
-        ]
-      };
-    const [cardname, setCardname] = useState(localStorage.getItem("windowdisplaydeck"));
-    const [userinfostate, setDisplay] = useState(localStorage.getItem("windowuserinfoboxstate"));
-    const [loginsignupstate, setDisplay2] = useState(localStorage.getItem("windowloginboxstate"));
+    var navigate = useNavigate();
+    const [cardname, setCardname] = useState("");
     const [adddeckstate, setStateOfAddingBox] = useState("none");
     const [editcardstate, setStateOfEditBox] = useState("none");
     const [bgopacity, setBackGroundOpacity] = useState("1");
@@ -21,7 +19,8 @@ const Cards = function(props) {
     const [linkcontent2, setLinkContent2] = useState("");
     const [imagelink, setImage] = useState("");
     const [imagelink2, setImage2] = useState("");
-    const [abc, setabc] = useState(state.users);
+    const [listOfCard, setListOfCard] = useState([]);
+    const [listDisplayCard, setListDisplayCard] = useState([]);
     const [notify, setNotify] = useState("");
     const [searchContent, setSearchContent] = useState("");
     const [nameInputContent, setNameInput] = useState("");
@@ -32,50 +31,52 @@ const Cards = function(props) {
     const [synonymInputContent, setSynonymInput] = useState("");
     const [antonymInputContent, setAntonymInput] = useState("");
     const [exampleInputContent, setExampleInput] = useState("");
-    useEffect( async () => {
-        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
-            setabc(value);
+    
+    const takeListCardFromServer = async (username, nameOfDeck) => {
+        const config = {
+            username: username,
+            nameOfDeck: nameOfDeck,
+        };
+        if (username !== '') await axios.post("http://localhost:3001/searchcard", config)
+        .then(res=> {
+            setListOfCard(res.data);
+            setListDisplayCard(res.data);
         })
-    },[]);
+    }
+    useLayoutEffect(() => {
+       takeListCardFromServer(props.username, props.deckUsing);
+    }, [props]);
+
     const addOnClick = () => {
         setStateOfAddingBox("flex");
-        //setBackGroundOpacity("0.7");
-        //state.users = abc;
-        //console.log(state.users);
     }
 
     const editOnClick = (item) => {
-        console.log(item);
+        console.log(item.image);
         setNameInput(item.name);
         setTypeInput(item.type);
         setSpellingInput(item.spelling);
         setMeaningInput(item.meaning);
         setImageInput(item.image);
         setImage2(item.image);
+        setLinkContent2(item.image);
         setSynonymInput(item.synonym);
         setAntonymInput(item.antonym);
         setExampleInput(item.example);
+        setCardname(item.name);
         setStateOfEditBox("flex");
-        //setBackGroundOpacity("0.7");
-        localStorage.setItem("windowdisplaycardname", item.name);
     }
 
     async function closeOnClick() {
         setStateOfAddingBox("none");
         setBackGroundOpacity("1");
         setNotify("");
-        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
-            setabc(value);
-        })
     }
 
     async function editcloseOnClick(deck_owner, name) {
         setStateOfEditBox("none");
         setBackGroundOpacity("1");
         setNotify("");
-        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), "").then(value => {
-            setabc(value);
-        })
     }
 
     async function deletehandle(deck_owner, cardname, owner) {
@@ -86,58 +87,28 @@ const Cards = function(props) {
         };
         await axios.post("http://localhost:3001/deletecard", config)
         .then(res=> {
-            console.log(res.data);
-            setabc(res.data);
+            setListOfCard(res.data);
+            setListDisplayCard(res.data);
         });
     }
 
-    async function listofCards(username, nameOfDeck, nameOfCard) {
-        const config = {
-            username: username,
-            nameOfDeck: nameOfDeck,
-        };
-        var returnValue = [];
-        await axios.post("http://localhost:3001/searchcard", config)
-        .then(res=> {
-            //localStorage("arrayOfDecks", res.data);
-            //console.log(JSON.parse(res.data));
-            //console.log(res.data);
-            //var obj = JSON.parse(res.data);
-            //console.log(obj[0]);
-            var currentValue = res.data;
-            for(let i = 0; i < currentValue.length; i++) {
-                if (currentValue[i].name.startsWith(nameOfCard)) {
-                    returnValue.push(currentValue[i]);
-                }
-            }
-        })
-        return returnValue;
-    }
-
-    const signoutOnclick = () => {
-        setDisplay("none");
-        setDisplay2("block");
-        localStorage.setItem("windowuserinfoboxstate", "none");
-        localStorage.setItem("windowloginboxstate", "block");
-        localStorage.setItem("windowusername", "");
-        console.log("1");
-        window.location.href="/";
-    }
-
-    const searchSubmit = async (event) => {
-        console.log(1);
+    const searchSubmit = (event) => {
         event.preventDefault();
-        await listofCards(localStorage.getItem("windowusername"), localStorage.getItem("windowdisplaydeck"), searchContent).then(value => {
-            setabc(value);
-        })
+        var newDisplayCard = [];
+        for(let i = 0; i < listOfCard.length; i++) {
+            if (listOfCard[i].name.startsWith(searchContent.toUpperCase()) || listOfCard[i].name.startsWith(searchContent.toLowerCase())) {
+                newDisplayCard.push(listOfCard[i]);
+            }
+        }
+        setListDisplayCard(newDisplayCard);
     }
 
     const edithandleSubmit = (event) => {
         event.preventDefault();
         const config = {
-            name: localStorage.getItem("windowdisplaycardname"),
-            deck_owner: localStorage.getItem("windowdisplaydeck"),
-            owner: localStorage.getItem("windowusername"),
+            name: cardname,
+            deck_owner: props.deckUsing,
+            owner: props.username,
             newname: event.target.edit_card_name.value,
             newtype: event.target.edit_card_type.value,
             newspelling: event.target.edit_card_spelling.value,
@@ -176,9 +147,10 @@ const Cards = function(props) {
         .then(res=> {
             console.log(res.data);
             if (res.data == "0") {
-                console.log("Add successfully");
+                console.log("Edit successfully");
                 event.target.reset(); 
                 editcloseOnClick();
+                takeListCardFromServer(props.username, props.deckUsing);
             }
             else {
                 setNotify("Card's already exist!");
@@ -199,13 +171,14 @@ const Cards = function(props) {
 
 
     function uploadImage() {
+        console.log(linkcontent);
         setImage(linkcontent);
         
     }
 
     function uploadImage2() {
+        console.log(linkcontent2);
         setImage2(linkcontent2);
-        
     }
 
     const handleSubmit = (event) => {
@@ -221,13 +194,11 @@ const Cards = function(props) {
             synonym: event.target.card_synonym.value,
             antonym: event.target.card_antonym.value,
             example: event.target.card_example.value,
-            deck_owner: localStorage.getItem("windowdisplaydeck"),
-            owner: localStorage.getItem("windowusername"),
+            deck_owner: props.deckUsing,
+            owner: props.username,
             box: 1,
             time: dateNow.toLocaleString(),
         };
-        console.log(config.name);
-        console.log(config.type);
         if (config.name.localeCompare("") == 0) {
             setNotify("Please fill in card's name!");
         }
@@ -260,6 +231,7 @@ const Cards = function(props) {
                 console.log("Add successfully");
                 event.target.reset(); 
                 closeOnClick();
+                takeListCardFromServer(props.username, props.deckUsing);
             }
             else {
                 setNotify("Card's already exist!");
@@ -268,7 +240,6 @@ const Cards = function(props) {
         }    
     }
 
-    
     function getDay(a, b) {
         return (b - a) / (24*3600*1000);
     }
@@ -276,20 +247,31 @@ const Cards = function(props) {
     function studyhandle() {
         var dateNow = new Date();
         dateNow.setHours(0,0,0,0);
-        console.log(abc);
-        var xyz = [];
-        for(var i = 0; i < abc.length; i++) {
-            var dateDiff = getDay(new Date(abc[i].time).getTime(), dateNow.getTime());
-            if (abc[i].box == 1) xyz.push(abc[i]);
-            else if (abc[i].box == 2 && dateDiff % 3 == 0 && dateDiff) xyz.push(abc[i]);
-            else if (abc[i].box == 3 && dateDiff % 10 == 0 && dateDiff) xyz.push(abc[i]);
-            else if (abc[i].box == 4 && dateDiff % 30 == 0 && dateDiff) xyz.push(abc[i]);
-            else if (abc[i].box == 5 && dateDiff % 90 == 0 && dateDiff) xyz.push(abc[i]); 
+        var listCardStudy = [];
+        for(var i = 0; i < listOfCard.length; i++) {
+            var dateDiff = getDay(new Date(listOfCard[i].time).getTime(), dateNow.getTime());
+            console.log(dateDiff + i);
+            if (listOfCard[i].box == 1) listCardStudy.push(listOfCard[i]);
+            else if (listOfCard[i].box == 2 && dateDiff % 3 == 0 && dateDiff) listCardStudy.push(listOfCard[i]);
+            else if (listOfCard[i].box == 3 && dateDiff % 10 == 0 && dateDiff) listCardStudy.push(listOfCard[i]);
+            else if (listOfCard[i].box == 4 && dateDiff % 30 == 0 && dateDiff) listCardStudy.push(listOfCard[i]);
+            else if (listOfCard[i].box == 5 && dateDiff % 90 == 0 && dateDiff) listCardStudy.push(listOfCard[i]); 
         }
-        localStorage.setItem("windowdisplaylistcard", JSON.stringify(xyz));    
-        localStorage.setItem("windowrememberedwords", 0);
-        localStorage.setItem("windowtotalwords", 0);     
+        navigate(
+            '/practice',
+            {
+                replace: true,
+                state: {
+                    listCardStudy: listCardStudy,
+                }
+            }
+        )
         window.location.href = '/practice';
+        //localStorage.setItem("windowdisplaylistcard", JSON.stringify(xyz));    
+        //localStorage.setItem("windowrememberedwords", 0);
+        //localStorage.setItem("windowtotalwords", 0);     
+        //window.location.href = '/practice';
+        //console.log(listCardStudy);
     }
 
     const searchChange = (event) => {
@@ -298,7 +280,7 @@ const Cards = function(props) {
 
     const Card = (props) => {
         return (
-            abc.map((item) => (
+            listDisplayCard.map((item) => (
                 <div class="cards-container">
                     <div class="cards-name">
                         <span>{item.name}</span>
@@ -318,41 +300,13 @@ const Cards = function(props) {
 
     return (
         <div>
-            {/* header menu */} 
-            <div class="container-fluid">
-                {/* logo */} 
-                <div class="header-logo">
-                    <span class="name">IamRoht</span>
-                </div>
-                {/* menu */}
-                <div class="header-menu collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav__item"><a href="/" class="nav__link active">Home</a></li>
-                        <li class="nav__item"><a href="/decks" class="nav__link">Decks</a></li>
-                        <li class="nav__item"><a href="/statistic" class="nav__link">Statistics</a></li>
-                        <li class="nav__item"><a href="/about" class="nav__link">About</a></li>
-                    </ul>
-                </div>
-                <div class="user-info" style={{display:userinfostate}}>
-                    <div class="user-displayname">
-                        <span>Hello, </span>
-                        <a href="/user">{localStorage.getItem("windowdisplayname")}</a>
-                    </div>
-                </div>
-
-                {/* signin signup */}
-                <div class="header-signin collapse navbar-collapse" id="navbarResponsive" style={{display:loginsignupstate}}>
-                    <span class="btn signin"><a href="/signin">Sign in </a></span>
-                    <span class="btn-or"> / </span>
-                    <span class="btn signup"><a href="/signup">Sign up</a></span>
-                </div>
-            </div>
+            <Menu {...props}></Menu>
             <div class="cards-content" style={{"opacity":bgopacity}}>
                 <div class="cards-back">
                     <a href="/decks">&lt; Back</a>
                 </div>
                 <div class="cards-title"> 
-                    <h1>{cardname}</h1>
+                    <h1>{props.deckUsing}</h1>
                 </div>
 
                 <div class="hehe">

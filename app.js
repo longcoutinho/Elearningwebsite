@@ -348,13 +348,15 @@ async function SearchWordsInDB(owner, time) {
     const database = client.db('Test');
     listofwords = database.collection('words');  
     const query = {username:owner, time:time};
+    console.log(query);
     const cur = await listofwords.find(query).toArray();
     if (cur.length == 0) {
-      console.log("no data");
+      //console.log("no data");
       return "0";
     }
     else {
-      console.log(1);
+      console.log(cur);
+      return cur;
       returnString = cur;
     }
     return returnString;

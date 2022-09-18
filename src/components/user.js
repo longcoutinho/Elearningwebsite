@@ -45,14 +45,19 @@ const User = function(props) {
     const changenamesubmit = async (event) => {
         event.preventDefault();
         const config = {
-            username: localStorage.getItem("windowusername"),
+            username: props.username,
             newname: event.target.new_displayname_user.value,
         };
         axios.post("http://localhost:3001/changedisplaynameuser", config)
         .then(res=> {
             console.log(res.data);
             if (res.data == "0") {
-                localStorage.setItem("windowdisplayname", config.newname);
+                const userData = {
+                    logedIn: 'true',
+                    displayName: config.newname,
+                    username: props.username
+                }
+                props.parentCallback(userData);
                 window.location.reload(false);
             }
             else {
@@ -65,7 +70,7 @@ const User = function(props) {
         event.preventDefault();
         console.log(1);
         const config = {
-            username: localStorage.getItem("windowusername"),
+            username: props.username,
             oldpassword: event.target.old_password_user.value,
             newpassword: event.target.new_password_user.value,
             confirmpassword: event.target.confirm_password_user.value
@@ -75,6 +80,7 @@ const User = function(props) {
                 console.log(res.data);
                 if (res.data == "0") {
                     console.log("Changed password!")
+                    window.location.reload(false);
                 }
                 else {
                     console.log("Deck da ton tai!");
@@ -88,7 +94,7 @@ const User = function(props) {
     
 
     useEffect( async () => {
-        if (localStorage.getItem("windowusername") == "admin") {
+        if (props.username == "admin") {
             setDisplayUser("flex");
         }
         else {
@@ -98,7 +104,7 @@ const User = function(props) {
             setabc(value);
         })
         
-    },[]);
+    },[props]);
     
     async function deletehandle(username) {
         const config = {
@@ -157,19 +163,19 @@ const User = function(props) {
         <div class="user-container">
             <Menu {...props}></Menu>
             <div class="title-user-info">
-                <p>Thong tin ca nhan</p>
+                <p>PROFILE</p>
             </div>
             <div class="gg" >
                 <table id="user">
 
                 <tr>
                     <td >Username</td>
-                    <td >{localStorage.getItem("windowusername")}</td>
+                    <td >{props.username}</td>
                     <td ></td>
                 </tr>
                 <tr>
                     <td >Display name</td>
-                    <td >{localStorage.getItem("windowdisplayname")}</td>
+                    <td >{props.displayName}</td>
                     <td ><button onClick={() => changenamehandle()}>CHANGE </button></td>
                 </tr>
                 <tr>
@@ -211,7 +217,7 @@ const User = function(props) {
                 </div>
             </form>
             
-            <p class="user-list-title" style={{display:displayusercard}}>Danh sach user</p>
+            <p class="user-list-title" style={{display:displayusercard}}>USERS LIST</p>
             <div style={{display:displayusercard}} class="user-search-container">
                 <input onChange={onChangehandle} placeholder="Search" type="text"></input>
                 <i onClick={onClickhandle} class="fa-solid fa-magnifying-glass"></i>
@@ -219,7 +225,7 @@ const User = function(props) {
             <div class="display-user-card" style={{display:displayusercard}}>
                 <table id="admin">
                     <tr>
-                        <th >STT</th>
+                        <th >I</th>
                         <th >Username</th>
                         <th >Password</th>
                         <th >Action</th>

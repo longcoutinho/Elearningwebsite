@@ -3,62 +3,65 @@ import { useState } from "react";
 import "../styles/practice.css"
 import axios from "axios";
 import voice_icon from "../image/voice_icon.jpg"
+import { useLocation } from "react-router";
 
 const Practice = function(props) {
-    const [abc, setabc] = useState(JSON.parse(localStorage.getItem("windowdisplaylistcard")));
-    const [value, incValue] = useState(Object.keys(abc).length - 1);
+    const [listCardStudy, setListCardStudy] = useState([]);
     const [displaysentence, setdisplaysentence] = useState("none");
     const [displaybutton, setDisplayButton] = useState("flex");
     const [rotateState, setrotation] = useState("none");
     const [buttonstate, setButton] = useState(false);
-    
+    const [cardInd, setCardInd] = useState();
+    const [rememWords, setRememWords] = useState(0);
+    const [totalWords, setTotalWords] = useState(0);
+    const { state } = useLocation();    
     useEffect(() => {
         var xyz = [];
-        var size = Object.keys(abc).length;
-       for(var i = 0; i < size; i++) {
-           abc[i].display = 1;
-           xyz.push(abc[i]);
-       }
-       if (value >=0) xyz[value].display = 0;
-       else {
+        var size = state.listCardStudy.length
+        console.log(state.listCardStudy);
+        if (size == 0) {
             setdisplaysentence("flex");
             setDisplayButton("none");
-       }
-       setabc(xyz);
-    },[]);
+        }
+        else {
+            setCardInd(size - 1);
+            for(var i = 0; i < size; i++) {
+                state.listCardStudy[i].display = 0;
+                xyz.push(state.listCardStudy[i]);
+            }
+            setdisplaysentence("none");
+            setDisplayButton("flex");
+            console.log(xyz);
+            setListCardStudy(xyz); 
+        }
+    },[state]);
 
     function changecard() {
-        var xyz = [];
-        var size = Object.keys(abc).length;
-        for(var i = 0; i < size; i++) {
-            xyz.push(abc[i]);
+        var newListCard = [];
+        for(let i = 0; i < listCardStudy.length; i++) {
+            newListCard.push(listCardStudy[i]);
         }
-        xyz[value].display = 1;
-        if (value >= 0) {
-            if (value > 0) {
-                var newvalue = value - 1;
-                xyz[newvalue].display = 0;
-                incValue(newvalue);
-            }
-            if (value == 0) {
+        if (cardInd >= 0) {
+            newListCard[cardInd].display = 1;
+            setCardInd(cardInd - 1);
+            if (cardInd == 0) {
                 setdisplaysentence("flex");
                 setDisplayButton("none");
             }
         }
-        setabc(xyz);
+        setListCardStudy(newListCard);
         setButton(false);
     }
 
     function rememberhandle() {
         setrotation("none");
-        //abc[0].display = 1;
         var dateNow = new Date();
         dateNow.setHours(0,0,0,0);
         const config = {
-            cardname: abc[value].name,
-            deck_owner: localStorage.getItem("windowdisplaydeck"),
-            owner: localStorage.getItem("windowusername"),
-            box: abc[value].box + 1,
+            cardname: listCardStudy[cardInd].name,
+            deck_owner: props.deckUsing,
+            owner: props.username,
+            box: listCardStudy[cardInd].box + 1,
             time: dateNow.toLocaleString()
         };
         axios.post("http://localhost:3001/updatecardbox", config)
@@ -73,13 +76,8 @@ const Practice = function(props) {
         })
         setButton(true);
         setTimeout(changecard, 1000);
-        //console.log(abc[0].display);
-        
-        //setrotation2("rotateY(180deg)");
-        var curremem = parseInt(localStorage.getItem("windowrememberedwords"));
-        localStorage.setItem("windowrememberedwords", curremem + 1);
-        var curtotal = parseInt(localStorage.getItem("windowtotalwords"));
-        localStorage.setItem("windowtotalwords", curtotal + 1); 
+        setRememWords(rememWords + 1);
+        setTotalWords(totalWords + 1); 
     }
 
     function dontrememberhandle() {
@@ -87,12 +85,13 @@ const Practice = function(props) {
         var dateNow = new Date();
         dateNow.setHours(0,0,0,0);
         const config = {
-            cardname: abc[value].name,
-            deck_owner: localStorage.getItem("windowdisplaydeck"),
-            owner: localStorage.getItem("windowusername"),
+            cardname: listCardStudy[cardInd].name,
+            deck_owner: props.deckUsing,
+            owner: props.username,
             box: 1,
             time: dateNow.toLocaleString()
         };
+        console.log(cardInd);
         axios.post("http://localhost:3001/updatecardbox", config)
         .then(res=> {
             console.log(res.data);
@@ -105,19 +104,17 @@ const Practice = function(props) {
         })
         setButton(true);
         setTimeout(changecard, 1000);
-        console.log(abc[value].name);
-        var curtotal = parseInt(localStorage.getItem("windowtotalwords"));
-        localStorage.setItem("windowtotalwords", curtotal + 1); 
+        setTotalWords(totalWords + 1);
     }
     
     function backhandle() {
         var dateNow = new Date();
         dateNow.setHours(0,0,0,0);
         const config = {
-            owner: localStorage.getItem("windowusername"),
+            owner: props.username,
             time: dateNow.toLocaleString(),
-            r_words: parseInt(localStorage.getItem("windowrememberedwords")),
-            t_words: parseInt(localStorage.getItem("windowtotalwords")),
+            r_words: rememWords,
+            t_words: totalWords,
         };
         console.log(config);
         axios.post("http://localhost:3001/updatecountwords", config)
@@ -129,14 +126,10 @@ const Practice = function(props) {
 
     const rotatehandle = (event) => {
         if (event.target.tagName == "DIV") setrotation("rotateY(180deg)");
-        //setrotation2("none");
-        console.log(3);
     }
 
     const rotatehandle2 = (event) => {
         setrotation("none");
-        //setrotation2("rotateY(180deg)");
-        console.log(2);
     }
 
     function readOnClick(content) {
@@ -147,7 +140,7 @@ const Practice = function(props) {
 
     const Card = (props) => {
         return (
-            abc.map((item) => (
+            listCardStudy.map((item) => (
                 <div onClick={rotatehandle} class="cards-study-container" style={{display:  item.display ? 'none' : 'flex'}}>
                     <div class="cards-study-name" >
                         <span>{item.name}</span>
@@ -164,7 +157,7 @@ const Practice = function(props) {
 
     const BackCard = (props) => {
         return (
-            abc.map((item) => (
+            listCardStudy.map((item) => (
                 <div onClick={rotatehandle2} class="cards-study-container-2" style={{display:  item.display ? 'none' : 'flex'}}>
                     
                     <div class="cards-study-meaning">

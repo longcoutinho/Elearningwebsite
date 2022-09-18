@@ -3,7 +3,9 @@ import "../styles/decks.css"
 import { useState } from "react";
 import axios from "axios";
 import Menu from "./Menu.js";
+import { useNavigate } from "react-router";
 const Decks = function(props) {
+    var navigate = useNavigate();
     const [adddeckstate, setStateOfAddingBox] = useState("");
     const [editdeckstate, setStateOfEditBox] = useState("");
     const [bgopacity, setBackGroundOpacity] = useState("1");
@@ -80,7 +82,7 @@ const Decks = function(props) {
         event.preventDefault();
         var newDisplaydeck = [];
         for(let i = 0; i < listOfDeck.length; i++) {
-            if (listOfDeck[i].name.startsWith(searchContent.toUpperCase() || searchContent.toLowerCase())) {
+            if (listOfDeck[i].name.startsWith(searchContent.toUpperCase()) || listOfDeck[i].name.startsWith(searchContent.toLowerCase())) {
                 newDisplaydeck.push(listOfDeck[i]);
             }
         }
@@ -88,11 +90,10 @@ const Decks = function(props) {
     }
 
     function decksubmit(content) {
-        localStorage.setItem("windowdisplaydeck", content);
+        props.changeDeckUsing(content);
     }
 
-    async function edithandle(item) {
-        console.log(item);
+    function edithandle(item) {
         setNameInput(item.name);
         setDiscriptionInput(item.decription);
         setStateOfEditBox("flex");

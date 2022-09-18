@@ -4,7 +4,7 @@ import img1 from "../image/theforgettingcurve.png"
 import img2 from "../image/img2.png"
 import img3 from "../image/img3.jpg"
 import Menu from "./Menu.js"
-
+import Footer from "./Footer.js"
 const About = function(props) {
     return (
         <div>
@@ -36,7 +36,9 @@ const About = function(props) {
                 Với phương pháp này tất cả nội dung đã học sẽ được lặp đi lặp lại cho đến khi người học đã nhớ thông tin. Bên cạnh đó, ưu điểm của cách làm này là phân loại được từ vựng theo mức độ dễ – trung bình – khó để người học không học tràn lan mà chỉ phân bổ thời gian và công sức tập trung vào những từ vựng khó.
                 </p>
             </div>
+            <Footer></Footer>
         </div>
+        
     )
 }
 export default About

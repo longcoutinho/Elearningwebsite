@@ -51,17 +51,21 @@ const App = () => {
   return (
     <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home {...userData}/>} />
+          <Route path='/' 
+          element={<Home {...userData}/>} />
           <Route path="/signin" element={<Signin {...userData} 
           changeListOfDeck = {changeListOfDeckFromChild}
           parentCallback={callbackFunction}/>} /> 
           <Route path="/signup" element={<Signup/>} />
           <Route path="/decks" element={<Decks {...userData} 
           changeListOfDeck = {changeListOfDeckFromChild}
+          changeDeckUsing = {changeDeckUsingFromChild}
           />}/>
-          <Route path="/cards" element={<Cards/>} />
+          <Route path="/cards" element={<Cards 
+          {...userData}
+          />} />
           <Route path="/statistic" element={<Statistic {...userData}/> } />
-          <Route path="/practice" element={<Practice/>} />
+          <Route path="/practice" element={<Practice {...userData}/>} />
           <Route path="/user" element={<User {...userData} parentCallback={callbackFunction} />} />
           <Route path="/about" element={<About {...userData} />} />
         </Routes>

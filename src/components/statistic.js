@@ -7,10 +7,11 @@ import Chart from 'react-apexcharts'
 import Menu from "./Menu";
 
 const Statistic = function(props) {
+    const [notify, setNotify] = useState("LOADING");
     useEffect( async () => {
         var newseries =  [
           {    
-            name: 'Total words',
+            name: 'Total words',  
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
@@ -31,25 +32,27 @@ const Statistic = function(props) {
           oldd.setHours(0, 0, 0, 0);
 
           const config = {
-            owner: localStorage.getItem("windowusername"),
+            owner: props.username,
             time: oldd.toLocaleString(),
           };
-
+          if (config.owner != "") {
           await axios.post("http://localhost:3001/takewordsinfo", config)
           .then(res=> {
             if (res.data == "0") {
               console.log("no data!");
             }
             else {
+              console.log(res.data);
               ind = (day - 1) - i;
               newseries[0].data[ind] = res.data[0].t_words;
               newseries[1].data[ind] = res.data[0].r_words;
             } 
           })
+          }
         }
         setSeries(newseries);
-    
-    },[]); 
+        if (props.username != "")setNotify("LEARING IN THIS WEEK")
+    },[props]); 
     
     const [options, setOptions] = useState(
       {
@@ -86,6 +89,7 @@ const Statistic = function(props) {
         <div>
             <Menu {...props}></Menu>
             <div class="statistic-content">
+              <h1>{notify}</h1>
               <BarChart></BarChart>
             </div>
         </div>
